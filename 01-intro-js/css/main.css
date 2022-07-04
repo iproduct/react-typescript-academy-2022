@@ -45,20 +45,20 @@ body {
   background: #ccc;
 }
 
-#articles {
+#main>section {
   margin-left: 20%;
   margin-right: 20%;
 }
 
 /* Create two columns/boxes that floats next to each other */
-nav {
+nav:not(.topnav) {
   float: left;
   width: 20%;
   padding: 20px;
 }
 
 /* Style the list inside the menu */
-nav ul {
+nav:not(.topnav) ul {
   list-style-type: none;
   padding: 0;
 }
