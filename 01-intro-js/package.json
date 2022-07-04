@@ -1,0 +1,29 @@
+{
+  "name": "01-intro",
+  "version": "1.0.0",
+  "description": "Introduction to html, css, and javascript",
+  "main": "index.js",
+  "scripts": {
+    "start": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iproduct/react-typescript-academy-2022.git"
+  },
+  "keywords": [
+    "html",
+    "css",
+    "js",
+    "intro"
+  ],
+  "author": "Trayan Iliev",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/iproduct/react-typescript-academy-2022/issues"
+  },
+  "homepage": "https://github.com/iproduct/react-typescript-academy-2022#readme",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
