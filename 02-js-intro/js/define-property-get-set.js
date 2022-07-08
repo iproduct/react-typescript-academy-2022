@@ -21,7 +21,7 @@ var pl1 = new PositionLogger(5);
 console.log('Value: ' + pl1.position);
 pl1.position += 20;
 console.log('Value: ' + pl1.position);
-pl1.position -= 10; 
+pl1.position -= 10;
 pl1.position += 50;
 console.log('Value: ' + pl1.position);
 console.log(pl1.positionsLog);
