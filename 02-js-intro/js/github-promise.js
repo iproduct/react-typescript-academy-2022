@@ -4,20 +4,24 @@ function demo() {
         .then(usersResp => usersResp.json())
         .then(users => {
             console.log(users);
-            return fetch(`https://api.github.com/users/${users[0].username}`);
+            return Promise.all(users.map(user => {
+                return fetch(`https://api.github.com/users/${user.username}`)
+                    .then(usersResp => usersResp.json());
+            }));
         })
-        .then(githubResp => githubResp.json())
-        .then(gitUser => {
-            console.log(gitUser);
-            document.createElement(div);
-            const img = new Image();
-            img.src = gitUser.avatar_url
-            resultsElem.appendChild(img);
+        .then(gitUsers => {
+            console.log(gitUsers);
+            const images = gitUsers.map(gitUser => {
+                const img = new Image();
+                img.src = gitUser.avatar_url
+                resultsElem.appendChild(img);
+                return img;
+            })
             return new Promise((resolve, reject) => {
-                setTimeout(resolve, 5000, img)
+                setTimeout(resolve, 5000, images)
             });
-        }).then(img => {
-            resultsElem.removeChild(img);
+        }).then(images => {
+            images.forEach(img => resultsElem.removeChild(img));
         })
         .finally(() => console.log("Demo finished."));
 }
