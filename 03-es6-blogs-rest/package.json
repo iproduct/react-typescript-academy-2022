@@ -1,0 +1,15 @@
+{
+  "name": "03-es6-blogs-rest",
+  "version": "1.0.0",
+  "description": "blogs demo using es6+",
+  "main": "index.js",
+  "repository": "https://github.com/iproduct/react-typescript-academy-2022",
+  "author": "Trayan Iliev",
+  "license": "Apache-2.0",
+  "scripts": {
+    "api": "json-server --watch db.json --routes routes.json"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.0"
+  }
+}

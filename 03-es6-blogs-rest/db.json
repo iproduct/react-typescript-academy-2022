@@ -1,0 +1,36 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "Json APIS",
+      "author": "tsacademy"
+    },
+    {
+      "id": 2,
+      "title": "Fetch API and Promises",
+      "author": "john"
+    },
+    {
+      "title": "REST Clients",
+      "author": "john",
+      "id": 3
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "fname": "John",
+      "lname": "Doe",
+      "username": "john",
+      "password": "john123",
+      "role": "admin"
+    }
+  ]
+}
