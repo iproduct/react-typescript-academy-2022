@@ -1,0 +1,13 @@
+#results {
+    display:flex;
+    flex-flow: row wrap;
+    gap: 10px;
+}
+
+.post-item {
+    width: 350px;
+    height: 120px;
+    border: 1px solid lightskyblue;
+    border-radius: 5px;
+    padding: 5px 10px;
+}

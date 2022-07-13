@@ -1,4 +1,4 @@
-GET http://localhost:3000/posts HTTP/1.1
+GET http://localhost:3000/api/posts HTTP/1.1
 
 ###
 
