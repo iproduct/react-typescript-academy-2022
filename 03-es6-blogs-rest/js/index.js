@@ -10,11 +10,33 @@ async function fetchPosts() {
     posts.forEach(appendPost);
 }
 
+
 function appendPost(post) {
     const div =  document.createElement("div");
     div.className = 'post-item';
-    div.innerHTML=`<h3>${post.id}: ${post.title}</h3><p>Author: ${post.author}</p>`;
+    div.id = "post-" + post.id;
+    div.innerHTML=`<header><h3>${post.id}: ${post.title}</h3><span class="delete">X</span></header>
+    <p>Author: ${post.author}</p>`;
     results.appendChild(div);
+    const buton = div.querySelector("span.delete");
+    button.addEventListener('click', deletePost(post.id))
+}
+
+async function deletePost(postId) {
+    console.log("DELETING ID = " + postId);
+    const postsResp = await fetch(`${API_BASE_URL}/posts/${postId}`);
+    const deleted = await postsResp.json();
+    console.log(deleted);
+    removePost(postId)
+}
+
+function removePost(postId) {
+    const posts =  results.querySelectorAll(".post-item");
+    for(const post of posts) {
+        if(post.id === "post-" + post.id) {
+            results.removeChild(post);
+        }
+    }
 }
 
 function clearForm() {

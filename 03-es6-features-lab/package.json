@@ -1,0 +1,9 @@
+{
+  "name": "03-es6-features-lab",
+  "version": "1.0.0",
+  "description": "ES6+ demos",
+  "main": "index.js",
+  "repository": "https://github.com/iproduct/react-typescript-academy-2022.git",
+  "author": "Trayan Iliev",
+  "license": "Apache-2.0"
+}
