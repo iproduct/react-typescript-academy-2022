@@ -17,4 +17,32 @@ function appendPost(post) {
     results.appendChild(div);
 }
 
+function clearForm() {
+    form.reset();
+}
+
+async function addPost(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = {};
+    for(const key of formData.keys()) {
+        data[key] = formData.get(key);
+    }
+    console.log(data);
+    const response = await fetch(`${API_BASE_URL}/posts`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/x-www-form-urlencoded'',
+        },
+        body: JSON.stringify(data)
+    });
+    const createdPost = await response.json();
+    console.log(createdPost);
+    appendPost(createdPost);
+    clearForm();
+}
+
+form.addEventListener("submit", addPost);
+
 fetchPosts();
