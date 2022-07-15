@@ -1,11 +1,6 @@
 {
   "posts": [
     {
-      "id": 1,
-      "title": "Json APIS",
-      "author": "tsacademy"
-    },
-    {
       "id": 2,
       "title": "Fetch API and Promises",
       "author": "john"
@@ -21,13 +16,7 @@
       "id": 4
     }
   ],
-  "comments": [
-    {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
-    }
-  ],
+  "comments": [],
   "users": [
     {
       "id": 1,
