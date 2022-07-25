@@ -4,14 +4,16 @@ let persons2 = [
     parents: {
       mother: 'Melinda Harrison',
       father: 'Simon Harrison',
-    }, age: 35
+    }, 
+    age: 35
   },
   {
     name: 'Robert Moore',
     parents: {
       mother: 'Sheila Moore',
       father: 'John Moore',
-    }, age: 25
+    }, 
+    age: 25
   }];
 for (let { name: n, parents: { mother: mother }, age } of persons2) {
   console.log(`Name: ${n}, Mother: ${mother}, age: ${age}`);
