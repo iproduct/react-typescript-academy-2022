@@ -1,0 +1,12 @@
+{
+  "name": "04-ts-intro",
+  "version": "1.0.0",
+  "description": "TypeScript intro",
+  "main": "index.js",
+  "repository": "https://github.com/iproduct/react-typescript-academy-2022.git",
+  "author": "Trayan Iliev",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "typescript": "^4.7.4"
+  }
+}

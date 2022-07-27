@@ -6,9 +6,9 @@
 </head>
 
 <body>
-    <div class="external" onclick="handler(event)">external
-        <div class="middle" onclick="handler(event)">middle
-            <div class="internal" onclick="handler(event)">internal
+    <div class="external">external
+        <div class="middle">middle
+            <div class="internal">internal
             </div>
         </div>
     </div>
@@ -30,8 +30,10 @@
             alert("Handler 2: " + elem.className);
             elem.style.background = '';
         }
-        document.querySelectorAll("div").forEach(
-            elem => elem.addEventListener('click', handler2, false)
+        document.querySelectorAll("div").forEach(elem => {
+            elem.addEventListener('click', handler, false);
+            elem.addEventListener('click', handler2, false);
+        }
         );
     </script>
 </body>
