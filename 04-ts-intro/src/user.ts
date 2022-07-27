@@ -1,5 +1,5 @@
-import { Contact, Person } from "./person";
-import { IdType } from "./shared-types";
+import { Contact, Person } from "./person.js";
+import { IdType } from "./shared-types.js";
 
 export interface User extends Person {
     password: string;
