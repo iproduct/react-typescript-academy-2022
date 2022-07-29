@@ -1,8 +1,9 @@
 import { UserBase, Role, User } from './user.js';
 
 function greeter(user: User) {
-    return `Hello ${user.firstName} ${user.lastName} from ${user.contact?.country || 'BG'} in Roles: 
-    ${user.roles.map(role => Role[role]).join(', ')}`;
+    return user.toString();
+    // return `Hello ${user.firstName} ${user.lastName} from ${user.contact?.country || 'BG'} in Roles: 
+    // ${user.roles.map(role => Role[role]).join(', ')}`;
 }
 
 const user1 = new UserBase(1, 'Trayan', 'Iliev', 'trayan@gmail.com', 'trayan123', [Role.AUTHOR, Role.ADMIN],

@@ -3,7 +3,10 @@ import { IdType } from "./shared-types.js";
 
 export interface User extends Person {
     password: string;
-    roles: Role[]
+    roles: Role[];
+    readonly salutation: string;
+    toString(): string; // overriding
+    // toString: () => string; // alternative
 }
 
 
@@ -21,5 +24,58 @@ export class UserBase implements User {
         public roles: Role[] = [Role.READER],
         public contact?: Contact
         ) {}
-    
+        get salutation() {
+            return `Hello ${this.firstName} ${this.lastName} in roles: ${this.roles.map(role => Role[role]).join(', ')}`;
+        }
+        toString(): string {
+            return this.salutation;
+        }
+}
+
+export class Reader extends UserBase {
+    constructor(
+        public id: IdType,
+        public firstName: string,
+        public lastName: string,
+        public email: string,
+        public password: string,
+        public contact?: Contact
+        ) {
+            super( id, firstName, lastName, email, password, [Role.READER], contact);
+        }
+        toString(): string {
+            return `READER: ${super.toString()}`
+        }
+}
+
+export class Author extends UserBase {
+    constructor(
+        public id: IdType,
+        public firstName: string,
+        public lastName: string,
+        public email: string,
+        public password: string,
+        public contact?: Contact
+        ) {
+            super( id, firstName, lastName, email, password, [Role.AUTHOR], contact);
+        }
+        toString(): string {
+            return `AUTHOR: ${super.toString()}`
+        }
+}
+
+export class Admin extends UserBase {
+    constructor(
+        public id: IdType,
+        public firstName: string,
+        public lastName: string,
+        public email: string,
+        public password: string,
+        public contact?: Contact
+        ) {
+            super( id, firstName, lastName, email, password, [Role.ADMIN], contact);
+        }
+        toString(): string {
+            return `ADMIN: ${super.toString()}`
+        }
 }

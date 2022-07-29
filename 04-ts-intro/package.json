@@ -7,7 +7,7 @@
   "author": "Trayan Iliev",
   "license": "Apache-2.0",
   "scripts": {
-    "start": "lite-server"
+    "start": "concurrently --kill-others \"tsc -w\" \"lite-server\""
   },
   "dependencies": {
     "typescript": "^4.7.4"
@@ -15,6 +15,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.31.0",
     "@typescript-eslint/parser": "^5.31.0",
+    "concurrently": "^7.3.0",
     "eslint": "^8.20.0",
     "lite-server": "^2.6.1"
   }
