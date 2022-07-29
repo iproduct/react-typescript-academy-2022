@@ -6,4 +6,6 @@ const users: User[] = [
     new Admin(2, 'Jane', 'Doe', 'jane@gmail.com', 'jane123', { country: 'USA', address: 'San Francisko' }),
 ];
 
+const 
+
 document.getElementById('results')!.innerHTML = users.map(user => user.toString()).join('<br>');
