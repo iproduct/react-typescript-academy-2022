@@ -1,4 +1,3 @@
-import { IdType } from './../shared-types';
 import { IdGenerator } from './id-generator';
 import { Identifiable, IdType } from "../shared-types";
 
