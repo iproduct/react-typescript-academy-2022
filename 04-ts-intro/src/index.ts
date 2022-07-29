@@ -1,5 +1,4 @@
-import { Admin, Author, Reader } from './user.js';
-import { User } from './user.js';
+import { Admin, Author, Reader, User } from './model/user.js';
 
 const users: User[] = [
     new Reader(1, 'Trayan', 'Iliev', 'trayan@gmail.com', 'trayan123', { country: 'BG', address: 'Sofia, 1000' }),

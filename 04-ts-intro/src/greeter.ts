@@ -1,4 +1,4 @@
-import { UserBase, Role, User } from './user.js';
+import { UserBase, Role, User } from './model/user.js';
 
 function greeter(user: User) {
     return user.toString();

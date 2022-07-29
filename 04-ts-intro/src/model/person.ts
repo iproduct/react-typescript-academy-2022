@@ -1,4 +1,4 @@
-import { Identifiable } from "./shared-types.js"
+import { Identifiable } from "../shared-types.js"
 
 export interface Person extends Identifiable {
     firstName: string,
