@@ -1,5 +1,5 @@
 
-import {v4 as uuidv4} from 'uuid';
+// import {v4 as uuidv4} from 'uuid';
 
 export type Uuid = string;
 
@@ -14,8 +14,8 @@ export class NumberIdGenerator implements IdGenerator<number> {
     }
 }
 
-export class UuidGenerator implements IdGenerator<Uuid> {
-    getNextId(): Uuid {
-        return uuidv4();
-    }
-}
+// export class UuidGenerator implements IdGenerator<Uuid> {
+//     getNextId(): Uuid {
+//         return uuidv4();
+//     }
+// }

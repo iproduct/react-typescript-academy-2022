@@ -1,5 +1,5 @@
-import { IdGenerator } from './id-generator';
-import { Identifiable, IdType } from "../shared-types";
+import { IdGenerator } from './id-generator.js';
+import { Identifiable, IdType } from "../shared-types.js";
 
 export interface Repository<T extends Identifiable> {
     findAll(): T[];
@@ -13,7 +13,7 @@ export interface Repository<T extends Identifiable> {
 export class RepositoryImpl<T extends Identifiable> implements Repository<T> {
     private entities = new Map<IdType, T>();
 
-    constructor(private idGenerator: IdGenerator<IdType>) { }
+    constructor(private idGenerator: IdGenerator<IdType>) { } // Constructor DI
 
     findAll(): T[] {
         return Array.from(this.entities.values());
@@ -22,7 +22,7 @@ export class RepositoryImpl<T extends Identifiable> implements Repository<T> {
         return this.entities.get(id);
     }
     create(entity: T): T {
-        this.idGenerator.getNextId(); // assign unique id
+        entity.id = this.idGenerator.getNextId(); // assign unique id
         this.entities.set(entity.id, entity);
         return entity;
     }

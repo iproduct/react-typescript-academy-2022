@@ -6,7 +6,11 @@ function greeter(user: User) {
     // ${user.roles.map(role => Role[role]).join(', ')}`;
 }
 
-const user1 = new UserBase(1, 'Trayan', 'Iliev', 'trayan@gmail.com', 'trayan123', [Role.AUTHOR, Role.ADMIN],
+const user1 = new UserBase('Trayan', 'Iliev', 'trayan@gmail.com', 'trayan123', [Role.AUTHOR, Role.ADMIN],
     { country: 'BG', address: 'Sofia, 1000' });
 
 document.getElementById('results')!.innerHTML = greeter(user1);
+
+const name = 'Georgi';
+// name += ' Petrov';
+console.log(name);
