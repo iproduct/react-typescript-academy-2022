@@ -8,11 +8,13 @@ const users: User[] = [
     new Admin('Jane', 'Doe', 'jane@gmail.com', 'jane123', { country: 'USA', address: 'San Francisko' }),
 ];
 
-const userRepo: UserRepository  = new UserRepositoryImpl(new NumberIdGenerator());
+const userRepo: UserRepository = new UserRepositoryImpl(new NumberIdGenerator());
 users.forEach(user => userRepo.create(user));
 
 const allUsers = userRepo.findAll();
 const trayan = userRepo.findByEmail('trayan@gmail.com');
 console.log('Found by email:', trayan);
-
-document.getElementById('results')!.innerHTML = allUsers.map(user => user.toString()).join('<br>');
+const results = document.getElementById('results');
+if (results) {
+    results.innerHTML = allUsers.map(user => user.toString()).join('<br>');
+}
