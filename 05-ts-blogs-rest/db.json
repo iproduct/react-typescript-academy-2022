@@ -50,7 +50,7 @@
       "id": 23
     },
     {
-      "title": "Blogs API Tutorial in TypeScript and Materialize",
+      "title": "Blogs API Tutorial in TypeScript",
       "content": "This tutorial demonstrates how to implement SPA using pure TypeScript without any frameworks.\nMore text here ...\nAnd more ...\nSome more text ...\nSome more text ...\nSome more text ...",
       "tags": [
         "typescript",

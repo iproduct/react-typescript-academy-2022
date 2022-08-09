@@ -87,9 +87,9 @@ class BlogsController {
   }
   
  fillPostForm(post: Post) {
-    let field: keyof Post;
-    for (field in post) {
-      (document.getElementById(field) as HTMLFormElement).value = post[field];
+    // let field: keyof Post;
+    for (const field in post) {
+      (document.getElementById(field) as HTMLFormElement).value = post[field as keyof Post];
       const label = document.querySelector(`#add-post-form label[for=${field}]`);
       if (label) {
         label.className = 'active';
