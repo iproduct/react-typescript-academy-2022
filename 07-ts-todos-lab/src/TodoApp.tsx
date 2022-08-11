@@ -1,39 +1,31 @@
-import React, { Component, MouseEventHandler } from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import MOCK_TODOS from './mock-todos';
+import { Todo, TodoStatus } from './todo-model';
+import TodoList from './TodoList';
+
+export type FilterType = TodoStatus | undefined;
 
 
 export interface TodoAppState {
-  friends: string[];
-  count: number;
-  filterText: string
+  todos: Todo[];
+  filter: FilterType
 }
 
 export default class AppClass extends Component<{}, TodoAppState> {
   state: Readonly<TodoAppState> = {
-    friends: ['Ivan', 'Hristo', 'Petar'],
-    count: 0,
-    filterText: 'filter you'
-  }
-
-  // constructor(props: AppProps) {
-  //   super(props);
-  // }
-
-  addFriend = () => {
-    this.setState((state: TodoAppState) => ({
-      friends: [...state.friends, `friend - ${state.count}`],
-        count: state.count + 1
-    }));
+    todos: MOCK_TODOS,
+    filter: undefined
   }
 
   render() {
     return (
-    <div className="App">
-      <header className="App-header">
-        <h2>React TODOs Demo</h2>
-      </header>
-    </div>
+      <div className="App">
+        <header className="App-header">
+          <h2>React TODOs Demo</h2>
+          <TodoList todos={this.state.todos} filter={this.state.filter} />
+        </header>
+      </div>
     );
   }
 }
