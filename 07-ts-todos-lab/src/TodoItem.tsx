@@ -6,10 +6,16 @@ interface TodoItemProps {
     todo: Todo;
 }
 
-export const TodoItem = ({todo}: TodoItemProps) => {
+export const TodoItem = ({ todo }: TodoItemProps) => {
     return (
-        <div className='TodoItem'>
-            {todo.id}: {todo.text} - {TodoStatus[todo.status]}
+        <div className="TodoItem">
+            <span className="TodoItem-text">
+                <span className='TodoItem-id'>{todo.id}</span>
+                : {todo.text}
+            </span>
+            <span className='TodoItem-right'>
+                {TodoStatus[todo.status]}
+            </span>
         </div>
     )
 }

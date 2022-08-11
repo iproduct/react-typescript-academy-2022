@@ -1,6 +1,7 @@
 .TodoItem {
   display: flex;
   justify-content: space-between;
+  column-gap: 15px;
   padding: 5px;
   background-image: linear-gradient(to bottom right, rgba(120, 120, 120, 0.4), rgba(120, 120, 120, 0));
   border: 1px solid rgba(200, 200, 200, 0.4)
