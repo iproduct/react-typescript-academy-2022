@@ -18,12 +18,24 @@ export default class AppClass extends Component<{}, TodoAppState> {
     filter: undefined
   }
 
+  handleTodoUpdate(todo: Todo) {
+    this.setState(({todos}) => ({todos: todos.map(td => td.id === todo.id? todo: td)}));
+  }
+  handleTodoDelete(todo: Todo) {
+    this.setState(({todos}) => ({todos: todos.map(td => td.id === todo.id? todo: td)}));
+  }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <h2>React TODOs Demo</h2>
-          <TodoList todos={this.state.todos} filter={this.state.filter} />
+          <TodoList
+            todos={this.state.todos}
+            filter={this.state.filter}
+            onUpdateTodo={this.handleTodoUpdate.bind(this)}
+            onDeleteTodo={this.handleTodoUpdate.bind(this)}
+          />
         </header>
       </div>
     );
