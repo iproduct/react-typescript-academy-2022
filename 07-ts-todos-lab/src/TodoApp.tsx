@@ -28,9 +28,9 @@ export default class AppClass extends Component<{}, TodoAppState> {
   }
 
   render() {
-    return (<div className="App">
+    return (
+    <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <h2>React TODOs Demo</h2>
       </header>
     </div>
