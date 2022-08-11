@@ -50,7 +50,7 @@ export class AppClass extends Component<AppProps, AppState> {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Learn {'&amp;'} React
         </a>
       </header>
     </div>

@@ -4,10 +4,11 @@ import './App.css';
 
 export interface AppProps {
   name: string;
+  country: string;
 }
 
 
-export const AppLambda: React.FC<AppProps> = ({ name }) => {
+export const AppLambda = ({ name, country }:AppProps) => {
   const [friends, setFriends]: [string[], Dispatch<SetStateAction<string[]>>] =
     useState(['Ivan', 'Hristo', 'Petar']);
   return (
@@ -15,7 +16,7 @@ export const AppLambda: React.FC<AppProps> = ({ name }) => {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h2>
-          Hello from React {name}!
+          Hello {name} from {country}!
         </h2>
         <h3>
           Friends:
