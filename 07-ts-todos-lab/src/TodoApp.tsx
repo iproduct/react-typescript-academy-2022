@@ -18,6 +18,12 @@ export default class AppClass extends Component<{}, TodoAppState> {
     filter: undefined
   }
 
+  constructor(props: {}) {
+    super(props);
+    this.handleTodoUpdate = this.handleTodoUpdate.bind(this)
+    this.handleTodoDelete = this.handleTodoDelete.bind(this)
+  }
+
   handleTodoUpdate(todo: Todo) {
     this.setState(({todos}) => ({todos: todos.map(td => td.id === todo.id? todo: td)}));
   }
@@ -33,8 +39,8 @@ export default class AppClass extends Component<{}, TodoAppState> {
           <TodoList
             todos={this.state.todos}
             filter={this.state.filter}
-            onUpdateTodo={this.handleTodoUpdate.bind(this)}
-            onDeleteTodo={this.handleTodoUpdate.bind(this)}
+            onUpdateTodo={this.handleTodoUpdate}
+            onDeleteTodo={this.handleTodoDelete}
           />
         </header>
       </div>
