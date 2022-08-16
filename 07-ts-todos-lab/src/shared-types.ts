@@ -8,3 +8,7 @@ export interface TodoListener {
 export interface FilterChangeListener {
     (filter: FilterType): void;
 }
+
+export interface Identifiable<K> {
+    id: K;
+}
