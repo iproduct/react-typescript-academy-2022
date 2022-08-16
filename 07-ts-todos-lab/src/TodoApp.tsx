@@ -28,7 +28,7 @@ export default class AppClass extends Component<{}, TodoAppState> {
     this.setState(({todos}) => ({todos: todos.map(td => td.id === todo.id? todo: td)}));
   }
   handleTodoDelete(todo: Todo) {
-    this.setState(({todos}) => ({todos: todos.map(td => td.id === todo.id? todo: td)}));
+    this.setState(({todos}) => ({todos: todos.filter(td => td.id !== todo.id)}));
   }
 
   render() {

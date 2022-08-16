@@ -27,9 +27,9 @@ export const TodoItem = ({ todo, onUpdateTodo, onDeleteTodo }: TodoItemProps) =>
                     {TodoStatus[todo.status]}
                 </span>
                 {todo.status === TodoStatus.Active ? 
-                    <span className='TodoItem-button' onClick={handleCompletion}>Complete</span>
+                    <span className='TodoItem-button fas fa-check-circle' onClick={handleCompletion} ></span>
                     :
-                    <span className='TodoItem-button' onClick={handleDelete}>Delete</span>
+                    <span className='TodoItem-button fas fa-times-circle danger' onClick={handleDelete}></span>
                 }
             </span>
         </div>
