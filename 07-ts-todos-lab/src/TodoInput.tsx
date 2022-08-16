@@ -9,34 +9,39 @@ interface TodoInputProps {
 
 interface TodoInputState {
     text: string;
+    deadline: string;
 }
 
 class TodoInput extends Component<TodoInputProps, TodoInputState> {
     state: Readonly<TodoInputState> = {
-        text: ''
+        text: '',
+        deadline: ''
     }
 
-    handleTextChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({text: event.target.value});
+    handleFieldChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const fieldName = event.target.name;
+        this.setState({[fieldName]: event.target.value} as unknown as TodoInputState);
     }
 
     handleTodoSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        this.props.onCreateTodo(new Todo(this.state.text));
-        this.setState({text: ''});
+        this.props.onCreateTodo(new Todo(this.state.text, this.state.deadline));
+        this.setState({text: '', deadline: ''});
     }
 
     handleTodoReset = (event: React.FormEvent) => {
         event.preventDefault();
-        this.setState({text: ''});
+        this.setState({text: '', deadline: ''});
     }
 
     render() {
         return (
             <form className='TodoInput' onSubmit={this.handleTodoSubmit}>
                 <label htmlFor='TodoInput-text'>What to do next?</label>
-                <input type='text' id='TodoInput-text' name='text' value={this.state.text} 
-                    onChange={this.handleTextChanged} />
+                <input type='text' id='text' name='text' value={this.state.text} 
+                    onChange={this.handleFieldChanged} />
+                <input type='date' id='deadline' name='deadline' value={this.state.deadline} 
+                    onChange={this.handleFieldChanged} />
                 <button className='button button5' type='submit'>Add TODO</button>
                 <button className='button button3' type='reset' onClick={this.handleTodoReset}>Reset</button>
             </form>

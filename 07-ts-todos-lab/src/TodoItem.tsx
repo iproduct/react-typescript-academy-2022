@@ -20,7 +20,7 @@ export const TodoItem = ({ todo, onUpdateTodo, onDeleteTodo }: TodoItemProps) =>
         <div className="TodoItem">
             <span className="TodoItem-text">
                 <span className='TodoItem-id'>{todo.id}</span>
-                : {todo.text}
+                : {todo.text} [{new Date(todo.deadline).toDateString()}]
             </span>
             <span className='TodoItem-right'>
                 <span className='TodoItem-status'>
