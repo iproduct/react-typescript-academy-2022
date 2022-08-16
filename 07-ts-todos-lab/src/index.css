@@ -30,8 +30,8 @@ code {
 input[type=text], input[type=date], select {
   font-size: 16pt;
   width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
+  padding: 5px 10px;
+  margin: 2px 0;
   display: inline-block;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -44,12 +44,12 @@ input[type=text], input[type=date], select {
   border: none;
   border-radius: 5px;
   color: white;
-  padding: 16px 32px;
+  padding: 5px 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16pt;
-  margin: 4px 2px;
+  margin: 10px 10px 10px 0;
   transition-duration: 0.4s;
   cursor: pointer;
 }
