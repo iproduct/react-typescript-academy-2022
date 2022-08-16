@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 import MOCK_TODOS from './mock-todos';
 import { Todo, TodoStatus } from './todo-model';
+import TodoFilter from './TodoFilter';
 import TodoInput from './TodoInput';
 import TodoList from './TodoList';
 
 export type FilterType = TodoStatus | undefined;
-
 
 export interface TodoAppState {
   todos: Todo[];
@@ -36,6 +36,10 @@ export default class AppClass extends Component<{}, TodoAppState> {
     this.setState(({todos}) => ({todos: todos.concat(todo)}));
   }
 
+  handleFilterChange = (filter: FilterType) => {
+    this.setState({filter: filter});
+  }
+
 
   render() {
     return (
@@ -43,6 +47,7 @@ export default class AppClass extends Component<{}, TodoAppState> {
         <header className="App-header">
           <h2>React TODOs Demo</h2>
           <TodoInput onCreateTodo={this.handleTodocreate} />
+          <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange}/>
           <TodoList
             todos={this.state.todos}
             filter={this.state.filter}
