@@ -1,39 +1,35 @@
-import * as React from 'react';
-import { Todo, TodoStatus } from './todo.model';
-import './TodoItem.css';
-import { TodoListener } from './TodoApp';
+import React from "react";
+import { Todo, TodoStatus } from "./todo.model"
+import { TodoListener } from "./TodoApp";
+import './TodoItem.css'
 
-interface IAppProps {
-  todo: Todo;
-  onChangeStatus: TodoListener;
-  onUpdate: TodoListener;
-  onDelete: TodoListener;
+interface TodoItemProps {
+    todo: Todo;
+    onUpdate: TodoListener;
+    onDelete: TodoListener;
 }
 
-export const TodoItem: React.FC<IAppProps> = (props) => {
-  function handleCompletion(event: React.MouseEvent<HTMLSpanElement, MouseEvent>) {
-    // props.onChangeStatus(Object.assign({}, props.todo, {status: TodoStatus.COMPLETED}));
-    props.onChangeStatus({ ...props.todo, status: TodoStatus.COMPLETED});
-  }
-  function handleDelete(event: React.MouseEvent<HTMLSpanElement, MouseEvent>) {
-    props.onDelete(props.todo);
-  }
-  return (
-    <div className="TodoItem" key={props.todo.id}>
-      <span className="TodoItem-text">
-        <span className="TodoItem-id">{props.todo.id}.</span>
-        {props.todo.text}
-      </span>
-      <span className="TodoItem-right">
-        <span className="TodoItem-status">
-          {TodoStatus[props.todo.status]}
+const TodoItem = ({ todo,onUpdate, onDelete }: TodoItemProps) => {
+    function handleCompletion(event: React.MouseEvent) {
+        onUpdate({ ...todo, status: TodoStatus.Completed })
+    }
+    return (
+        <div className="TodoItem">
+            <span className="TodoItem-text">
+                <span className="TodoItem-id">{todo.id}</span>
+                {todo.text} - {new Date(todo.deadline).toDateString()}
+            </span>
+            <span className="TodoItem-right">
+                <span className="TodoItem-status">{TodoStatus[todo.status]}</span>
+                {todo.status === TodoStatus.Active ?
+                    <span className="TodoItem-button fas fa-check-circle"
+                        onClick={handleCompletion}></span> :
+                    <span className="TodoItem-button fas fa-times-circle danger"
+                        onClick={() => onDelete(todo)}></span>
+                }
         </span>
-        {props.todo.status === TodoStatus.ACTIVE ? 
-            <span className="TodoItem-button fas fa-check-circle" onClick={handleCompletion}></span>
-          : <span className="TodoItem-button danger fas fa-times-circle" onClick={handleDelete}></span>
-        }
-      </span>
-    </div>
-  );
-};
+        </div >
+    )
+}
 
+export default TodoItem

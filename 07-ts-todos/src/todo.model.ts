@@ -1,13 +1,13 @@
+import { IdType } from './shared-types';
 export enum TodoStatus {
-    ACTIVE = 1, COMPLETED, CANCELED
+    Active = 1, Completed, Canceled
 }
 
 export class Todo {
-    static nextId = 0;
-    id = ++Todo.nextId;
-
+    id: IdType;
     constructor(
         public text: string,
-        public status = TodoStatus.ACTIVE
-    ) { }
+        public deadline = new Date().toDateString(),
+        public status = TodoStatus.Active,
+    ) {}
 }

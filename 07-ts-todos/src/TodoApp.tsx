@@ -1,36 +1,84 @@
-import React from 'react';
-import './TodoApp.css';
-import TodoList from './TodoList';
-import MOCK_TODOS from './mock-todos';
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import './App.css';
 import { Todo, TodoStatus } from './todo.model';
+import MOCK_TODOS from './mock-todos';
+import TodoList from './TodoList';
 import TodoInput from './TodoInput';
-import ChooseFilter from './ChooseFilter';
+import TodoFilter from './TodoFilter';
+import { TodosAPI } from './rest-api-client';
+import TodoInputFunction from './TodoInputFunction';
+
+
+export type FilterType = TodoStatus | undefined;
+
+interface TodoAppState {
+  todos: Todo[];
+  filter: FilterType;
+  errors: string | undefined;
+}
 
 export interface TodoListener {
   (todo: Todo): void;
 }
 
-export type FilterType = TodoStatus | undefined;
-
 export interface FilterChangeListener {
   (filter: FilterType): void;
 }
 
-export interface TodoAppState {
-  todos: Todo[];
-  filter: FilterType;
-}
+class TodoApp extends Component<{}, TodoAppState> {
+  state: Readonly<TodoAppState> = {
+    todos: [],
+    filter: undefined,
+    errors: undefined
+  }
 
-export class TodoApp extends React.Component<{}, TodoAppState> {
-  state = {
-    todos: MOCK_TODOS,
-    filter: undefined
-  };
   constructor(props: {}) {
-    super(props);
-    this.handleStatusChange = this.handleStatusChange.bind(this);
-    this.handleCreateTodo = this.handleCreateTodo.bind(this);
-    this.handleDeleteTodo = this.handleDeleteTodo.bind(this);
+    super(props)
+    this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
+  }
+
+  async componentDidMount() {
+    try {
+      const allTodos = await TodosAPI.findAll();
+      this.setState({ todos: allTodos, errors: undefined })
+    } catch (err) {
+      this.setState({ errors: err as string })
+    }
+  }
+
+  handleUpdateTodo(todo: Todo) {
+    this.setState(({ todos }) => ({
+      todos: todos.map(td => td.id === todo.id ? todo : td)
+    }))
+  }
+
+  handleDeleteTodo = async (todo: Todo) => {
+    try {
+      await TodosAPI.deleteById(todo.id);
+      this.setState(({ todos }) => ({
+        todos: todos.filter(td => td.id !== todo.id),
+        errors: undefined
+      }));
+    } catch (err) {
+      this.setState({ errors: err as string })
+    }
+  }
+
+  handleCreateTodo = async (todo: Todo) => {
+    try {
+      const created = await TodosAPI.create(todo);
+      this.setState(({ todos }) => ({
+        todos: todos.concat(created),
+        errors: undefined
+      }));
+    } catch (err) {
+      this.setState({ errors: err as string })
+    }
+  }
+
+  handlefilterChange = (status: FilterType) => {
+    this.setState({ filter: status })
   }
 
   render() {
@@ -38,42 +86,18 @@ export class TodoApp extends React.Component<{}, TodoAppState> {
       <div className="App">
         <header className="App-header">
           <h2>TODO Demo</h2>
-          <TodoInput onCreateTodo={this.handleCreateTodo} />
-          <ChooseFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
+          {this.state.errors && <div className="errors">{this.state.errors}</div>}
+          <TodoInputFunction onCreateTodo={this.handleCreateTodo} />
+          <TodoFilter filter={this.state.filter} onFilterChange={this.handlefilterChange} />
           <TodoList
             todos={this.state.todos}
             filter={this.state.filter}
-            onChangeStatus={this.handleStatusChange}
-            onUpdate={this.noOpTodoListener}
+            onUpdate={this.handleUpdateTodo}
             onDelete={this.handleDeleteTodo}
           />
         </header>
       </div>
     );
-  }
-
-  noOpTodoListener(todo: Todo) {}
-
-  handleStatusChange(todo: Todo) {
-    this.setState(({todos}) => ({
-      todos: this.state.todos.map(td => td.id === todo.id? todo: td)
-    }));
-  }
-
-  handleCreateTodo(todo: Todo) {
-    this.setState(({todos}) => ({
-      todos: this.state.todos.concat(todo)
-    }));
-  }
-
-  handleDeleteTodo(todo: Todo) {
-    this.setState(({todos}) => ({
-      todos: this.state.todos.filter(td => td.id !== todo.id)
-    }));
-  }
-
-  handleFilterChange = (filter: FilterType) => {
-    this.setState({filter});
   }
 }
 

@@ -12,8 +12,22 @@ code {
     monospace;
 }
 
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-input[type=text], select {
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+input[type=text], input[type=date], select {
   font-size: 16pt;
   width: 100%;
   padding: 12px 20px;
@@ -90,4 +104,13 @@ input[type=text], select {
 .button5:hover {
   background-color: #555555;
   color: white;
+}
+
+.errors {
+  padding: 5px 20px;
+  border: 1px solid red;
+  border-radius: 5px;
+  background-color: rgb(252, 230, 230);
+  color: red;
+  text-align: center;
 }

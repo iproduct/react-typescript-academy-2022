@@ -1,45 +1,51 @@
 import React, { Component } from 'react';
-import { TodoListener } from './TodoApp';
 import { Todo } from './todo.model';
-import './TodoInput.css';
+import { TodoListener } from './TodoApp';
 
-interface Props {
-    onCreateTodo: TodoListener;
+interface TodoInputProps {
+    onCreateTodo: TodoListener
 }
-interface State {
+
+interface TodoInputState {
     text: string;
+    date: string;
 }
 
-export default class TodoInput extends Component<Props, State> {
-    state = {
-        text: ''
+class TodoInput extends Component<TodoInputProps, TodoInputState> {
+    state: Readonly<TodoInputState> = {
+        text: '',
+        date: new Date().toISOString()
+    }
+    handleTodoSubmit = (event: React.FormEvent) => {
+        event.preventDefault();
+        this.props.onCreateTodo(new Todo(this.state.text, new Date(this.state.date).toISOString()));
+        this.setState({text: ''})
+    }
+
+    handleTextChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const fieldName = event.target.name as keyof TodoInputState & string;
+        const stateUpdate = {[fieldName]: event.target.value} as unknown as TodoInputState;
+        this.setState(stateUpdate);
+    }
+
+    handletodoReset = (event: React.MouseEvent) => {
+        event.preventDefault();
+        this.setState({text: ''})
     }
 
     render() {
         return (
-            <form className="container" onSubmit={this.handleTodoSubmit}>
-                <label htmlFor="todo-text">What to do next?</label>
-                <input type="text" id="todo-text" name="todo-text" value={this.state.text}
-                    onChange={this.handleTextChanged} placeholder="Next to do ..." />
-                <button className="button button5" type="submit">Add TODO</button>
-                <button className="button button3" type="reset" onClick={this.handleTodoReset}>Reset</button>
+            <form className="TodoInput-form" onSubmit={this.handleTodoSubmit}>
+                <label htmlFor="TodoInput-todo-text">What to do next?</label>
+                <input type="text" id="TodoInput-todo-text" name="text" value={this.state.text}
+                    onChange={this.handleTextChanged} />
+                <input type="date" id="TodoInput-todo-text" name="date" value={this.state.date}
+                    onChange={this.handleTextChanged} />
+                <button className='button button5' type="submit">Add TODO</button>
+                <button className='button button3' type="reset" onClick={this.handletodoReset}>Reset</button>
             </form>
-        )
+        );
     }
-
-    handleTodoSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        this.props.onCreateTodo(new Todo(this.state.text));
-        this.setState({text: ""})
-    }
-
-    handleTodoReset = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault();
-        this.setState({text: ""});
-    }
-
-    handleTextChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({text: event.target.value});
-    }
-
 }
+
+export default TodoInput;
