@@ -1,4 +1,5 @@
 import { Identifiable } from "./shared-types";
+import { Todo } from "./todo-model";
 
 const API_BASE_URL="http://localhost:4000/api";
 
@@ -54,5 +55,6 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
             return Promise.reject(err);
         }
     }
-
 }
+
+export const TodosApi: ApiClient<number, Todo> = new ApiClientImpl('todos');

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import MOCK_TODOS from './mock-todos';
+import { TodosApi } from './rest-api-client';
 import { Todo, TodoStatus } from './todo-model';
 import TodoFilter from './TodoFilter';
 import TodoInput from './TodoInput';
@@ -10,19 +11,30 @@ export type FilterType = TodoStatus | undefined;
 
 export interface TodoAppState {
   todos: Todo[];
-  filter: FilterType
+  filter: FilterType;
+  errors: string | undefined;
 }
 
 export default class AppClass extends Component<{}, TodoAppState> {
   state: Readonly<TodoAppState> = {
-    todos: MOCK_TODOS,
-    filter: undefined
+    todos: [],
+    filter: undefined,
+    errors: undefined
   }
 
   constructor(props: {}) {
     super(props);
-    this.handleTodoUpdate = this.handleTodoUpdate.bind(this)
-    this.handleTodoDelete = this.handleTodoDelete.bind(this)
+    this.handleTodoUpdate = this.handleTodoUpdate.bind(this);
+    this.handleTodoDelete = this.handleTodoDelete.bind(this);
+  }
+
+  async componentDidMount() {
+    try {
+      const allTodos = await TodosApi.findAll();
+      this.setState({todos: allTodos, errors: undefined});
+    } catch(err) {
+      this.setState({errors: (err as any).toString()})
+    }
   }
 
   handleTodoUpdate(todo: Todo) {
@@ -46,6 +58,7 @@ export default class AppClass extends Component<{}, TodoAppState> {
       <div className="App">
         <header className="App-header">
           <h2>React TODOs Demo</h2>
+          {this.state.errors && <div className='errors'>{this.state.errors}</div>}
           <TodoInput onCreateTodo={this.handleTodocreate} />
           <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange}/>
           <TodoList
