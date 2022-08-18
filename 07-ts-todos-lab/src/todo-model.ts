@@ -1,14 +1,19 @@
+import { IdType } from "./shared-types";
+
 export enum TodoStatus {
     Active = 1, Completed, Canceled
 }
 
 export class Todo {
-    static nextId = 0;
-    id = ++Todo.nextId;
+    id: IdType
 
     constructor(
         public text: string,
-        public deadline: string = new Date().toISOString().split('T')[0],
+        public deadline: string = toIsoDate(new Date()),
         public status = TodoStatus.Active
     ) { }
+}
+
+export function toIsoDate(date: Date) {
+    return date.toISOString().split('T')[0];
 }

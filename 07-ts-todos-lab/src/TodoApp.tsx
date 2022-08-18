@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import MOCK_TODOS from './mock-todos';
 import { TodosApi } from './rest-api-client';
+import { Immutable } from './shared-types';
 import { Todo, TodoStatus } from './todo-model';
 import TodoFilter from './TodoFilter';
 import TodoInput from './TodoInput';
@@ -16,7 +17,7 @@ export interface TodoAppState {
 }
 
 export default class AppClass extends Component<{}, TodoAppState> {
-  state: Readonly<TodoAppState> = {
+  state: Immutable<TodoAppState> = {
     todos: [],
     filter: undefined,
     errors: undefined
@@ -31,25 +32,43 @@ export default class AppClass extends Component<{}, TodoAppState> {
   async componentDidMount() {
     try {
       const allTodos = await TodosApi.findAll();
-      this.setState({todos: allTodos, errors: undefined});
-    } catch(err) {
-      this.setState({errors: (err as any).toString()})
+      this.setState({ todos: allTodos, errors: undefined });
+    } catch (err) {
+      this.setState({ errors: (err as any).toString() })
     }
   }
 
-  handleTodoUpdate(todo: Todo) {
-    this.setState(({todos}) => ({todos: todos.map(td => td.id === todo.id? todo: td)}));
-  }
-  handleTodoDelete(todo: Todo) {
-    this.setState(({todos}) => ({todos: todos.filter(td => td.id !== todo.id)}));
+  async handleTodoUpdate(todo: Todo) {
+    try {
+      const updated = await TodosApi.update(todo);
+      this.setState(({ todos }) => ({
+        todos: todos.map(td => td.id === updated.id ? updated : td),
+        errors: undefined
+      }));
+    } catch (err) {
+      this.setState({ errors: (err as any).toString() })
+    }
   }
 
-  handleTodocreate = (todo: Todo) => {
-    this.setState(({todos}) => ({todos: todos.concat(todo)}));
+  handleTodoDelete(todo: Todo) {
+    
+    this.setState(({ todos }) => ({ todos: todos.filter(td => td.id !== todo.id) }));
+  }
+
+  handleTodoCreate = async (todo: Todo) => {
+    try {
+      const created = await TodosApi.create(todo);
+      this.setState(({ todos }) => ({ 
+        todos: todos.concat(created), 
+        errors: undefined 
+      }));
+    } catch (err) {
+      this.setState({ errors: (err as any).toString() })
+    }
   }
 
   handleFilterChange = (filter: FilterType) => {
-    this.setState({filter: filter});
+    this.setState({ filter: filter });
   }
 
 
@@ -59,8 +78,8 @@ export default class AppClass extends Component<{}, TodoAppState> {
         <header className="App-header">
           <h2>React TODOs Demo</h2>
           {this.state.errors && <div className='errors'>{this.state.errors}</div>}
-          <TodoInput onCreateTodo={this.handleTodocreate} />
-          <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange}/>
+          <TodoInput onCreateTodo={this.handleTodoCreate} />
+          <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
           <TodoList
             todos={this.state.todos}
             filter={this.state.filter}
