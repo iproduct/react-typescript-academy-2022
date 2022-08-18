@@ -10,6 +10,7 @@ interface TodoListProps {
     filter: FilterType;
     onUpdateTodo: TodoListener;
     onDeleteTodo: TodoListener;
+    onEditTodo: TodoListener;
 }
 
 export default function TodoList({ todos, filter, ...rest }: TodoListProps) {

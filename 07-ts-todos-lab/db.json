@@ -7,22 +7,22 @@
       "status": 1
     },
     {
-      "id": 2,
       "text": "Connect to REST API in backend",
       "deadline": "2022-08-12",
-      "status": 1
-    },
-    {
-      "text": "Todo dates format change to ISO",
-      "deadline": "2022-08-16T00:00:00.000Z",
       "status": 1,
-      "id": 4
+      "id": 2
     },
     {
       "text": "Learn Hooks",
       "deadline": "2022-08-19",
       "status": 1,
       "id": 5
+    },
+    {
+      "text": "Learn lifecycle methods",
+      "deadline": "2022-08-25",
+      "status": 1,
+      "id": 6
     }
   ],
   "posts": [
