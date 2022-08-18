@@ -50,8 +50,16 @@ export default class AppClass extends Component<{}, TodoAppState> {
     }
   }
 
-  handleTodoDelete(todo: Todo) {
-    
+  handleTodoDelete = async(todo: Todo) => {
+    try {
+      await TodosApi.deleteById(todo.id);
+      this.setState(({ todos }) => ({
+        todos: todos.filter(td => td.id !== todo.id),
+        errors: undefined
+      }));
+    } catch (err) {
+      this.setState({ errors: (err as any).toString() })
+    }
     this.setState(({ todos }) => ({ todos: todos.filter(td => td.id !== todo.id) }));
   }
 
