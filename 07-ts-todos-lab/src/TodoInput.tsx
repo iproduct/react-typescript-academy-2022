@@ -61,9 +61,6 @@ class TodoInput extends Component<TodoInputProps, TodoInputState> {
         });
         console.log(idToLabelMap);
         return (
-            <Fragment>
-            {this.props.children}
-            <div>Children Count: {Children.count(this.props.children)}</div>
             <form className='TodoInput' onSubmit={this.handleTodoSubmit}>
                 {/* <label htmlFor='id'>ID</label> */}
                 {idToLabelMap.id}
@@ -90,7 +87,6 @@ class TodoInput extends Component<TodoInputProps, TodoInputState> {
                 <button className='button button5' type='submit'>Submit</button>
                 <button className='button button3' type='reset' onClick={this.handleTodoReset}>Reset</button>
             </form>
-            </Fragment>
         );
     }
 }
