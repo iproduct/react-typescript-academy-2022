@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Children, Component, Fragment, ReactNode, ReactElement } from 'react';
 import { IdType, Optional, TodoListener } from './shared-types';
 import { Todo, TodoStatus } from './todo-model';
 import './TodoInput.css';
 
 interface TodoInputProps {
     todo: Optional<Todo>;
-    onCreateTodo: TodoListener;
+    children: ReactNode;
+    onSubmitTodo: TodoListener;
 }
 
 interface TodoInputState {
@@ -13,6 +14,10 @@ interface TodoInputState {
     text: string;
     status: string,
     deadline: string;
+}
+
+type IdToLabelMap = {
+    [Prop in keyof TodoInputState]?: ReactElement
 }
 
 class TodoInput extends Component<TodoInputProps, TodoInputState> {
@@ -30,7 +35,7 @@ class TodoInput extends Component<TodoInputProps, TodoInputState> {
 
     handleTodoSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        this.props.onCreateTodo(
+        this.props.onSubmitTodo(
             new Todo(
                 this.state.text,
                 this.state.deadline,
@@ -46,7 +51,19 @@ class TodoInput extends Component<TodoInputProps, TodoInputState> {
     }
 
     render() {
+        const children = Children.toArray(this.props.children);
+        console.log(children);
+        const labels = children.filter(child => typeof child === 'object' && 'type' in child && child.type === 'label');
+        const idToLabelMap: IdToLabelMap = {};
+        labels.forEach(label => {
+            const labelElem = label as ReactElement<{htmlFor: string}>;
+            idToLabelMap[labelElem.props.htmlFor as keyof TodoInputState] = labelElem;
+        });
+        console.log(idToLabelMap);
         return (
+            <Fragment>
+            {this.props.children}
+            <div>Children Count: {Children.count(this.props.children)}</div>
             <form className='TodoInput' onSubmit={this.handleTodoSubmit}>
                 <label htmlFor='id'>ID</label>
                 <input type='text' id='id' name='id' defaultValue={this.state.id} disabled />
@@ -69,6 +86,7 @@ class TodoInput extends Component<TodoInputProps, TodoInputState> {
                 <button className='button button5' type='submit'>Submit</button>
                 <button className='button button3' type='reset' onClick={this.handleTodoReset}>Reset</button>
             </form>
+            </Fragment>
         );
     }
 }

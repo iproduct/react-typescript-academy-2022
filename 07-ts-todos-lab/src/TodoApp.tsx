@@ -82,7 +82,12 @@ export default class AppClass extends Component<{}, TodoAppState> {
         <header className="App-header">
           <h2>React TODOs Demo</h2>
           {this.state.errors && <div className='errors'>{this.state.errors}</div>}
-          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onCreateTodo={this.handleTodoSubmit} />
+          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onSubmitTodo={this.handleTodoSubmit}>
+            <label htmlFor='id'>Todo ID</label>
+            <label htmlFor='text'>Todo Text</label>
+            <label htmlFor='status'>Todo Status</label>
+            <label htmlFor='deadline'>Todo <b>Deadline</b></label>
+          </TodoInput>
           <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
           <TodoList
             todos={this.state.todos}
