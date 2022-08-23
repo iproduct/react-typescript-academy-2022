@@ -65,21 +65,25 @@ class TodoInput extends Component<TodoInputProps, TodoInputState> {
             {this.props.children}
             <div>Children Count: {Children.count(this.props.children)}</div>
             <form className='TodoInput' onSubmit={this.handleTodoSubmit}>
-                <label htmlFor='id'>ID</label>
+                {/* <label htmlFor='id'>ID</label> */}
+                {idToLabelMap.id}
                 <input type='text' id='id' name='id' defaultValue={this.state.id} disabled />
 
-                <label htmlFor='text'>What to do next?</label>
+                {/* <label htmlFor='text'>What to do next?</label> */}
+                {idToLabelMap.text}
                 <input type='text' id='text' name='text' value={this.state.text}
                     onChange={this.handleFieldChanged} />
 
-                <label htmlFor='status'>What to do next?</label>
+                {/* <label htmlFor='status'>What to do next?</label> */}
+                {idToLabelMap.status}
                 <select id="status" name="status" value={this.state.status} onChange={this.handleFieldChanged}>
                     <option value={TodoStatus.Active}>Active</option>
                     <option value={TodoStatus.Completed}>Completed</option>
                     <option value={TodoStatus.Canceled}>Canceled</option>
                 </select>
 
-                <label htmlFor='deadline'>What's the deadline?</label>
+                {/* <label htmlFor='deadline'>What's the deadline?</label> */}
+                {idToLabelMap.deadline}
                 <input type='date' id='deadline' name='deadline' value={this.state.deadline}
                     onChange={this.handleFieldChanged} />
 

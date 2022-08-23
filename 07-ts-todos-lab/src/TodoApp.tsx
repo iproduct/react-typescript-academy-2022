@@ -85,7 +85,7 @@ export default class AppClass extends Component<{}, TodoAppState> {
           <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} onSubmitTodo={this.handleTodoSubmit}>
             <label htmlFor='id'>Todo ID</label>
             <label htmlFor='text'>Todo Text</label>
-            <label htmlFor='status'>Todo Status</label>
+            <label htmlFor='status'>Todo <i>Status</i></label>
             <label htmlFor='deadline'>Todo <b>Deadline</b></label>
           </TodoInput>
           <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
