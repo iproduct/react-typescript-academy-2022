@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import { TodosApi } from './rest-api-client';
 import { Optional } from './shared-types';
 import { Todo, TodoStatus } from './todo-model';
+import { equals } from './TodoApp';
 import TodoFilter from './TodoFilter';
 import TodoInput from './TodoInput';
 import TodoList from './TodoList';
@@ -14,6 +15,7 @@ function TodoAppFunction() {
   const [filter, setFilter] = useState<FilterType>(undefined);
   const [errors, setErrors] = useState<Optional<string>>(undefined);
   const [editedTodo, setEditedTodo] = useState<Optional<Todo>>(undefined);
+  const [counter, setCounter] = useState<number>(0);
 
   useEffect(() => {
     TodosApi.findAll().then(allTodos => {
@@ -22,7 +24,13 @@ function TodoAppFunction() {
     }).catch(err => setErrors((err as any).toString()));
   }, []);
 
-  const handleTodoDelete = async (todo: Todo) => {
+  React.useEffect(() => {
+    setInterval(() => {
+      setCounter(counter => counter + 1);
+    }, 2000);
+  }, []);
+
+  const handleTodoDelete = useCallback(async (todo: Todo) => {
     try {
       await TodosApi.deleteById(todo.id);
       setTodos((todos) => todos.filter(td => td.id !== todo.id));
@@ -30,9 +38,9 @@ function TodoAppFunction() {
     } catch (err) {
       setErrors((err as any).toString());
     }
-  }
+  }, []);
 
-  const handleTodoSubmit = async (todo: Todo) => {
+  const handleTodoSubmit = useCallback(async (todo: Todo) => {
     try {
       if (todo.id) { // update todo
         const updated = await TodosApi.update(todo);
@@ -46,15 +54,16 @@ function TodoAppFunction() {
     } catch (err) {
       setErrors((err as any).toString());
     }
-  }
+  },[]);
 
   const handleFilterChange = (filter: FilterType) => {
     setFilter(filter);
   }
 
-  const handleEditTodo = (todo: Todo) => {
+  const handleEditTodo = useCallback((todo: Todo) => {
     setEditedTodo(todo);
-  }
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -70,6 +79,7 @@ function TodoAppFunction() {
         <TodoList
           todos={todos}
           filter={filter}
+          equals={equals}
           onUpdateTodo={handleTodoSubmit}
           onDeleteTodo={handleTodoDelete}
           onEditTodo={handleEditTodo}

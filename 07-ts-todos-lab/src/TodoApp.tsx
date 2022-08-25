@@ -17,6 +17,10 @@ export interface TodoAppState {
   editedTodo: Optional<Todo>;
 }
 
+export type BiPredicate<T> = (a: T, b: T)=> boolean
+
+export function equals<T>(a: T, b: T) { return a === b}
+
 export default class AppClass extends Component<{}, TodoAppState> {
   state: Immutable<TodoAppState> = {
     todos: [],
@@ -92,6 +96,7 @@ export default class AppClass extends Component<{}, TodoAppState> {
           <TodoList
             todos={this.state.todos}
             filter={this.state.filter}
+            equals={equals}
             onUpdateTodo={this.handleTodoSubmit}
             onDeleteTodo={this.handleTodoDelete}
             onEditTodo={this.handleEditTodo}
