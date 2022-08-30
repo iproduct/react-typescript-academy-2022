@@ -1,0 +1,4 @@
+.PostList {
+   display: flex;
+   flex-direction: column;
+}
