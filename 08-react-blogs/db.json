@@ -16,7 +16,7 @@
     },
     {
       "title": "Classes in ES6+ and TypeScript",
-      "content": "Class syntax in ES6+ is very neat ...",
+      "content": "Traditional JavaScript uses functions and prototype-based inheritance to build up reusable components, but this may feel a bit awkward to programmers more comfortable with an object-oriented approach, where classes inherit functionality and objects are built from these classes. Starting with ECMAScript 2015, also known as ECMAScript 6, JavaScript programmers can build their applications using this object-oriented class-based approach. In TypeScript, we allow developers to use these techniques now, and compile them down to JavaScript that works across all major browsers and platforms, without having to wait for the next version of JavaScript.",
       "tags": [
         "javascript",
         "es6",
