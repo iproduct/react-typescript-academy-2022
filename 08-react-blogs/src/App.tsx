@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline } from '@mui/material';
+import { Box, Container, CssBaseline, Divider } from '@mui/material';
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import PostList from './component/PostList';
@@ -6,6 +6,7 @@ import { Post, PostStatus } from './model/posts';
 import { Optional } from './model/shared-types';
 import { PostsApi } from './service/rest-api-client';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import PostForm from './component/PostForm';
 
 export const CARD_HEADER_HEIGHT = 60;
 export const CARD_CONTENT_HEIGHT = 100;
@@ -95,6 +96,10 @@ function PostAppFunction() {
           <label htmlFor='deadline'>Post <b>Deadline</b></label>
         </PostInput>
         <PostFilter filter={filter} onFilterChange={handleFilterChange} /> */}
+        <PostForm post={editedPost} onSubmitPost={handlePostSubmit} />
+        <Divider variant="middle" sx={{
+          margin: '30px 0 60px',
+        }}/>
         <PostList
           posts={posts}
           filter={filter}

@@ -1,7 +1,7 @@
 import { Post } from "./posts";
 
 export interface PostListener {
-    (todo: Post): void;
+    (post: Post): void;
 }
 
 export interface Identifiable<K> {
