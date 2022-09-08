@@ -13,7 +13,7 @@ interface FormInputTextProps<TFieldValues extends FieldValues> {
 }
 
 
-function FormInputText<TFieldValues extends FieldValues>(
+function FormInputSelect<TFieldValues extends FieldValues>(
     { name, control, label, rules = {}, disabled = false, size = 'medium', error=undefined}: FormInputTextProps<TFieldValues>) {
     return (
         (

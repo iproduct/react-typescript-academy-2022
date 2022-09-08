@@ -1,7 +1,7 @@
 import { IdType } from "./shared-types.js";
 
 export enum PostStatus {
-    Published = 1, Draft
+    Published = 1, Draft, Outdated
 }
 
 export type FilterType = PostStatus | undefined;

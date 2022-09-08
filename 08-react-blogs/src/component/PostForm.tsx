@@ -37,7 +37,7 @@ const schema = yup.object({
     imageUrl: yup.string().required().url(),
     status: yup.number().min(1).max(2),
     authorId: yup.number().positive().required(),
-  }).required();
+}).required();
 
 export default function PostForm({ post, onSubmitPost }: PostFormProps) {
     const { control, register, setValue, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
@@ -73,15 +73,15 @@ export default function PostForm({ post, onSubmitPost }: PostFormProps) {
         >
             <FormInputText name='id' label='ID' control={control} disabled size='small' />
             <FormInputText name='title' label='Title' control={control} error={errors.title?.message}
-            rules={{ required: true, minLength: 2, maxLength: 40 }} />
+                rules={{ required: true, minLength: 2, maxLength: 40 }} />
             <FormInputText name='content' label='Content' control={control} error={errors.content?.message}
-            rules={{ required: true, minLength: 20, maxLength: 1024 }} />
+                rules={{ required: true, minLength: 20, maxLength: 1024 }} />
             <FormInputText name='tags' label='Tags' control={control} error={errors.tags?.message}
-            rules={{ pattern: TAGS_PATTERN }} />
+                rules={{ pattern: TAGS_PATTERN }} />
             <FormInputText name='imageUrl' label='Image URL' control={control} error={errors.imageUrl?.message}
-            rules={{ required: true }} />
+                rules={{ required: true }} />
             <FormInputText name='authorId' label='Author ID' control={control} error={errors.authorId?.message}
-            rules={{ required: true }} />
+                rules={{ required: true }} />
             <Button variant="contained" endIcon={<SendIcon />} type='submit'>
                 Submit
             </Button>
