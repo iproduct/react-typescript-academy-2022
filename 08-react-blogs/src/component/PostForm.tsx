@@ -10,7 +10,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
 import FormInputText from './FormInputText';
+import FormInputSelect, { SelectOption } from './FormInputSelect';
 
+const EMPTY_POST = new Post(undefined, '', '', [], '');
 
 interface PostFormProps {
     post: Optional<Post>;
@@ -29,6 +31,11 @@ type FormData = {
 
 const TAGS_PATTERN = /^\w{2,}([,\s]+\w{2,})*$/;
 
+const POST_SELECT_OPTIONS: SelectOption[] = Object.keys(PostStatus)
+    .filter((item) => !isNaN(Number(item)))
+    .map((ordinal: string) => parseInt(ordinal))
+    .map((ordinal: number) => ({ key: ordinal, value: PostStatus[ordinal] }));
+
 const schema = yup.object({
     id: yup.number().positive(),
     title: yup.string().required().min(2).max(40),
@@ -39,23 +46,27 @@ const schema = yup.object({
     authorId: yup.number().positive().required(),
 }).required();
 
-export default function PostForm({ post, onSubmitPost }: PostFormProps) {
-    const { control, register, setValue, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+export default function PostForm({ post = EMPTY_POST, onSubmitPost }: PostFormProps) {
+    const { control, register, setValue, handleSubmit, reset, formState: { errors, isDirty, isValid } } = useForm<FormData>({
         defaultValues: { ...post, tags: post?.tags.join(', ') },
         mode: 'onChange',
         resolver: yupResolver(schema),
     });
 
-    const onSubmit = (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
+    const onSubmit = async (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
         event?.preventDefault();
-        const post = { ...data, tags: data.tags.split(/,\s*/) }
-        console.log(post);
-        onSubmitPost(post);
+        const newPost = { ...data, tags: data.tags.split(/,\s*/) }
+        console.log(newPost);
+        onSubmitPost(newPost);  
+        console.log("RESET to:", post);
+        reset({ ...post, tags: post?.tags.join(', ') });
     }
 
     const onReset = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log('RESETING FORM');
+        console.log("RESET to:", post);
+        reset({ ...post, tags: post?.tags.join(', ') });
     }
 
     return (
@@ -64,7 +75,7 @@ export default function PostForm({ post, onSubmitPost }: PostFormProps) {
             sx={{
                 backgroundColor: '#ddf',
                 padding: '20px',
-                '& .MuiTextField-root': { m: 1, width: 'calc(100% - 20px)' },
+                '& .MuiFormControl-root': { m: 0.5, width: 'calc(100% - 10px)' },
                 '& .MuiButton-root': { m: 1, width: '25ch' },
             }}
             noValidate
@@ -82,7 +93,9 @@ export default function PostForm({ post, onSubmitPost }: PostFormProps) {
                 rules={{ required: true }} />
             <FormInputText name='authorId' label='Author ID' control={control} error={errors.authorId?.message}
                 rules={{ required: true }} />
-            <Button variant="contained" endIcon={<SendIcon />} type='submit'>
+            <FormInputSelect name='status' label='Status' control={control} error={errors.status?.message}
+                rules={{ required: true }} options={POST_SELECT_OPTIONS} defaultOptionIndex={0}/>
+            <Button variant="contained" endIcon={<SendIcon />} type='submit' disabled={!(isDirty && isValid)}>
                 Submit
             </Button>
             <Button variant="contained" endIcon={<CancelIcon />} color='warning' type='reset'>

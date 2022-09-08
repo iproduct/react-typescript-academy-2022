@@ -19,13 +19,13 @@ export class PostCreateDto {
 
 export class Post extends PostCreateDto{
     constructor(
-        public id: IdType,
+        public id: IdType | undefined,
         title: string,
         content: string,
         tags: string[],
         imageUrl: string,
-        status: PostStatus,
-        authorId: IdType
+        status: PostStatus = PostStatus.Published,
+        authorId: IdType = 1
     ) {
         super(title, content, tags, imageUrl, status,authorId);
     }

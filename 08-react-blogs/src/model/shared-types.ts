@@ -8,7 +8,7 @@ export interface Identifiable<K> {
     id: K;
 }
 
-export type IdType =  number;
+export type IdType =  number | undefined;
 
 export type Optional<V> = V | undefined
 
