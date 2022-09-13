@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import { FilterType, Post } from '../model/posts';
 import { PostListener } from '../model/shared-types';
+import ErrorBoundary from '../util/ErrorBoundary';
 import PostCard from './PostCard';
 import './PostList.css'
 
@@ -11,14 +12,14 @@ interface PostListProps {
     onEditPost: PostListener;
 }
 
-function PostList({posts, filter, ...rest }: PostListProps) {
+function PostList({ posts, filter, ...rest }: PostListProps) {
     const filteredPosts = useMemo(
         () => posts.filter(post => !filter ? true : post.status === filter),
         [posts, filter]);
     console.log('Render PostList')
     return (
         <div className='PostList'>
-            {filteredPosts.map(post => (<PostCard post={post} key={post.id} {...rest} />))}
+            {filteredPosts.map(post => (<ErrorBoundary key={post.id}><PostCard post={post} {...rest} /></ErrorBoundary>))}
         </div>
     )
 }

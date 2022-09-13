@@ -1,5 +1,5 @@
 import { Box, Container, CssBaseline, Divider } from '@mui/material';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import './App.css';
 import PostList from './component/PostList';
 import { Post, PostStatus } from './model/posts';
@@ -7,6 +7,7 @@ import { Optional } from './model/shared-types';
 import { PostsApi } from './service/rest-api-client';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import PostForm from './component/PostForm';
+import { useOnMount } from './hooks/useOnMount';
 
 export const CARD_HEADER_HEIGHT = 60;
 export const CARD_CONTENT_HEIGHT = 100;
@@ -36,12 +37,12 @@ function PostAppFunction() {
   const [editedPost, setEditedPost] = useState<Optional<Post>>(undefined);
   // const [counter, setCounter] = useState<number>(0);
 
-  useEffect(() => {
+  useOnMount(() =>
     PostsApi.findAll().then(allPosts => {
       setPosts(allPosts);
       setErrors(undefined);
-    }).catch(err => setErrors((err as any).toString()));
-  }, []);
+    }).catch(err => setErrors((err as any).toString()))
+  );
 
   // React.useEffect(() => {
   //   setInterval(() => {
@@ -73,7 +74,7 @@ function PostAppFunction() {
     } catch (err) {
       setErrors((err as any).toString());
     }
-  },[]);
+  }, []);
 
   const handleFilterChange = (filter: FilterType) => {
     setFilter(filter);
@@ -85,9 +86,9 @@ function PostAppFunction() {
 
   return (
     <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <Container maxWidth={'lg'}>
-      <h2>Blog Posts Demo</h2>
+      <CssBaseline />
+      <Container maxWidth={'lg'}>
+        <h2>Blog Posts Demo</h2>
         {errors && <div className='errors'>{errors}</div>}
         {/* <PostInput key={editedPost?.id} post={editedPost} onSubmitPost={handlePostSubmit}>
           <label htmlFor='id'>Post ID</label>
@@ -99,15 +100,15 @@ function PostAppFunction() {
         <PostForm post={editedPost} onSubmitPost={handlePostSubmit} />
         <Divider variant="middle" sx={{
           margin: '30px 0 60px',
-        }}/>
+        }} />
         <PostList
           posts={posts}
           filter={filter}
           onDeletePost={handlePostDelete}
           onEditPost={handleEditPost}
         />
-    </Container>
-  </ThemeProvider>
+      </Container>
+    </ThemeProvider>
   );
 }
 
