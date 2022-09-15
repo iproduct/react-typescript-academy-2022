@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef, ElementType } from "react";
+import React, { ComponentPropsWithoutRef, ElementType, PropsWithChildren, ReactNode } from "react";
 
 
 interface ErrorBoundaryState {
@@ -10,7 +10,7 @@ function logErrorToMyService(error: any, errorInfo: any) {
     console.log(error, '->', errorInfo);
 }
 
-export default class ErrorBoundary extends React.Component<ComponentPropsWithoutRef<ElementType<any>>, ErrorBoundaryState> {
+export default class ErrorBoundary<P> extends React.Component<PropsWithChildren<P>, ErrorBoundaryState> {
     state: Readonly<ErrorBoundaryState> = {
         error: undefined,
         errorInfo: undefined,
@@ -35,8 +35,8 @@ export default class ErrorBoundary extends React.Component<ComponentPropsWithout
             // You can render any custom fallback UI
             return (
                 <div>
-                    <h3>Something went wrong: {this.state.error?.toString()}</h3>;
-                    <p>Error Info: {this.state.errorInfo?.componentStack}</p>;
+                    <h3>Something went wrong: {this.state.error?.toString()}</h3>
+                    <p>Error Info: {this.state.errorInfo?.componentStack}</p>
                 </div>
             );
         }
