@@ -2,7 +2,6 @@ import React, { Component, ComponentClass, ComponentElement, ComponentProps, Com
 import './App.css';
 import FForm,  {FancyForm} from './components/FancyForm';
 
-type A =ComponentProps<typeof FForm>
 
 function App() {
   const [color, setColor] = useState<string>('green');
