@@ -44,7 +44,6 @@ export default function PostPage() {
                     </Form>
                     <Form
                         method="delete"
-                        action='.'
                         onSubmit={(event) => {
                             if (
                                 // eslint-disable-next-line no-restricted-globals

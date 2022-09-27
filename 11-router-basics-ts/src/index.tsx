@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
 import ContactPage from './pages/ContanctPage';
 import RootPage from './pages/RootPage';
@@ -33,9 +33,8 @@ const router = createBrowserRouter([
           path: ":postId",
           action: async ({ request, params }) => {
             if (request.method === 'DELETE') {
-              // eslint-disable-next-line @typescript-eslint/no-unused-expressions
               params.postId && await PostsApi.deleteById(+params.postId);
-              router.navigate('/posts');
+              return redirect('/posts');
             }
           },
           loader: ({ params }) => {
@@ -46,14 +45,6 @@ const router = createBrowserRouter([
             }
           },
           element: <PostPage />,
-          // children: [{
-          //   path: "delete",
-          //   action: async ({ params }) => {
-          //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-          //     params.postId && await PostsApi.deleteById(+params.postId);
-          //     router.navigate('/posts');
-          //   }
-          // }],
         }]
       }, {
         path: '*',
