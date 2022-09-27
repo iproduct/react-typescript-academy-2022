@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import './RootPage.css';
 
 export default function RootPage() {
@@ -32,10 +32,43 @@ export default function RootPage() {
         <nav>
           <ul>
             <li>
-              <Link to={`/contacts/1`}>Your Name</Link>
+              <NavLink to="/posts">
+                {({ isActive }) => (
+                  <span
+                    className={
+                      isActive ? 'active' : undefined
+                    }
+                  >
+                    Blog Posts
+                  </span>
+                )}
+              </NavLink>
             </li>
             <li>
-              <Link to={`/contacts/2`}>Your Friend</Link>
+              <NavLink to="/contacts/1">
+                {({ isActive }) => (
+                  <span
+                    className={
+                      isActive ? 'active' : undefined
+                    }
+                  >
+                    Your Name
+                  </span>
+                )}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/contacts/2">
+                {({ isActive }) => (
+                  <span
+                    className={
+                      isActive ? 'active' : undefined
+                    }
+                  >
+                    Your Friend
+                  </span>
+                )}
+              </NavLink>
             </li>
           </ul>
         </nav>

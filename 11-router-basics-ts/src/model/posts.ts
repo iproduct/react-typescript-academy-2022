@@ -13,7 +13,8 @@ export class PostCreateDto {
         public tags: string[],
         public imageUrl: string,
         public status: PostStatus,
-        public authorId: IdType
+        public favorite: boolean,
+        public authorId: IdType,
     ) { }
 }
 
@@ -25,8 +26,9 @@ export class Post extends PostCreateDto{
         tags: string[],
         imageUrl: string,
         status: PostStatus = PostStatus.Published,
+        favorite = false,
         authorId: IdType = 1
     ) {
-        super(title, content, tags, imageUrl, status, authorId);
+        super(title, content, tags, imageUrl, status, favorite, authorId);
     }
 }
