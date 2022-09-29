@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { NavLink } from 'react-router-dom';
+import { NavLink, Path, useSearchParams } from 'react-router-dom';
 import { FilterType, Post } from '../model/posts';
 import { PostListener } from '../model/shared-types';
 import ErrorBoundary from '../util/ErrorBoundary';
@@ -17,10 +17,11 @@ function PostList({ posts, filter, ...rest }: PostListProps) {
         () => posts.filter(post => !filter ? true : post.status === filter),
         [posts, filter]);
     console.log('Render PostList')
+    let [searchParams, setSearchParams] = useSearchParams();
     return (
         <div className='PostList'>
             {filteredPosts.map(post => (<ErrorBoundary key={post.id}>
-                <NavLink to={`/posts/${post.id}`}>
+                <NavLink to={{pathname: `/posts/${post?.id}`, search: searchParams.toString()}} relative="path">
                     {({ isActive }) => (
                         <span
                             className={

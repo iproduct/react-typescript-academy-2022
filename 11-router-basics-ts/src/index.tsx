@@ -11,6 +11,16 @@ import { PostsPage } from './pages/PostsPage';
 import PostPage from './pages/PostPage';
 import { PostsApi } from './service/rest-api-client';
 
+export async function postsLoader({request}: {request: Request}) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get('q');
+  if(q) {
+    return PostsApi.findByTitleLike(q);
+  } else {
+   return PostsApi.findAll();
+  }
+}
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -26,7 +36,7 @@ const router = createBrowserRouter([
         element: <ContactPage />,
       }, {
         path: "posts",
-        loader: () => PostsApi.findAll(),
+        loader: postsLoader,
         element: <PostsPage />,
         children: [{
           errorElement: <ErrorPage />,

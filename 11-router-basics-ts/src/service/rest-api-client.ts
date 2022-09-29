@@ -44,7 +44,7 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
         });
     }
 
-    private async handleRequest(url: string, options?: RequestInit) {
+    protected async handleRequest(url: string, options?: RequestInit) {
         try {
             const resp = await fetch(url, options);
             if(resp.status >= 400) {
@@ -57,4 +57,17 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
     }
 }
 
-export const PostsApi: ApiClient<IdType, Post> = new ApiClientImpl('posts');
+export interface PostsApiClient extends ApiClient<IdType, Post>{
+    findByTitleLike(title: string): Promise<Post[]>;
+}
+
+export class PostsApiClientImpl extends ApiClientImpl<IdType, Post> implements PostsApiClient {
+    constructor() {
+        super('posts')
+    }
+    findByTitleLike(search: string): Promise<Post[]> {
+        return this.handleRequest(`${API_BASE_URL}/${this.apiCollectionSuffix}?title_like=${encodeURIComponent(search)}`);
+    }
+}
+
+export const PostsApi: PostsApiClient = new PostsApiClientImpl();

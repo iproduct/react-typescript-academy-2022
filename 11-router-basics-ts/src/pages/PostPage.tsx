@@ -39,7 +39,7 @@ export default function PostPage() {
                 {post?.content && <p>{post?.content}</p>}
 
                 <div>
-                    <Form action="edit">
+                    <Form method="put">
                         <button type="submit">Edit</button>
                     </Form>
                     <Form

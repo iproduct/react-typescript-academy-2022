@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Form, NavLink, Outlet, useLocation } from "react-router-dom";
 import './RootPage.css';
 
 export default function RootPage() {
@@ -7,7 +7,7 @@ export default function RootPage() {
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
-          <form id="search-form" role="search">
+          <Form action="/posts" id="search-form" role="search">
             <input
               id="q"
               aria-label="Search contacts"
@@ -15,6 +15,7 @@ export default function RootPage() {
               type="search"
               name="q"
             />
+            <button type="submit">Search</button>
             <div
               id="search-spinner"
               aria-hidden
@@ -24,13 +25,26 @@ export default function RootPage() {
               className="sr-only"
               aria-live="polite"
             ></div>
-          </form>
+          </Form>
           <form method="post">
             <button type="submit">New</button>
           </form>
         </div>
         <nav>
           <ul>
+            <li>
+              <NavLink to="/" end>
+                {({ isActive }) => (
+                  <span
+                    className={
+                      isActive ? 'active' : undefined
+                    }
+                  >
+                    Home
+                  </span>
+                )}
+              </NavLink>
+            </li>
             <li>
               <NavLink to="/posts">
                 {({ isActive }) => (
