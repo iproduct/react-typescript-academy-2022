@@ -5,16 +5,44 @@ import { IncomingMessage, ServerResponse } from 'http';
 const HOSTNAME = 'localhost';
 const PORT = 64000;
 
+const todos = [
+    { id: 1, text: 'Implement REST server' },
+    { id: 2, text: 'Implement GET all TODOs' },
+    { id: 3, text: 'Implement POST new TODO' },
+    { id: 4, text: 'Implement error handling' },
+];
+
+let nextId = 4;
+
 const server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
     const path = url.parse(req.url).pathname
-    // res.statusCode = 200;
-    // res.setHeader('Content-Type', 'text/html');
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write('<h1>Hello NodeJS</h1>')
-    res.write('<h2>from TypeScript</h2>')
-    res.write(`<p>Request for: ${path}</p>`)
-    res.write(`<p>METHOD: ${req.method}</p>`)
-    res.end(`<p>HEADRES: ${JSON.stringify(req.headers)}</p>`)
+    console.log(`Request for: ${path}`)
+    console.log(`METHOD: ${req.method}`)
+    console.log(`HEADRES: ${JSON.stringify(req.headers)}`)
+
+    if (req.method === 'GET' && path === '/api/todos') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(todos))
+    } else if (req.method === 'GET') {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ message: 'This is not the page you are looking for :)' }))
+    } else if (req.method === 'POST') {
+        let bodyChunks: Uint8Array[] = [];
+
+        req.on('data', chunk => bodyChunks.push(chunk))
+            .on('end', () => {
+                let body = Buffer.concat(bodyChunks).toString();
+                console.log(body);
+                const newTodo = JSON.parse(body);
+                newTodo.id = ++nextId;
+                todos.push(newTodo);
+                res.writeHead(201, {
+                    'Content-Type': 'application/json',
+                    'Location': `http://${HOSTNAME}:${PORT}/api/todos/${newTodo.id}`
+                });
+                res.end(JSON.stringify(newTodo));
+            })
+    }
 })
 
 server.listen(PORT, HOSTNAME, () => {
