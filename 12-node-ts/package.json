@@ -6,15 +6,22 @@
   "author": "Trayan Iliev",
   "license": "Apache-2.0",
   "scripts": {
-    "server": "node --inspect=5858 -r ts-node/register ./src/05_http_server_1.ts",
+    "server": "node --inspect=5858 -r ts-node/register ./src/05-http-server-02.ts",
     "tsc": "tsc -w",
-    "start": "concurrently --kill-others \"nodemon\" \"livereload ./dist -d\"",
-    "build": "tsc"
+    "start": "nodemon -w ./dist ./dist/05-http-server-01.js",
+    "build": "tsc",
+    "nodemon": "nodemon"
   },
   "devDependencies": {
     "@types/node": "^18.7.23",
+    "concurrently": "^7.4.0",
+    "livereload": "^0.9.3",
+    "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "tslib": "^2.4.0",
     "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "rxjs": "^7.5.7"
   }
 }
