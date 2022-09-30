@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, Outlet, Params, useLoaderData, useParams } from "react-router-dom";
+import { Form, Outlet, Params, useFetcher, useLoaderData, useParams } from "react-router-dom";
 import { Post } from "../model/posts";
 import { PostsApi } from "../service/rest-api-client";
 import './PostPage.css'
@@ -69,13 +69,17 @@ interface FavoriteProps {
 }
 
 export function Favorite({ post }: FavoriteProps) {
+    const fetcher = useFetcher();
     // yes, this is a `let` for later
     let favorite = post.favorite;
+    if(fetcher.formData) {
+        favorite = fetcher.formData.get('favorite') === 'false'
+    }
     return (
-        <Form method="post">
+        <fetcher.Form method="post">
             <button
                 name="favorite"
-                value={favorite ? "false" : "true"}
+                value={favorite ? "true" : "false"}
                 aria-label={
                     favorite
                         ? "Remove from favorites"
@@ -84,6 +88,6 @@ export function Favorite({ post }: FavoriteProps) {
             >
                 {favorite ? "★" : "☆"}
             </button>
-        </Form>
+        </fetcher.Form>
     );
 }

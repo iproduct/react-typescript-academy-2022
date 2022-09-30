@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
+import { ActionFunctionArgs, createBrowserRouter, LoaderFunction, LoaderFunctionArgs, Params, redirect, RouterProvider } from 'react-router-dom';
 import ErrorPage from './pages/ErrorPage';
 import ContactPage from './pages/ContanctPage';
 import RootPage from './pages/RootPage';
@@ -11,13 +11,35 @@ import { PostsPage } from './pages/PostsPage';
 import PostPage from './pages/PostPage';
 import { PostsApi } from './service/rest-api-client';
 
-export async function postsLoader({request}: {request: Request}) {
+export async function postsLoader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const q = url.searchParams.get('q');
-  if(q) {
+  if (q) {
     return PostsApi.findByTitleLike(q);
   } else {
-   return PostsApi.findAll();
+    return PostsApi.findAll();
+  }
+}
+
+export function postLoader({ params }: LoaderFunctionArgs ) {
+  if (params.postId) {
+    return PostsApi.findById(+params.postId);
+  } else {
+    throw new Error(`Invalid or missing post ID`);
+  }
+}
+
+export async function postAction({ request, params }: ActionFunctionArgs) {
+  if (request.method === 'DELETE') {
+    params.postId && await PostsApi.deleteById(+params.postId);
+    return redirect('/posts');
+  } else if (request.method === 'POST') {
+    let formData = await request.formData();
+    let favorite = formData.get('favorite');
+    console.log(favorite);
+    if (favorite !== null && params.postId) {
+      return PostsApi.patchById(+params.postId, {favorite: (favorite ? favorite === 'false': undefined)});
+    }
   }
 }
 
@@ -41,19 +63,8 @@ const router = createBrowserRouter([
         children: [{
           errorElement: <ErrorPage />,
           path: ":postId",
-          action: async ({ request, params }) => {
-            if (request.method === 'DELETE') {
-              params.postId && await PostsApi.deleteById(+params.postId);
-              return redirect('/posts');
-            }
-          },
-          loader: ({ params }) => {
-            if (params.postId) {
-              return PostsApi.findById(+params.postId);
-            } else {
-              throw new Error(`Invalid or missing post ID`);
-            }
-          },
+          action: postAction,
+          loader: postLoader,
           element: <PostPage />,
         }]
       }, {
