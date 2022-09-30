@@ -1,6 +1,7 @@
 import * as http from 'http';
 import * as url from 'url';
 import { IncomingMessage, ServerResponse } from 'http';
+import * as fs from 'fs';
 
 const HOSTNAME = 'localhost';
 const PORT = 64000;
@@ -30,17 +31,25 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
         let bodyChunks: Uint8Array[] = [];
 
         req.on('data', chunk => bodyChunks.push(chunk))
-            .on('end', () => {
+            .on('end', async () => {
                 let body = Buffer.concat(bodyChunks).toString();
                 console.log(body);
                 const newTodo = JSON.parse(body);
                 newTodo.id = ++nextId;
                 todos.push(newTodo);
-                res.writeHead(201, {
-                    'Content-Type': 'application/json',
-                    'Location': `http://${HOSTNAME}:${PORT}/api/todos/${newTodo.id}`
-                });
-                res.end(JSON.stringify(newTodo));
+                fs.writeFile('todos.json', JSON.stringify(todos), (err)=>{
+                    if(err) {
+                        console.log(err);
+                        res.writeHead(500, {'Content-Type': 'application/json'});
+                        res.end(JSON.stringify({ message: 'Error writing to JSON file :(' }))
+                        return;
+                    }
+                    res.writeHead(201, {
+                        'Content-Type': 'application/json',
+                        'Location': `http://${HOSTNAME}:${PORT}/api/todos/${newTodo.id}`
+                    });
+                    res.end(JSON.stringify(newTodo));
+                })
             })
     }
 })
