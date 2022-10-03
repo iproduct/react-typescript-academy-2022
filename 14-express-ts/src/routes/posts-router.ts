@@ -52,14 +52,14 @@ router.post('/', async function (req, res) {
         post.id = uuidv4();
         posts.push(post);
         try {
-        promises.writeFile(postsDb, JSON.stringify(posts));
-        res.json(post);
-        } catch(err) {
+            promises.writeFile(postsDb, JSON.stringify(posts));
+            res.json(post);
+        } catch (err) {
             console.error(`Unable to create post: ${post.id}: ${post.title}.`);
             console.error(err);
             sendErrorResponse(req, res, 500, `Server error: ${err.message}`, err);
         }
-    } catch(errors) {
+    } catch (errors) {
         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
     }
 });
