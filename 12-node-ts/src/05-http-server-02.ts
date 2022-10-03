@@ -17,6 +17,7 @@ let nextId = 4;
 
 const server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
     const path = url.parse(req.url).pathname
+    
     console.log(`Request for: ${path}`)
     console.log(`METHOD: ${req.method}`)
     console.log(`HEADRES: ${JSON.stringify(req.headers)}`)
