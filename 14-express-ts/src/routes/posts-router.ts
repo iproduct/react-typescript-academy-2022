@@ -1,17 +1,19 @@
 import * as express from 'express';
 import { sendErrorResponse } from '../utils';
 import * as indicative from 'indicative';
-import {promises} from 'fs';
+import { promises } from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
-const postsDb = '../../posts.json';
+const postsDb = 'posts.json';
 
 // Posts API Feature
-router.get('/', async(req, res) => {
-    try{
-        const posts = await promises.readFile(postsDb);
+router.get('/', async (req, res) => {
+    try {
+        const postsData = await promises.readFile(postsDb)
+        const posts = JSON.parse(postsData.toString());
         res.json(posts);
-    } catch(err) {
+    } catch (err) {
         sendErrorResponse(req, res, 500, `Server error: ${err.message}`, err);
     }
 });
@@ -30,37 +32,37 @@ router.get('/', async(req, res) => {
 //     }
 // });
 
-// router.post('/', function(req, res) {
-//     const post = req.body;
-//     indicative.validator.validate(post, {
-//         // id: 'required|regex:^[0-9a-f]{24}',
-//         title: 'required|string|min:3|max:60',
-//         text: 'string|max:120',
-//         authorId: 'required|regex:^[0-9a-f]{24}',
-//         content: 'string',
-//         imageUrl: 'url',
-//         categories: 'array',
-//         'categories.*': 'string',
-//         keywords: 'array',
-//         'keywords.*': 'string'
-//     }).then(() => {
-//         req.app.locals.db.collection('posts').insertOne(post).then(r => {
-//             if (r.result.ok && r.insertedCount === 1) {
-//                 replace_id(post);
-//                 console.log(`Created post: ${post.id}: ${post.title}`);
-//                 res.status(201).location(`/posts/${post.id}`).json(post);
-//             } else {
-//                 sendErrorResponse(req, res, 500, `Server error: ${err.message}`, err);
-//             }
-//         }).catch(err => {
-//             console.error(`Unable to create post: ${post.id}: ${post.title}.`);
-//             console.error(err);
-//             sendErrorResponse(req, res, 500, `Server error: ${err.message}`, err);
-//         });
-//     }).catch(errors => {
-//         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
-//     });
-// });
+router.post('/', async function (req, res) {
+    const post = req.body;
+    try {
+        await indicative.validator.validate(post, {
+            // id: 'required|regex:^[0-9a-f]{24}',
+            title: 'required|string|min:3|max:60',
+            text: 'string|max:120',
+            authorId: 'required|regex:^[0-9a-f]{24}',
+            content: 'string',
+            imageUrl: 'url',
+            categories: 'array',
+            'categories.*': 'string',
+            keywords: 'array',
+            'keywords.*': 'string'
+        });
+        const postsData = await promises.readFile(postsDb)
+        const posts = JSON.parse(postsData.toString());
+        post.id = uuidv4();
+        posts.push(post);
+        try {
+        promises.writeFile(postsDb, JSON.stringify(posts));
+        res.json(post);
+        } catch(err) {
+            console.error(`Unable to create post: ${post.id}: ${post.title}.`);
+            console.error(err);
+            sendErrorResponse(req, res, 500, `Server error: ${err.message}`, err);
+        }
+    } catch(errors) {
+        sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
+    }
+});
 
 // router.put('/:id', verifyToken, verifyRole(['Author','Admin']), async (req, res) => {
 //     const old = await req.app.locals.db.collection('posts').findOne({ _id: new ObjectID(req.params.id) });
