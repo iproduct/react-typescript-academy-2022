@@ -318,6 +318,11 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
+negotiator@~0.2.5:
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.2.8.tgz#adfd207a3875c4d37095729c2e7c283c5ba2ee72"
+  integrity sha512-2iv1EafEsegrlyCHYPn4bMKM0g5wVTNqkdp8AqOggvSLV5znbQfTASWh4eKBqwEcw1awuY8l3U7wX95JSQWFEg==
+
 nodemon@^2.0.20:
   version "2.0.20"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-2.0.20.tgz#e3537de768a492e8d74da5c5813cb0c7486fc701"
@@ -346,6 +351,15 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
+oppressor@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/oppressor/-/oppressor-0.0.1.tgz#84b2058c9121c4c6fe632566b31ed39618bd8feb"
+  integrity sha512-8IkH6TK/dHF0BBJSyRTjkXfNn868DGgTY/9Czg7WL+oKHB2a4l5IHMLkVDGZFUg+QK/3IG0peIJuFpxEMlwHpA==
+  dependencies:
+    negotiator "~0.2.5"
+    response-stream "~0.0.0"
+    through "~0.1.4"
+
 "opts@>= 1.2.0":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/opts/-/opts-2.0.2.tgz#a17e189fbbfee171da559edd8a42423bc5993ce1"
@@ -372,6 +386,11 @@ require-directory@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
   integrity sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==
+
+response-stream@~0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/response-stream/-/response-stream-0.0.0.tgz#da4b17cc7684c98c962beb4d95f668c8dcad09d5"
+  integrity sha512-tWH3QWqkXv7AgYRXidIhPKO1SqPix2E0gM3x/vxf60LHQHWNS8AVrB3RnYexPAoo5dOc0bGzDlUgtsBvV3CWLA==
 
 rxjs@^7.0.0, rxjs@^7.5.7:
   version "7.5.7"
@@ -443,6 +462,11 @@ supports-color@^8.1.0:
   integrity sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==
   dependencies:
     has-flag "^4.0.0"
+
+through@~0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/through/-/through-0.1.4.tgz#8059576d833089b3c18eccd37580bf9cc5b59130"
+  integrity sha512-a5fKJqmlhfG2dbuF54Sgr5mNEaEwz3yaCQ8qCU7FwtW1NQuGryBxksb6e0s+7j4OP7Azdt9N0lU9h9bY9DHPhg==
 
 to-regex-range@^5.0.1:
   version "5.0.1"

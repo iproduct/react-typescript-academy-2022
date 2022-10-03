@@ -17,7 +17,7 @@ let nextId = 4;
 
 const server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
     const path = url.parse(req.url).pathname
-    
+
     console.log(`Request for: ${path}`)
     console.log(`METHOD: ${req.method}`)
     console.log(`HEADRES: ${JSON.stringify(req.headers)}`)
@@ -38,10 +38,10 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
                 const newTodo = JSON.parse(body);
                 newTodo.id = ++nextId;
                 todos.push(newTodo);
-                fs.writeFile('todos.json', JSON.stringify(todos), (err)=>{
-                    if(err) {
+                fs.writeFile('todos.json', JSON.stringify(todos), (err) => {
+                    if (err) {
                         console.log(err);
-                        res.writeHead(500, {'Content-Type': 'application/json'});
+                        res.writeHead(500, { 'Content-Type': 'application/json' });
                         res.end(JSON.stringify({ message: 'Error writing to JSON file :(' }))
                         return;
                     }
@@ -51,7 +51,10 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
                     });
                     res.end(JSON.stringify(newTodo));
                 })
-            })
+            }).on('error', (err) => {
+                // This prints the error message and stack trace to `stderr`.
+                console.error(err.stack);
+            });
     }
 })
 
