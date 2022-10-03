@@ -1,0 +1,32 @@
+[
+    {
+        "title": "ReactJS Intro Book",
+        "text": "Learning React JavaScript Library From Scratch",
+        "authorId": "6249c88304ccb8350742b2fb",
+        "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/51BXdIhEe1L.jpg",
+        "categories": [
+            "react",
+            "programming"
+        ],
+        "keywords": [
+            "react",
+            "javascript"
+        ],
+        "id": "625173ed0f271e8188e7dcbe"
+    },
+    {
+        "id": "62519de2c9bf3c75a4674438",
+        "title": "Redux in Action",
+        "text": "Redux makes state access and mutation straightforward ... ",
+        "imageUrl": "https://www.publicdomainpictures.net/pictures/250000/velka/mars-1515656849bmH.jpg",
+        "authorId": "625185f849fc5879389d55a4",
+        "keywords": [
+            "redux",
+            "react"
+        ],
+        "categories": [
+            "react",
+            "spa"
+        ]
+    }
+]
