@@ -1,4 +1,4 @@
-export const sendErrorResponse = function(req, res, status = 500, message, err) {
+export const sendErrorResponse = function(req, res, status = 500, message, err = null) {
     if(req.get('env') === 'production') {
         err = undefined;
     }
