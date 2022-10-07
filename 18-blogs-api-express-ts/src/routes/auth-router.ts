@@ -1,4 +1,4 @@
-import { UserRepository } from './../dao/user-repository';
+
 
 /**
  * THIS HEADER SHOULD BE KEPT INTACT IN ALL CODE DERIVATIVES AND MODIFICATIONS.
@@ -26,13 +26,14 @@ import * as jwt from 'jsonwebtoken';
 import { Role, User } from '../model/user';
 import Credentials from '../model/auth';
 import { Repository } from '../dao/repository';
+import { UserRepository } from './../dao/user-repository';
 import { sendErrorResponse } from '../utils';
 
 const router = Router();
 
 // Auth API Feature
 router.post('/login', async (req, res, next) => {
-    const usersRepo: UserRepository = req.app.locals.postsRepo;
+    const usersRepo: UserRepository = req.app.locals.usersRepo;
     const credentials = req.body as Credentials;
     try {
         await indicative.validator.validate(credentials, {
@@ -66,7 +67,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/register', async (req, res, next) => {
-    const usersRepo: UserRepository = req.app.locals.postsRepo;
+    const usersRepo: UserRepository = req.app.locals.usersRepo;
     // validate new user
     const newUser = req.body;
     try {
@@ -75,21 +76,20 @@ router.post('/register', async (req, res, next) => {
             lastName: 'required|string|min:2',
             username: 'required|string|min:5',
             password: 'required|string|min:6',
-            role: 'required|number|min:0|max:2',
+            role: 'required|number|range:0,2',
             imageUrl: 'url'
         });
-    } catch (err) {
-        next(new InvalidDataError(err.message));
+    } catch (errors) {
+        sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
         return;
     }
     // create user in db
     try {
-        const found = await (<UserRepository>req.app.locals.userRepo).findByUsername(newUser.username);
+        const found = await usersRepo.findByUsername(newUser.username);
         if (found) {
-            throw new InvalidDataError(`Username already taken: "${newUser.username}".`);
+            sendErrorResponse(req, res, 400, `Username already taken: ${newUser.username}.`);
+            // throw new InvalidDataError(`Username already taken: "${newUser.username}".`);
         }
-
-        throw new InvalidDataError(`Can not change username.`);
 
         // hash password
         newUser.password = await bcrypt.hash(newUser.password, 8);
@@ -99,7 +99,7 @@ router.post('/register', async (req, res, next) => {
         const created = await usersRepo.create(newUser);
         delete created.password;
 
-        res.status(201).location(`/api/users/${newUser.id}`).json(newUser);
+        res.status(201).location(`/api/users/${newUser.id}`).json(created);
     } catch (err) {
         next(err);
     }
