@@ -6,7 +6,7 @@
   "author": "Trayan Iliev",
   "license": "Apache-2.0",
   "scripts": {
-    "server": "node --inspect=5858 -r ts-node/register ./src/01-mongo-connect-insert.ts",
+    "server": "node --inspect=5858 -r ts-node/register ./src/03-find-sort.ts",
     "tsc": "tsc -w",
     "start": "nodemon -w ./dist ./dist/05-http-server-01.js",
     "build": "tsc",
