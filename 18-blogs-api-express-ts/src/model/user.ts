@@ -1,3 +1,5 @@
+
+
 /**
  * THIS HEADER SHOULD BE KEPT INTACT IN ALL CODE DERIVATIVES AND MODIFICATIONS.
  * 
@@ -16,11 +18,30 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export class AuthenticationError extends Error {
+import { OptionalId } from 'mongodb';
+import { Identifiable, IdType } from '../dao/repository';
+
+export interface IUser extends Identifiable {
+    firstName: string;
+    lastName: string;
+    username: string;
+    password: string;
+    imageUrl: string;
+    role: Role;
 }
 
-export class NotFoundError extends Error {
+export enum Role{
+    READER, AUTHOR, ADMIN
 }
 
-export class InvalidDataError extends Error {
+export class User implements IUser , OptionalId<User>{
+    public id: IdType;
+    constructor(
+        public firstName: string,
+        public lastName: string,
+        public username: string,
+        public password: string,
+        public imageUrl: string,
+        public role: Role = Role.READER
+        ) {}
 }

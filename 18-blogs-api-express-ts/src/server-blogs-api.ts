@@ -7,6 +7,9 @@ import { sendErrorResponse } from './utils';
 import postsRouter from './routes/posts-router';
 import { MongodbRepository } from './dao/mongodb-repository';
 import { Post } from './model/post';
+import { User } from './model/user';
+import { UserRepository } from './dao/user-repository';
+import authRouter from './routes/auth-router';
 
 export const HOSTNAME = 'localhost';
 export const PORT = 4000;
@@ -14,6 +17,7 @@ const POSTS_DB_FILE = 'posts.json';
 const dbUrl = `mongodb://localhost:27017`;
 const database = 'ts-academy-2022';
 const postsCollection = 'posts';
+const usersCollection = 'users';
 
 const app = express();
 app.use(cors({
@@ -25,6 +29,7 @@ app.use(express.json({ limit: '10mb' }))
 
 app
     .use('/api/posts', postsRouter)
+    .use('/api/auth', authRouter)
     // .use('/api/users', usersRouter);
     .use((req, res) => {
         sendErrorResponse(req, res, 404, `This is not the page you are looking for :)`);
@@ -39,6 +44,7 @@ app.use(function (err, req, res, next) {
     const con = await MongoClient.connect(dbUrl);
     const db = con.db(database);
     app.locals.postsRepo = new MongodbRepository<Post>(db, postsCollection);
+    app.locals.usersRepo = new UserRepository(db, usersCollection);
 
     app.listen(PORT, HOSTNAME, () => {
         console.log(`HTTP Server listening on: http://${HOSTNAME}:${PORT}`);

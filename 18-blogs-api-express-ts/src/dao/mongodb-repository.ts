@@ -8,7 +8,7 @@ import { replaceWithId, replaceWith_id } from '../utils';
 
 
 export class MongodbRepository<T extends Identifiable> implements Repository<T> {
-    constructor(private db: Db, private collection: string) { }
+    constructor(protected db: Db, protected collection: string) { }
 
     async findAll(): Promise<T[]> {
         const entities = await this.db.collection<T>(this.collection).find().toArray()
