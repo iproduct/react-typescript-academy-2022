@@ -6,9 +6,9 @@
   "author": "Trayan Iliev",
   "license": "Apache-2.0",
   "scripts": {
-    "server": "node --inspect=5858 -r ts-node/register ./src/04-update-one.ts",
+    "server": "node --inspect=5858 -r ts-node/register ./src/server-blogs-api.ts",
     "tsc": "tsc -w",
-    "start": "nodemon -w ./dist ./dist/05-http-server-01.js",
+    "start": "nodemon -w ./dist ./dist/server-blogs-api.ts",
     "build": "tsc",
     "nodemon": "nodemon"
   },

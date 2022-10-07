@@ -16,7 +16,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { Post, IPost } from './model/post.model';
 import MOCK_POSTS from './model/mock-posts';
 
@@ -28,30 +28,32 @@ async function main() {
     // connect to mongodb
     const con = await MongoClient.connect(dbUrl);
     const db = con.db(database);
-
+    const postId = '633f1e501d575409116ce602';
     try {
+        // update by _id
+        var myquery = { _id: new ObjectId(postId) };
+        const post = await db.collection<Post>(collection).findOne(myquery);
+        post.title = "React Refs - REPLACED"
+        post.categories = ["frontend", "development"]
+        // var newvalues = { $set: {title: "React Refs - MODIFIED", categories: ['frontend']} };
+        const updateRes = await db.collection(collection)
+            // .updateOne(myquery, newvalues)
+            // .findOneAndUpdate(myquery, newvalues)
+            .replaceOne(myquery, post)
+        // console.log(updateRes);
+        // if (updateRes.acknowledged && updateRes.modifiedCount === 1) {
+        // if (updateRes.ok) {
+        if (updateRes.acknowledged && updateRes.modifiedCount === 1) {
+            // console.log("Updated document:", updateRes.value);
+            console.log(`Replaced document with ID: ${postId}`);
+        }
+
         // get all posts
         const posts = await db.collection<Post>(collection)
-            .find({title:/react/i, content: /dom/i})
-            // .project({title: 1, content: 1})
-            // .sort({title: -1})
-            // .skip(2)
-            // .limit(2)
+            .find(myquery)
+            .sort({title: 1})
             .toArray();
-
-        // const posts = await db.collection(collection)
-        //     .aggregate<IPost>(
-        //         [{ "$match": { "title": { $regex: /react/i } } },
-        //         {
-        //             $group: {
-        //                 _id: { title: '$title' },
-        //                 title: { $addToSet: '$title' },
-        //                 count: { "$sum": 1 }
-        //             }
-        //         }
-        //         ])
-        //     .toArray();
-
+       
         posts.forEach(post => console.log(post));
 
     } catch (err) {
