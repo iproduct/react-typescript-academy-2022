@@ -31,7 +31,7 @@ async function main() {
     const postId = '633f1e501d575409116ce602';
     try {
         // update by _id
-        var myquery = { _id: new ObjectId(postId) };
+        const myquery = { _id: new ObjectId(postId) };
         const post = await db.collection<Post>(collection).findOne(myquery);
         post.title = "React Refs - REPLACED"
         post.categories = ["frontend", "development"]

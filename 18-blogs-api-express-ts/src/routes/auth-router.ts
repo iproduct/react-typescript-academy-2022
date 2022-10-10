@@ -55,7 +55,8 @@ router.post('/login', async (req, res, next) => {
             next(new AuthenticationError(`Username or password is incorrect.`));
             return;
         }
-        const token = jwt.sign({ id: user.id }, "not-a-secret", {
+        console.log(process.env.BLOGS_API_SECRET);
+        const token = jwt.sign({ id: user.id }, process.env.BLOGS_API_SECRET, {
             expiresIn: '1h' //expires in 1h
         });
         delete user.password;
@@ -76,7 +77,7 @@ router.post('/register', async (req, res, next) => {
             lastName: 'required|string|min:2',
             username: 'required|string|min:5',
             password: 'required|string|min:6',
-            role: 'required|number|range:0,2',
+            role: `required|integer|equals:${Role.READER}`,
             imageUrl: 'url'
         });
     } catch (errors) {
@@ -87,19 +88,19 @@ router.post('/register', async (req, res, next) => {
     try {
         const found = await usersRepo.findByUsername(newUser.username);
         if (found) {
-            sendErrorResponse(req, res, 400, `Username already taken: ${newUser.username}.`);
-            // throw new InvalidDataError(`Username already taken: "${newUser.username}".`);
+            // sendErrorResponse(req, res, 400, `Username already taken: ${newUser.username}.`);
+            next(new InvalidDataError(`Username already taken: "${newUser.username}"`));
         }
 
         // hash password
         newUser.password = await bcrypt.hash(newUser.password, 8);
-        newUser.roles = Role.READER;
+        newUser.role = Role.READER;
 
         // Create new User
         const created = await usersRepo.create(newUser);
         delete created.password;
 
-        res.status(201).location(`/api/users/${newUser.id}`).json(created);
+        res.status(201).location(`/api/users/${created.id}`).json(created);
     } catch (err) {
         next(err);
     }

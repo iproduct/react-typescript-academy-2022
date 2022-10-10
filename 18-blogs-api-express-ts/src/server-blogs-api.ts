@@ -10,6 +10,10 @@ import { Post } from './model/post';
 import { User } from './model/user';
 import { UserRepository } from './dao/user-repository';
 import authRouter from './routes/auth-router';
+import { AuthenticationError, InvalidDataError, NotFoundError } from './model/errors';
+import {config} from 'dotenv';
+import usersRouter from './routes/users-router';
+config();
 
 export const HOSTNAME = 'localhost';
 export const PORT = 4000;
@@ -30,14 +34,22 @@ app.use(express.json({ limit: '10mb' }))
 app
     .use('/api/posts', postsRouter)
     .use('/api/auth', authRouter)
-    // .use('/api/users', usersRouter);
+    .use('/api/users', usersRouter)
     .use((req, res) => {
         sendErrorResponse(req, res, 404, `This is not the page you are looking for :)`);
     });
 
 app.use(function (err, req, res, next) {
-    console.error(err.stack)
-    sendErrorResponse(req, res, err.status || 500, `Server error: ${err.message}`, err);
+    console.error(err.stack);
+    let status = 500;
+    if(err instanceof AuthenticationError) {
+        status = 401;
+    } else if(err instanceof NotFoundError) {
+        status = 404;
+    } else if(err instanceof InvalidDataError) {
+        status = 400;
+    }
+    sendErrorResponse(req, res, err.status || status, `Server error: ${err.message}`, err);
 });
 
 (async () => {
