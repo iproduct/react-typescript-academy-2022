@@ -18,6 +18,9 @@ export class MongodbRepository<T extends Identifiable> implements Repository<T> 
     async findById(id: string): Promise<T> {
         const myquery = { _id: new ObjectId(id) };
         const document= await this.db.collection(this.collection).findOne<WithId<T>>(myquery);
+        if(!document) {
+            throw new NotFoundError(`Document with ID=${id} not found`);
+        }
         return replaceWithId(document);
     }
 

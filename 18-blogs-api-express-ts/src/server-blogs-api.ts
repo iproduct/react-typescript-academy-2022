@@ -10,7 +10,7 @@ import { Post } from './model/post';
 import { User } from './model/user';
 import { UserRepository } from './dao/user-repository';
 import authRouter from './routes/auth-router';
-import { AuthenticationError, InvalidDataError, NotFoundError } from './model/errors';
+import { AuthenticationError, ForbiddenError, InvalidDataError, NotFoundError } from './model/errors';
 import {config} from 'dotenv';
 import usersRouter from './routes/users-router';
 config();
@@ -44,12 +44,14 @@ app.use(function (err, req, res, next) {
     let status = 500;
     if(err instanceof AuthenticationError) {
         status = 401;
+    } else if(err instanceof ForbiddenError) {
+        status = 403;
     } else if(err instanceof NotFoundError) {
         status = 404;
     } else if(err instanceof InvalidDataError) {
         status = 400;
-    }
-    sendErrorResponse(req, res, err.status || status, `Server error: ${err.message}`, err);
+    } 
+    sendErrorResponse(req, res, err.status || status, `Error: ${err.message}`, err);
 });
 
 (async () => {

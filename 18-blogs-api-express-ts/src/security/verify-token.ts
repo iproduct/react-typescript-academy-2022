@@ -10,13 +10,14 @@
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
-export type RequestWithUserId = Request & {userId: string};
+export type RequestWithUserId<P = any, ResBody = any, ReqBody = any, ReqQuery = qs.ParsedQs, Locals extends Record<string, any> = Record<string, any>> =
+  Request<P, ResBody, ReqQuery, Locals> & { userId: string };
 
 export default function verifyToken(req: RequestWithUserId, res: Response, next: NextFunction) {
   console.log(req.headers);
   const tokenHeader = req.headers['authorization'];
   if (!tokenHeader) {
-    next({ status: 401, message: `Unauthorized`});
+    next({ status: 401, message: `Unauthorized` });
     return;
   }
   const segments = tokenHeader.split(' ');
@@ -27,7 +28,7 @@ export default function verifyToken(req: RequestWithUserId, res: Response, next:
   const token = segments[1].trim();
   console.log(`Token: ${token}`);
 
-  jwt.verify(token, process.env.BLOGS_API_SECRET, function (error, decoded: {id: string}) {
+  jwt.verify(token, process.env.BLOGS_API_SECRET, function (error, decoded: { id: string }) {
     if (error) next({ status: 403, message: `Failed to authenticate token.`, error });
     else {
       // if everything good, save to request for use in other routes

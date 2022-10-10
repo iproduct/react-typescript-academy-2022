@@ -10,6 +10,7 @@ import * as bcrypt from 'bcryptjs';
 import { UserRepository } from '../dao/user-repository';
 import { nextTick } from 'process';
 import verifyToken from '../security/verify-token';
+import verifyRole from '../security/verify-role';
 
 
 const router = express.Router();
@@ -133,7 +134,7 @@ router.put('/:id', async function (req, res) {
 });
 
 
-router.delete('/:id', verifyToken, async(req, res, next) => {
+router.delete('/:id', verifyToken, verifyRole([Role.AUTHOR, Role.ADMIN]), async(req, res, next) => {
     const params = req.params;
     const usersRepo: Repository<User> = req.app.locals.usersRepo;
     try {
