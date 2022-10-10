@@ -38,7 +38,6 @@ export class MongodbRepository<T extends Identifiable> implements Repository<T> 
     async update(dto: T): Promise<T> {
         const document = replaceWith_id(dto) as OptionalUnlessRequiredId<T>;
         const myquery = { _id: new ObjectId(document._id) };
-        // const { acknowledged, modifiedCount }
         const updateRes = await this.db.collection(this.collection)
             .replaceOne(myquery, document);
         if (!updateRes.acknowledged) {
