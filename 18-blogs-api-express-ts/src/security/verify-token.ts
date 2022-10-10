@@ -26,7 +26,7 @@ export default function verifyToken(req: RequestWithUserId, res: Response, next:
     return;
   }
   const token = segments[1].trim();
-  console.log(`Token: ${token}`);
+  // console.log(`Token: ${token}`);
 
   jwt.verify(token, process.env.BLOGS_API_SECRET, function (error, decoded: { id: string }) {
     if (error) next({ status: 403, message: `Failed to authenticate token.`, error });
