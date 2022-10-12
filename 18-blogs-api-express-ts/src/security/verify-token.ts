@@ -19,12 +19,10 @@
 
 import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
+// import { ExtractJwt } from 'passport-jwt';
 
-export type RequestWithUserId<P = any, ResBody = any, ReqBody = any, ReqQuery = qs.ParsedQs, Locals extends Record<string, any> = Record<string, any>> =
-  Request<P, ResBody, ReqQuery, Locals> & { userId: string };
-
-export default function verifyToken(req: RequestWithUserId, res: Response, next: NextFunction) {
-  console.log(req.headers);
+export default function verifyToken(req: Request, res: Response, next: NextFunction) {
+  // ExtractJwt.fromAuthHeaderAsBearerToken();
   const tokenHeader = req.headers['authorization'];
   if (!tokenHeader) {
     next({ status: 401, message: `Unauthorized` });
@@ -42,7 +40,7 @@ export default function verifyToken(req: RequestWithUserId, res: Response, next:
     if (error) next({ status: 403, message: `Failed to authenticate token.`, error });
     else {
       // if everything good, save to request for use in other routes
-      req.userId = decoded.id;
+      res.locals.userId = decoded.id;
       next();
     }
   });

@@ -19,15 +19,14 @@
 
 import { ForbiddenError } from './../model/errors';
 import { UserRepository } from './../dao/user-repository';
-import { RequestWithUserId } from './verify-token';
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 
 export default function verifyRole(roles) {
-  return async function (req: RequestWithUserId, res: Response, next: NextFunction) {
+  return async function (req: Request, res: Response, next: NextFunction) {
     const userRepo = req.app.locals.usersRepo as UserRepository;
     try {
-      const user = await userRepo.findById(req.userId);
+      const user = await userRepo.findById(res.locals.userId);
       if (!roles.includes(user.role)) {
         next(new ForbiddenError(`Access not allowed`));
         return;

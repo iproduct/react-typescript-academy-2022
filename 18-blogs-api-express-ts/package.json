@@ -19,6 +19,7 @@
     "@types/jsonwebtoken": "^8.5.9",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.7.23",
+    "@types/passport-jwt": "^3.0.7",
     "@types/uuid": "^8.3.4",
     "concurrently": "^7.4.0",
     "livereload": "^0.9.3",
@@ -37,6 +38,7 @@
     "mongodb": "^4.10.0",
     "morgan": "^1.10.0",
     "oppressor": "^0.0.1",
+    "passport-jwt": "^4.0.0",
     "rxjs": "^7.5.7",
     "uuid": "^9.0.0"
   }
