@@ -1,0 +1,83 @@
+buildscript {
+	ext {
+		springBootVersion = '2.7.5'
+	}
+	repositories {
+		mavenCentral()
+		maven { url "https://repo.spring.io/snapshot" }
+		maven { url "https://repo.spring.io/milestone" }
+	}
+	dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+idea {
+    module {
+        downloadJavadoc = true
+    }
+}
+
+group = 'org.iproduct.demos.spring'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 18
+
+//moduleName = 'org.iproduct.demos.spring.reactivequotes'
+//
+//implementationJava {
+//	inputs.property("moduleName", moduleName)
+//	doFirst {
+//		options.implementationrArgs = [
+//				'--module-path', classpath.asPath,
+//		]
+//		classpath = files()
+//	}
+//}
+//
+//mainClassName = "$moduleName/org.iproduct.demos.spring.reactivequotes.ReactiveQuotesServiceApp"
+//
+//run {
+//	inputs.property("moduleName", moduleName)
+//	doFirst {
+//		jvmArgs = [
+//				'--module-path', classpath.asPath,
+//				'--module', mainClassName
+//		]
+//		classpath = files()
+//	}
+//}
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+}
+
+
+configurations.all {
+	exclude group: 'commons-logging', module: 'commons-logging'
+}
+
+dependencies {
+	implementation('org.springframework.boot:spring-boot-starter-actuator')
+	implementation('org.springframework.boot:spring-boot-starter-webflux')
+	implementation 'org.hibernate:hibernate-validator:6.2.1.Final'
+//	implementation('org.springframework.boot:spring-boot-starter-websocket')
+//	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+//	implementation('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
+	implementation ('org.slf4j:jcl-over-slf4j')
+//	implementation ('ch.qos.logback:logback-classic')
+	implementation'org.springframework.boot:spring-boot-devtools'
+//	implementation('org.projectlombok:lombok')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation('io.projectreactor:reactor-test')
+	testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
+	testImplementation('org.springframework.security:spring-security-test')
+}
+
