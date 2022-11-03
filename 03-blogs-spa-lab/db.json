@@ -41,6 +41,19 @@
       ],
       "likeCounter": 0,
       "id": 3
+    },
+    {
+      "title": "TypeScript Components",
+      "content": "Component-oriented development is much easier using Typescript.",
+      "imageUrl": "https://logospng.org/wp-content/uploads/typescript.png",
+      "authorId": 1,
+      "tags": [
+        "typescript",
+        "components",
+        "frontend"
+      ],
+      "likeCounter": 0,
+      "id": 4
     }
   ],
   "comments": [
