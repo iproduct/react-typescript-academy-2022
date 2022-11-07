@@ -1,0 +1,5 @@
+#post-form {
+    display: flex;
+    flex-flow: column nowrap;
+    row-gap: 10px;
+}

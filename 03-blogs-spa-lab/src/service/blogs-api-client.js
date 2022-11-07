@@ -1,9 +1,20 @@
-const API_BASE_URL = `http://localhost:3000/api/posts`;
+const API_BASE_URL = `http://localhost:9000/api/posts`;
 
-export async function getAllPosts() {
+export const getAllPosts = async () => handleJsonRequest(API_BASE_URL);
+
+export const addPost = async (post) => handleJsonRequest(API_BASE_URL, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(post)
+});
+
+
+async function handleJsonRequest(url, options) {
     try {
-        const postsResp = await fetch(API_BASE_URL);
-        if(postsResp.status >= 400) {
+        const postsResp = await fetch(url, options);
+        if (postsResp.status >= 400) {
             Promise.reject(postsResp.body);
         }
         return postsResp.json();

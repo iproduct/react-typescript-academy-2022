@@ -54,6 +54,16 @@
       ],
       "likeCounter": 0,
       "id": 4
+    },
+    {
+      "title": "New Post",
+      "content": "New post content ...",
+      "imageUrl": "http://doctorakil.com/wp-content/uploads/2018/01/coffee-940x600.jpg",
+      "tags": [
+        "coffee",
+        "script"
+      ],
+      "id": 5
     }
   ],
   "comments": [

@@ -1,15 +1,11 @@
 export class Post {
-    static nextId = 0;
-    static getNextId() {
-        return ++Post.nextId;
-    }
-    id = Post.getNextId();
-    constructor(title, content, imageUrl, authorId, tags, likeCounter){
+    constructor(title, content, imageUrl, authorId, tags, likeCounter, id = undefined) {
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
         this.authorId = authorId;
         this.tags = tags;
         this.likeCounter = likeCounter;
-      }
+        this.id = id;
+    }
 }
