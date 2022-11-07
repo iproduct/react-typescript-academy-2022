@@ -1,5 +1,12 @@
-#post-form2 {
-    display: flex;
-    flex-flow: column nowrap;
-    row-gap: 10px;
+.card-container {
+    padding: 15px;
+}
+
+.card-content {
+    height: 140px;
+}
+
+.card .card-image img.activator {
+    height: 200px ;
+    width: auto;
 }

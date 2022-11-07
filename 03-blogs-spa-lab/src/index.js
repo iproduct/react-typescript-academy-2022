@@ -15,12 +15,26 @@ const postsElem = document.getElementById("posts");
 
 function showPosts() {
     posts.forEach(post => {
-        const item = document.createElement('li');
-        item.innerHTML = `
-        <span>${post.title}</span> :
-        <span>${post.content}</span>
+        const card = document.createElement('div');
+        card.className = 'card-container col s12 l6 xl4';
+        card.innerHTML = `
+        <div class="card">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="${post.imageUrl}">
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4">${post.title}<i
+                        class="material-icons right">more_vert</i></span>
+                <p><a href="#">This is a link</a></p>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4">${post.title}<i
+                        class="material-icons right">close</i></span>
+                <p>${post.content}</p>
+            </div>
+        </div>
         `;
-        postsElem.appendChild(item);
+        postsElem.appendChild(card);
     });
 }
 
