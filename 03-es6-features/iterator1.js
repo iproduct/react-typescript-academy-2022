@@ -12,7 +12,14 @@ let fibonacci = {
 
 for (var n of fibonacci) {
   // truncate the sequence at 1000
-  // if (n > 1000)
-  //   break;
+  if (n > 1000)
+    break;
+  console.log(n);
+}
+
+for (var n of fibonacci) {
+  // truncate the sequence at 1000
+  if (n > 2000)
+    break;
   console.log(n);
 }
