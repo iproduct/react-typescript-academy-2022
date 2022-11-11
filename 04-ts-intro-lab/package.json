@@ -1,0 +1,16 @@
+{
+  "name": "04-ts-intro-lab",
+  "version": "1.0.0",
+  "description": "TypeScript intro lab",
+  "main": "index.js",
+  "repository": "https://github.com/iproduct/react-typescript-academy-2022.git",
+  "author": "Trayan Iliev",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "concurrently --kill-others \"tsc -w\" \"lite-server\""
+  },
+  "devDependencies": {
+    "concurrently": "^7.5.0",
+    "lite-server": "^2.6.1"
+  }
+}

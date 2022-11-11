@@ -17,7 +17,6 @@ async function* combinedAsyncGen(){
   yield 3;
   yield * fibonacci(10);
   yield * fibonacci(20);
-
 }
 
 (async function() {
