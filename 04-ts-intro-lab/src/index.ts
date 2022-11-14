@@ -1,4 +1,4 @@
-import { Admin, Author, Reader, Role, User } from './users.js';
+import { Admin, Author, Reader, Role, User } from './model/users.js';
 
 // function greeter(person: string) {
 //     return `Hi ${person} from TypeScript!`

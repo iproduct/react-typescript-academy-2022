@@ -1,4 +1,4 @@
-import { IdType } from "./common-types.js";
+import { IdType } from "../common-types.js";
 import { Contact, Person } from "./person.js";
 
 export interface User extends Person {
