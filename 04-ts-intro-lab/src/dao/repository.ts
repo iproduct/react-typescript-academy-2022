@@ -1,5 +1,5 @@
-import { IdGenerator } from './id-generator';
-import { Identifiable, IdType } from "../common-types";
+import { IdGenerator } from './id-generator.js';
+import { Identifiable, IdType } from "../common-types.js";
 
 export interface Repository<T extends Identifiable> {
     findAll(): T[];

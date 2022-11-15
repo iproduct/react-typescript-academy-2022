@@ -15,19 +15,51 @@ export enum Role {
 
 export class UserBase implements User {
     id: IdType = undefined;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    roles: Role[];
+    contact?: Contact;
+    constructor(user: User);
     constructor(
-        public firstName: string,
-        public lastName: string,
-        public email: string,
-        public password: string,
-        public roles: Role[],
-        public contact?: Contact | undefined
-    ) {}
+        firstName: string,
+        lastName: string,
+        email: string,
+        password: string,
+        roles: Role[],
+        contact?: Contact | undefined
+    );
+    constructor(
+        nameOrUser: string | User,
+        lastName?: string,
+        email?: string,
+        password?: string,
+        roles?: Role[],
+        contact?: Contact | undefined
+    ) {
+        if (typeof nameOrUser === 'string') {
+            this.firstName = nameOrUser;
+            this.lastName = lastName || '';
+            this.email = email || '';
+            this.password = password || '';
+            this.roles = roles || [];
+            this.contact = contact;
+        } else {
+            this.id = nameOrUser.id;
+            this.firstName = nameOrUser.firstName;
+            this.lastName = nameOrUser.lastName;
+            this.email = nameOrUser.email;
+            this.password = nameOrUser.password;
+            this.roles = nameOrUser.roles;
+            this.contact = nameOrUser.contact;
+        }
+    }
     get salutation() {
         return `Hello ${this.firstName} ${this.lastName} in roles: ${this.roles.map(r => Role[r]).join(', ')}`;
     }
     toString(): string {
-        return `ID: ${this.id}, ${this.salutation}`;
+        return `ID: ${this.id}, Name: ${this.firstName} ${this.lastName}, Email: ${this.email}, Pasword: ${this.password}, Roles: roles: ${this.roles.map(r => Role[r]).join(', ')}`;
     }
 }
 
