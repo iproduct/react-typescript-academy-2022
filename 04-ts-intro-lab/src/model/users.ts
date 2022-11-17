@@ -2,14 +2,16 @@ import { IdType } from "../common-types.js";
 import { Contact, Person } from "./person.js";
 
 export interface User extends Person {
+    role: Role;
     password: string;
-    roles: Role[]; // Array<Role>
     readonly salutation: string;
     toString(): string;
     // toString: () => string;
 }
 
-export enum Role {
+export type Role = 'ADMIN' | 'AUTHOR' | 'READER' | 'ANONYMOUS';
+
+export enum Role2 {
     AUTHOR = 1, READER, ADMIN
 }
 
@@ -19,7 +21,7 @@ export class UserBase implements User {
     lastName: string;
     email: string;
     password: string;
-    roles: Role[];
+    role: Role = 'READER'; // disciminator property
     contact?: Contact;
     constructor(user: User);
     constructor(
@@ -27,7 +29,6 @@ export class UserBase implements User {
         lastName: string,
         email: string,
         password: string,
-        roles: Role[],
         contact?: Contact | undefined
     );
     constructor(
@@ -35,7 +36,6 @@ export class UserBase implements User {
         lastName?: string,
         email?: string,
         password?: string,
-        roles?: Role[],
         contact?: Contact | undefined
     ) {
         if (typeof nameOrUser === 'string') {
@@ -43,7 +43,6 @@ export class UserBase implements User {
             this.lastName = lastName || '';
             this.email = email || '';
             this.password = password || '';
-            this.roles = roles || [];
             this.contact = contact;
         } else {
             this.id = nameOrUser.id;
@@ -51,44 +50,64 @@ export class UserBase implements User {
             this.lastName = nameOrUser.lastName;
             this.email = nameOrUser.email;
             this.password = nameOrUser.password;
-            this.roles = nameOrUser.roles;
+            this.role = nameOrUser.role;
             this.contact = nameOrUser.contact;
         }
     }
     get salutation() {
-        return `Hello ${this.firstName} ${this.lastName} in roles: ${this.roles.map(r => Role[r]).join(', ')}`;
+        return `Hello ${this.firstName} ${this.lastName} in role: ${this.role}`;
     }
     toString(): string {
-        return `ID: ${this.id}, Name: ${this.firstName} ${this.lastName}, Email: ${this.email}, Pasword: ${this.password}, Roles: roles: ${this.roles.map(r => Role[r]).join(', ')}`;
+        return `ID: ${this.id}, Name: ${this.firstName} ${this.lastName}, Email: ${this.email}, Pasword: ${this.password}, Roles: role: ${this.role}`;
     }
 }
 
-export class Reader extends UserBase {
+export class Anonymous extends UserBase {
+    readonly role = 'ANONYMOUS';
     constructor(
         firstName: string,
         lastName: string,
         email: string,
         password: string,
-        roles: Role[] = [Role.READER],
+        public sessionTime: number,
         contact?: Contact | undefined
     ) {
-        super(firstName, lastName, email, password, roles, contact);
+        super(firstName, lastName, email, password, contact);
     }
     toString(): string {
         return `READER: ${super.toString()}`;
     }
 }
 
-export class Author extends UserBase {
+export class Reader extends UserBase {
+    role = 'READER' as const;
     constructor(
         firstName: string,
         lastName: string,
         email: string,
         password: string,
-        roles: Role[] = [Role.AUTHOR],
+        public favouritePosts: string[],
         contact?: Contact | undefined
     ) {
-        super(firstName, lastName, email, password, roles, contact);
+        super(firstName, lastName, email, password, contact);
+    }
+    toString(): string {
+        return `READER: ${super.toString()}`;
+    }
+}
+
+
+export class Author extends UserBase {
+    role = 'AUTHOR' as const;
+    constructor(
+        firstName: string,
+        lastName: string,
+        email: string,
+        password: string,
+        public ownPosts: string[],
+        contact?: Contact | undefined
+    ) {
+        super(firstName, lastName, email, password, contact);
     }
     toString(): string {
         return `AUTHOR: ${super.toString()}`;
@@ -96,17 +115,50 @@ export class Author extends UserBase {
 }
 
 export class Admin extends UserBase {
+    readonly role = 'ADMIN' as const;
     constructor(
         firstName: string,
         lastName: string,
         email: string,
         password: string,
-        roles: Role[] = [Role.ADMIN],
+        public managedUsers: IdType[],
         contact?: Contact | undefined
     ) {
-        super(firstName, lastName, email, password, roles, contact);
+        super(firstName, lastName, email, password, contact);
     }
     toString(): string {
         return `ADMIN: ${super.toString()}`;
+    }
+}
+
+export type UserType = Reader | Author | Admin | Anonymous;
+
+// export function getExtraData(user: UserType) {
+//     let extraData: string;
+//     if(user instanceof Reader) {
+//         extraData = user.favouritePosts.toString();
+//     } else if(user instanceof Author){
+//         extraData = user.ownPosts.toString();
+//     } else if(user instanceof Admin){
+//         extraData = user.managedUsers.toString();
+//     } else {
+//         throw new Error('Should not come here');
+//     }
+//     return extraData;
+// }
+
+export function getExtraData(user: UserType) {
+    switch (user.role) {
+        case 'READER':
+            return user.favouritePosts.toString();
+        case 'AUTHOR':
+            return user.ownPosts.toString();
+        case 'ADMIN':
+            return user.managedUsers.toString();
+        case 'ANONYMOUS':
+            return user.sessionTime.toString();
+        default:
+            const _exhaustiveCheck: never = user;
+            return _exhaustiveCheck;
     }
 }

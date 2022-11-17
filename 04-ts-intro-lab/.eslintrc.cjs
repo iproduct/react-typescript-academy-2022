@@ -6,5 +6,6 @@ module.exports = {
     root: true,
     rules: {
         "@typescript-eslint/no-non-null-assertion": "off",
+        "no-case-declarations": "off"
     }
 };
