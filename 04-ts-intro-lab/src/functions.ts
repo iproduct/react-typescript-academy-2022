@@ -45,3 +45,4 @@ console.log(obj);
 
 const obj2 = fn(String);
 console.log(obj2);
+
