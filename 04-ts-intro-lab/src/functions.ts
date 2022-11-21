@@ -113,7 +113,7 @@ console.log(arr1);
 
 // Inferred type is number[] -- "an array with zero or more numbers",
 // not specifically two numbers
-const args: [x: number, y: number] = [8, 5];
+const args: [number, number] = [8, 5];
 args[0]++;
 // args.push(42); // can not do this, if as const
 const angle = Math.atan2(...args);
