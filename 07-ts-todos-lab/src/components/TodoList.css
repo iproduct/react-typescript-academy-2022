@@ -1,0 +1,9 @@
+.TodoList {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+}
+
+.TodoList li {
+    display: block;
+}

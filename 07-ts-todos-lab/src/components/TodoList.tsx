@@ -1,11 +1,14 @@
-import { Todo } from "../model/todos"
+import { Todo } from "../model/todos";
+import "./TodoList.css";
 
 type Props = { todos: Todo[] }
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
     console.log({ todos })
     return (
-        <div>TodoList Component here ...</div>
+        <ul className="TodoList">
+           {todos.map(todo => (<li key={todo.id}> {todo.id} : {todo.text} - {todo.status}, till: {todo.deadline}</li>))}
+        </ul>
     )
 };
 

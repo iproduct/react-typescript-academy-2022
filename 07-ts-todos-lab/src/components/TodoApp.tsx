@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './TodoApp.css';
 import MOCK_TODOS from '../model/mock-todos';
-import { Todo } from '../model/todos';
+import { Todo, TodoStatus } from '../model/todos';
 import TodoList from './TodoList';
 
 interface AppState {
@@ -13,7 +13,11 @@ export default class App extends Component<{}, AppState> {
   state: Readonly<AppState> = {
     todos: MOCK_TODOS
   }
-  interval: NodeJS.Timer | undefined;
+  nextId = 0;
+  constructor(props: {}) {
+    super(props);
+    this.state.todos.forEach(todo => todo.id = ++this.nextId);
+  }
 
   render() {
     return (
