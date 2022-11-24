@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './TodoApp.css';
 import MOCK_TODOS from '../model/mock-todos';
-import { Todo, TodoStatus } from '../model/todos';
+import { Todo } from '../model/todos';
 import TodoList from './TodoList';
 
 interface AppState {
