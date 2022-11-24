@@ -9,7 +9,7 @@ interface AppState {
 }
 
 
-export default class App extends Component<{}, AppState> {
+export default class TodoApp extends Component<{}, AppState> {
   state: Readonly<AppState> = {
     todos: MOCK_TODOS
   }
