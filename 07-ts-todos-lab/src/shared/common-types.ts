@@ -9,3 +9,9 @@ export interface Indetifiable {
 export interface TodoListener {
     (todo: Todo) : void;
 }
+
+export type Partial<T> = {
+    [K in keyof T]?: T[K]
+}
+
+export type Optional<T> = T | undefined;
