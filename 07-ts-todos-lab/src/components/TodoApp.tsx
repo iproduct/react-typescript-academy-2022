@@ -3,6 +3,7 @@ import './TodoApp.css';
 import MOCK_TODOS from '../model/mock-todos';
 import { Todo, TodoStatus } from '../model/todos';
 import TodoList from './TodoList';
+import TodoInput from './TodoInput';
 
 interface AppState {
   todos: Todo[];
@@ -28,7 +29,11 @@ export default class TodoApp extends Component<{}, AppState> {
   }
 
   handleDeleteTodo = (todo: Todo) => {
-    this.setState(({todos}) => ({todos: this.state.todos.filter(td => td.id !== todo.id)}))
+    this.setState(({todos}) => ({todos: todos.filter(td => td.id !== todo.id)}))
+  }
+
+  handleTodoSubmit = (todo: Todo) => {
+    this.setState(({todos}) => ({todos: [...todos, {...todo, id: ++this.nextId}]}))
   }
 
   render() {
@@ -36,6 +41,7 @@ export default class TodoApp extends Component<{}, AppState> {
       <div className="TodoApp">
         <header className="TodoApp-header">
           <h1>React TODOs Demo</h1>
+          <TodoInput todo={undefined} onTodoSubmit={this.handleTodoSubmit} />
           <TodoList todos={this.state.todos} 
           onUpdateTodo={this.handleUpdateTodo} 
           onEditTodo={()=>{}} onDeleteTodo={this.handleDeleteTodo}/>

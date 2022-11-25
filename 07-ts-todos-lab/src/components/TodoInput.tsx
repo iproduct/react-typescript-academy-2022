@@ -17,7 +17,7 @@ interface TodoInputState {
 export default class TodoInput extends Component<TodoInputProps, TodoInputState> {
     state: Readonly<TodoInputState> = {
         text: this.props.todo?.text || '',
-        status: this.props.todo?.status.toString() || '',
+        status: this.props.todo?.status.toString() || '1',
         deadline: this.props.todo?.deadline || ''
     }
 
@@ -46,8 +46,8 @@ export default class TodoInput extends Component<TodoInputProps, TodoInputState>
                 <label htmlFor='text'>What to do next?</label>
                 <input type='text' id='text' name='text' value={this.state.text}
                     onChange={this.handleChange} />
-                <label htmlFor='text'>Status</label>
-                <select value={this.state.status} onChange={this.handleChange}>
+                <label htmlFor='status'>Status</label>
+                <select id='status' name='status' value={this.state.status} onChange={this.handleChange}>
                     <option value={TodoStatus.Active}>Active</option>
                     <option value={TodoStatus.Completed}>Compled</option>
                     <option value={TodoStatus.Canceled}>Canceled</option>
@@ -55,6 +55,8 @@ export default class TodoInput extends Component<TodoInputProps, TodoInputState>
                 <label htmlFor='deadline'>What's the deadline?</label>
                 <input type='date' id='deadline' name='deadline' value={this.state.deadline}
                     onChange={this.handleChange} />
+                <button className='button button5' type='submit'>Submit</button>
+                <button className='button button3' type='reset'>Reset</button>
             </form>
         )
     }
