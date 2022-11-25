@@ -29,7 +29,7 @@ export default function TodoItem({ todo, onUpdateTodo, onEditTodo, onDeleteTodo 
                 <span className='TodoItem-status'>{TodoStatus[todo.status]}</span>
                 {todo.status === TodoStatus.Active ?
                     <span className='TodoItem-button fas fa-circle-check' onClick={handleCompletion} />
-                    : <span className='TodoItem-button fas fa-circle-times danger' onClick={handleDelete} />
+                    : <span className='TodoItem-button fas fa-times-circle danger' onClick={handleDelete} />
                 }
                 <span className='TodoItem-button fas fa-pen-to-square' onClick={handleCompletion} />
             </span>
