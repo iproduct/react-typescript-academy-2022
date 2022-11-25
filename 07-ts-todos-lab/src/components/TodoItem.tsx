@@ -31,9 +31,8 @@ export default function TodoItem({ todo, onUpdateTodo, onEditTodo, onDeleteTodo 
                     <span className='TodoItem-button fas fa-circle-check' onClick={handleCompletion} />
                     : <span className='TodoItem-button fas fa-circle-times danger' onClick={handleDelete} />
                 }
+                <span className='TodoItem-button fas fa-pen-to-square' onClick={handleCompletion} />
             </span>
-            <span className='TodoItem-button fas fa-pen-to-square' onClick={handleCompletion} />
-
         </div>
     );
 }
