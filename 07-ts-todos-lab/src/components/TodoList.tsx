@@ -12,7 +12,6 @@ type Props = {
 
 // export const TodoList = ({ todos }: Props) => {
 export const TodoList: React.FC<Props> = ({ todos, ...rest }) => {
-    console.log({ todos })
     return (
         <ul className="TodoList">
            {todos.map(todo => (<TodoItem key={todo.id} todo={todo} {...rest} /> ))}

@@ -7,6 +7,7 @@ import TodoInput from './TodoInput';
 
 interface AppState {
   todos: Todo[];
+  editedTodo: Todo | undefined; // Optuional<Todo>
   filter: TodoFilter;
 }
 
@@ -15,6 +16,7 @@ type TodoFilter = TodoStatus | undefined;
 export default class TodoApp extends Component<{}, AppState> {
   state: Readonly<AppState> = {
     todos: MOCK_TODOS,
+    editedTodo: undefined,
     filter: undefined
   }
   nextId = 0;
@@ -25,15 +27,27 @@ export default class TodoApp extends Component<{}, AppState> {
   }
 
   handleUpdateTodo(todo: Todo) {
-    this.setState(({todos}) => ({todos: todos.map(td => td.id === todo.id ? todo: td)}))
+    this.setState(({ todos }) => ({ todos: todos.map(td => td.id === todo.id ? todo : td) }))
   }
 
   handleDeleteTodo = (todo: Todo) => {
-    this.setState(({todos}) => ({todos: todos.filter(td => td.id !== todo.id)}))
+    this.setState(({ todos }) => ({ todos: todos.filter(td => td.id !== todo.id) }))
   }
 
   handleTodoSubmit = (todo: Todo) => {
-    this.setState(({todos}) => ({todos: [...todos, {...todo, id: ++this.nextId}]}))
+    if(todo.id) {// edit mode
+      this.setState(({ todos }) => ({ todos: todos.map(td => td.id === todo.id ? todo : td) }))
+    } else { // create mode
+      this.setState(({ todos }) => ({ todos: [...todos, { ...todo, id: ++this.nextId }] }))
+    }
+  }
+
+  handleTodoEdit = (todo: Todo) => {
+    this.setState({ editedTodo: todo })
+  }
+
+  handleCancel = () => {
+    this.setState({ editedTodo: undefined })
   }
 
   render() {
@@ -41,10 +55,12 @@ export default class TodoApp extends Component<{}, AppState> {
       <div className="TodoApp">
         <header className="TodoApp-header">
           <h1>React TODOs Demo</h1>
-          <TodoInput todo={undefined} onTodoSubmit={this.handleTodoSubmit} />
-          <TodoList todos={this.state.todos} 
-          onUpdateTodo={this.handleUpdateTodo} 
-          onEditTodo={()=>{}} onDeleteTodo={this.handleDeleteTodo}/>
+          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} 
+          onTodoSubmit={this.handleTodoSubmit} onTodoCancel={this.handleCancel} />
+          <TodoList todos={this.state.todos}
+            onUpdateTodo={this.handleUpdateTodo}
+            onEditTodo={this.handleTodoEdit}
+            onDeleteTodo={this.handleDeleteTodo} />
         </header>
       </div>
     );

@@ -12,7 +12,7 @@ interface TodoItemProps {
 
 export default function TodoItem({ todo, onUpdateTodo, onEditTodo, onDeleteTodo }: TodoItemProps) {
     function handleCompletion(event: React.MouseEvent) {
-        onUpdateTodo({...todo, status: TodoStatus.Completed})
+        onUpdateTodo({ ...todo, status: TodoStatus.Completed })
     }
 
     function handleDelete(event: React.MouseEvent) {
@@ -31,7 +31,7 @@ export default function TodoItem({ todo, onUpdateTodo, onEditTodo, onDeleteTodo 
                     <span className='TodoItem-button fas fa-circle-check' onClick={handleCompletion} />
                     : <span className='TodoItem-button fas fa-times-circle danger' onClick={handleDelete} />
                 }
-                <span className='TodoItem-button fas fa-pen-to-square' onClick={handleCompletion} />
+                <span className='TodoItem-button fas fa-pen-to-square' onClick={() => onEditTodo(todo)} />
             </span>
         </div>
     );

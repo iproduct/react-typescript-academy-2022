@@ -6,6 +6,7 @@ import { toIsoDate } from '../shared/utils';
 interface TodoInputProps {
     todo: Optional<Todo>;
     onTodoSubmit: TodoListener;
+    onTodoCancel: () => void;
 }
 
 interface TodoInputState {
@@ -38,6 +39,14 @@ export default class TodoInput extends Component<TodoInputProps, TodoInputState>
         this.setState({ [fieldName]: event.target.value } as unknown as TodoInputState);
     }
 
+    handleReset = () => {
+        this.setState({
+            text: this.props.todo?.text || '',
+            status: this.props.todo?.status.toString() || '1',
+            deadline: this.props.todo?.deadline || ''
+        });
+    }
+
     render() {
         return (
             <form className='TodoInput' onSubmit={this.handleTodoSubmit}>
@@ -56,7 +65,8 @@ export default class TodoInput extends Component<TodoInputProps, TodoInputState>
                 <input type='date' id='deadline' name='deadline' value={this.state.deadline}
                     onChange={this.handleChange} />
                 <button className='button button5' type='submit'>Submit</button>
-                <button className='button button3' type='reset'>Reset</button>
+                <button className='button button3' type='button'  onClick={this.handleReset}>Reset</button>
+                <button className='button button3' type='button' onClick={this.props.onTodoCancel}>Cancel</button>
             </form>
         )
     }
