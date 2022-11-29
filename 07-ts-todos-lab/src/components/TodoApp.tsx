@@ -4,14 +4,18 @@ import MOCK_TODOS from '../model/mock-todos';
 import { Todo, TodoStatus } from '../model/todos';
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
+import TodoFilter from './TodoFilter';
 
 interface AppState {
   todos: Todo[];
   editedTodo: Todo | undefined; // Optuional<Todo>
-  filter: TodoFilter;
+  filter: FilterType;
 }
 
-type TodoFilter = TodoStatus | undefined;
+export type FilterType = TodoStatus | undefined;
+
+export type FilterChangeListener = (filterChange: FilterType) => void
+
 
 export default class TodoApp extends Component<{}, AppState> {
   state: Readonly<AppState> = {
@@ -35,7 +39,7 @@ export default class TodoApp extends Component<{}, AppState> {
   }
 
   handleTodoSubmit = (todo: Todo) => {
-    if(todo.id) {// edit mode
+    if (todo.id) {// edit mode
       this.setState(({ todos }) => ({ todos: todos.map(td => td.id === todo.id ? todo : td) }))
     } else { // create mode
       this.setState(({ todos }) => ({ todos: [...todos, { ...todo, id: ++this.nextId }] }))
@@ -50,14 +54,19 @@ export default class TodoApp extends Component<{}, AppState> {
     this.setState({ editedTodo: undefined })
   }
 
+  handleFilterChange = (filter: FilterType) => {
+    this.setState({ filter });
+  }
+
   render() {
     return (
       <div className="TodoApp">
         <header className="TodoApp-header">
           <h1>React TODOs Demo</h1>
-          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo} 
-          onTodoSubmit={this.handleTodoSubmit} onTodoCancel={this.handleCancel} />
-          <TodoList todos={this.state.todos}
+          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo}
+            onTodoSubmit={this.handleTodoSubmit} onTodoCancel={this.handleCancel} />
+          <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
+          <TodoList todos={this.state.todos} filter={this.state.filter} 
             onUpdateTodo={this.handleUpdateTodo}
             onEditTodo={this.handleTodoEdit}
             onDeleteTodo={this.handleDeleteTodo} />
