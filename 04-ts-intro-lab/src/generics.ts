@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 // @strict: false
 export class GenericNumber<NumType extends number | Date> {
@@ -119,6 +120,7 @@ type date2 = PromiseResolveType<Date>;
 
 
 // Mapped types
+// eslint-disable-next-line @typescript-eslint/ban-types
 type Horse = {};
 // ---cut---
 type OnlyBoolsAndHorses = {

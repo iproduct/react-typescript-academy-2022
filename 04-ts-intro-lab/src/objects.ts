@@ -1,8 +1,10 @@
-interface Shape {} // === any
-declare function getShape(): Shape;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// interface Shape {} // === any
+// declare function getShape(): Shape;
 
 interface PaintOptions {
-  shape: Shape;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  shape: any;
   xPos?: number;
   yPos?: number;
 }
@@ -30,9 +32,9 @@ function doStuff(values: ReadonlyArray<string>) {
 
 
 // tuple destructuring
-function doSomething([inputString, hash]: [string, number]) {
+function doSomething2([inputString, hash]: [string, number]) {
   console.log(inputString);
   console.log(hash);
 }
 
-doSomething(['abc', 42])
+doSomething2(['abc', 42])

@@ -1,6 +1,6 @@
 import { NumberIdGenerator } from './dao/id-generator.js';
 import { UserRepository, UserRepositoryMemoryImpl } from './dao/user-repository.js';
-import { Admin, Author, getExtraData, Reader, Role, User, UserBase, UserType } from './model/users.js';
+import { Admin, Author, getExtraData, Reader, User, UserType } from './model/users.js';
 
 // function greeter(person: string) {
 //     return `Hi ${person} from TypeScript!`
