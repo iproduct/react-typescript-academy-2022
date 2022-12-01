@@ -17,6 +17,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
+    "api": "json-server --watch db.json --routes routes.json --port 9000",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -39,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "json-server": "^0.17.1"
   }
 }

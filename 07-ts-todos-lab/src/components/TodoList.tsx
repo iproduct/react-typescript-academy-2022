@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Todo } from "../model/todos";
-import { TodoListener } from "../shared/common-types";
+import { TodoUdateListener } from "../shared/common-types";
 import { FilterType } from "./TodoApp";
 import TodoItem from "./TodoItem";
 import "./TodoList.css";
@@ -8,9 +8,9 @@ import "./TodoList.css";
 type Props = { 
     todos: Todo[],
     filter: FilterType,
-    onUpdateTodo: TodoListener;
-    onEditTodo: TodoListener;
-    onDeleteTodo: TodoListener;
+    onUpdateTodo: TodoUdateListener ;
+    onEditTodo: TodoUdateListener ;
+    onDeleteTodo: TodoUdateListener ;
 }
 
 // export const TodoList = ({ todos }: Props) => {

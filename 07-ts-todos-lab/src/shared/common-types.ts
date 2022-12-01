@@ -1,12 +1,17 @@
+import { TodoCreateDTO } from './../model/todos';
 import { Todo } from "../model/todos";
 
-export type IdType = number | undefined;
+export type IdType = number;
 
-export interface Indetifiable {
-    id: IdType;
+export interface Identifiable<K> {
+    id: K;
 }
 
 export interface TodoListener {
+    (todo: Todo | TodoCreateDTO) : void;
+}
+
+export interface TodoUdateListener {
     (todo: Todo) : void;
 }
 

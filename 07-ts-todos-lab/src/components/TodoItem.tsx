@@ -1,13 +1,13 @@
 import React from 'react';
 import { Todo, TodoStatus } from '../model/todos';
-import { TodoListener } from '../shared/common-types';
+import { TodoUdateListener } from '../shared/common-types';
 import './TodoItem.css';
 
 interface TodoItemProps {
     todo: Todo;
-    onUpdateTodo: TodoListener;
-    onEditTodo: TodoListener;
-    onDeleteTodo: TodoListener;
+    onUpdateTodo: TodoUdateListener;
+    onEditTodo: TodoUdateListener;
+    onDeleteTodo: TodoUdateListener;
 }
 
 export default function TodoItem({ todo, onUpdateTodo, onEditTodo, onDeleteTodo }: TodoItemProps) {

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './TodoApp.css';
 import MOCK_TODOS from '../model/mock-todos';
-import { Todo, TodoStatus } from '../model/todos';
+import { Todo, TodoCreateDTO, TodoStatus } from '../model/todos';
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
 import TodoFilter from './TodoFilter';
+import { IdType } from '../shared/common-types';
+import { ApiClient, ApiClientImpl } from '../service/todos-api-client';
 
 interface AppState {
   todos: Todo[];
+  errors: string | undefined;
   editedTodo: Todo | undefined; // Optuional<Todo>
   filter: FilterType;
 }
@@ -18,16 +21,27 @@ export type FilterChangeListener = (filterChange: FilterType) => void
 
 
 export default class TodoApp extends Component<{}, AppState> {
-  state: Readonly<AppState> = {
-    todos: MOCK_TODOS,
+  state: AppState = {
+    todos: [],
+    errors: undefined,
     editedTodo: undefined,
     filter: undefined
   }
+  todosApiClient: ApiClient<IdType, Todo> = new ApiClientImpl<IdType, Todo>('todos');
   nextId = 0;
+
   constructor(props: {}) {
     super(props);
-    this.state.todos.forEach(todo => todo.id = ++this.nextId);
     this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
+  }
+
+  async componentDidMount() {
+    try {
+      const todos = await this.todosApiClient.findAll();
+      this.setState({ todos });
+    } catch (err) {
+      this.setState({errors: '' + err});
+    }
   }
 
   handleUpdateTodo(todo: Todo) {
@@ -38,8 +52,8 @@ export default class TodoApp extends Component<{}, AppState> {
     this.setState(({ todos }) => ({ todos: todos.filter(td => td.id !== todo.id) }))
   }
 
-  handleTodoSubmit = (todo: Todo) => {
-    if (todo.id) {// edit mode
+  handleTodoSubmit = (todo: Todo | TodoCreateDTO) => {
+    if ('id' in todo) {// edit mode
       this.setState(({ todos }) => ({ todos: todos.map(td => td.id === todo.id ? todo : td) }))
     } else { // create mode
       this.setState(({ todos }) => ({ todos: [...todos, { ...todo, id: ++this.nextId }] }))
@@ -63,10 +77,11 @@ export default class TodoApp extends Component<{}, AppState> {
       <div className="TodoApp">
         <header className="TodoApp-header">
           <h1>React TODOs Demo</h1>
+          {this.state.errors &&<div className='errors'>{this.state.errors}</div>}
           <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo}
             onTodoSubmit={this.handleTodoSubmit} onTodoCancel={this.handleCancel} />
           <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
-          <TodoList todos={this.state.todos} filter={this.state.filter} 
+          <TodoList todos={this.state.todos} filter={this.state.filter}
             onUpdateTodo={this.handleUpdateTodo}
             onEditTodo={this.handleTodoEdit}
             onDeleteTodo={this.handleDeleteTodo} />

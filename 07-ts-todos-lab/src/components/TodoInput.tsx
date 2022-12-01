@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Todo, TodoStatus } from '../model/todos'
+import { Todo, TodoCreateDTO, TodoStatus } from '../model/todos'
 import { Optional, TodoListener } from '../shared/common-types'
 import { toIsoDate } from '../shared/utils';
 
@@ -25,11 +25,17 @@ export default class TodoInput extends Component<TodoInputProps, TodoInputState>
     handleTodoSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         this.props.onTodoSubmit(
+            this.props.todo?.id ?
             new Todo(
+                this.props.todo?.id,
                 this.state.text,
                 toIsoDate(new Date(this.state.deadline)),
                 parseInt(this.state.status),
-                this.props.todo?.id
+            ) :
+            new TodoCreateDTO(
+                this.state.text,
+                toIsoDate(new Date(this.state.deadline)),
+                parseInt(this.state.status),
             )
         );
         this.setState({
