@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './TodoApp.css';
-import MOCK_TODOS from '../model/mock-todos';
 import { Todo, TodoCreateDTO, TodoStatus } from '../model/todos';
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
@@ -101,7 +100,7 @@ export default class TodoApp extends Component<{}, AppState> {
           <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo}
             onTodoSubmit={this.handleTodoSubmit} onTodoCancel={this.handleCancel} />
           <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
-          <TodoList todos={this.state.todos} filter={this.state.filter}
+          <TodoList todos={this.state.todos} filter={this.state.filter} isLoading={false}
             onUpdateTodo={this.handleUpdateTodo}
             onEditTodo={this.handleTodoEdit}
             onDeleteTodo={this.handleDeleteTodo} />

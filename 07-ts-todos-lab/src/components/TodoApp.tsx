@@ -6,7 +6,8 @@ import TodoInput from './TodoInput';
 import TodoFilter from './TodoFilter';
 import { IdType } from '../shared/common-types';
 import { ApiClient, ApiClientImpl } from '../service/todos-api-client';
-import { useOnMount, useOnMountAsync } from './hooks/useOnMount';
+import { useOnMountAsync } from './hooks/useOnMount';
+import { useLoading } from './hooks/useIsLoading';
 
 export type FilterType = TodoStatus | undefined;
 
@@ -20,9 +21,12 @@ const TodoApp = () => {
   const [editedTodo, setEditedTodo] = useState<Todo | undefined>();
   const [filter, setFilter] = useState<FilterType>();
 
+  const [isLoading, load] = useLoading<Todo[]>();
+  // load(Promise<R>): Promise<R>
+
   useOnMountAsync(async () => {
     try {
-      const todos = await API_CLIENT.findAll();
+      const todos = await load(API_CLIENT.findAll());
       setTodos(todos);
     } catch (err) {
       setErrors('' + err);
@@ -90,7 +94,7 @@ const TodoApp = () => {
         <TodoInput key={editedTodo?.id} todo={editedTodo}
           onTodoSubmit={handleTodoSubmit} onTodoCancel={handleCancel} />
         <TodoFilter filter={filter} onFilterChange={handleFilterChange} />
-        <TodoList todos={todos} filter={filter}
+        <TodoList todos={todos} filter={filter} isLoading={isLoading}
           onUpdateTodo={handleUpdateTodo}
           onEditTodo={handleTodoEdit}
           onDeleteTodo={handleDeleteTodo} />
