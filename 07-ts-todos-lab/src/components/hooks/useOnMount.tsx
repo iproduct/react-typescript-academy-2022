@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { EffectCallback, useEffect } from "react";
 
 export const useOnMount = (f: EffectCallback) => useEffect(() => f(), [])
