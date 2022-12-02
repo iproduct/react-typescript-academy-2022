@@ -1,8 +1,20 @@
 {
   "todos": [
     {
-      "id":1,
+      "id": 1,
       "text": "Lifecycle Methods are working!",
+      "status": 1
+    },
+    {
+      "text": "Learn Hooks",
+      "deadline": "2022-12-02",
+      "status": 1,
+      "id": 2
+    },
+    {
+      "id": 3,
+      "text": "Create TodoList component EDITED",
+      "deadline": "2022-12-10",
       "status": 1
     }
   ],

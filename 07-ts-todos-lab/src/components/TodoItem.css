@@ -42,3 +42,8 @@
   color: rgb(255, 35, 21)
 }
 
+.TodoItem-right {
+  flex: 0 1 180px;
+  display: flex;
+  justify-content: end;
+}

@@ -27,6 +27,7 @@ export default class TodoApp extends Component<{}, AppState> {
     editedTodo: undefined,
     filter: undefined
   }
+
   todosApiClient: ApiClient<IdType, Todo> = new ApiClientImpl<IdType, Todo>('todos');
   nextId = 0;
 
@@ -40,7 +41,7 @@ export default class TodoApp extends Component<{}, AppState> {
       const todos = await this.todosApiClient.findAll();
       this.setState({ todos });
     } catch (err) {
-      this.setState({errors: '' + err});
+      this.setState({ errors: '' + err });
     }
   }
 
@@ -52,11 +53,23 @@ export default class TodoApp extends Component<{}, AppState> {
     this.setState(({ todos }) => ({ todos: todos.filter(td => td.id !== todo.id) }))
   }
 
-  handleTodoSubmit = (todo: Todo | TodoCreateDTO) => {
-    if ('id' in todo) {// edit mode
-      this.setState(({ todos }) => ({ todos: todos.map(td => td.id === todo.id ? todo : td) }))
-    } else { // create mode
-      this.setState(({ todos }) => ({ todos: [...todos, { ...todo, id: ++this.nextId }] }))
+  handleTodoSubmit = async (todo: Todo | TodoCreateDTO) => {
+    try {
+      if ('id' in todo) {// edit mode
+        const updated = await this.todosApiClient.update(todo);
+        this.setState(({ todos }) => ({ 
+          todos: todos.map(td => td.id === updated.id ? updated : td),
+          errors: undefined
+         }))
+      } else { // create mode
+        const created = await this.todosApiClient.create(todo);
+        this.setState(({ todos }) => ({ 
+          todos: todos.concat(created),
+          errors: undefined
+        }))
+      }
+    } catch(err) {
+      this.setState({ errors: '' + err });
     }
   }
 
@@ -77,7 +90,7 @@ export default class TodoApp extends Component<{}, AppState> {
       <div className="TodoApp">
         <header className="TodoApp-header">
           <h1>React TODOs Demo</h1>
-          {this.state.errors &&<div className='errors'>{this.state.errors}</div>}
+          {this.state.errors && <div className='errors'>{this.state.errors}</div>}
           <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo}
             onTodoSubmit={this.handleTodoSubmit} onTodoCancel={this.handleCancel} />
           <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
