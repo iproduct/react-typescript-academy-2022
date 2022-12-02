@@ -1,106 +1,102 @@
-import React, { Component } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './TodoApp.css';
-import MOCK_TODOS from '../model/mock-todos';
 import { Todo, TodoCreateDTO, TodoStatus } from '../model/todos';
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
 import TodoFilter from './TodoFilter';
 import { IdType } from '../shared/common-types';
 import { ApiClient, ApiClientImpl } from '../service/todos-api-client';
-
-interface AppState {
-  todos: Todo[];
-  errors: string | undefined;
-  editedTodo: Todo | undefined; // Optuional<Todo>
-  filter: FilterType;
-}
+import { useOnMount, useOnMountAsync } from './hooks/useOnMount';
 
 export type FilterType = TodoStatus | undefined;
 
 export type FilterChangeListener = (filterChange: FilterType) => void
 
+const API_CLIENT: ApiClient<IdType, Todo> = new ApiClientImpl<IdType, Todo>('todos');
 
-export default class TodoApp extends Component<{}, AppState> {
-  state: AppState = {
-    todos: [],
-    errors: undefined,
-    editedTodo: undefined,
-    filter: undefined
-  }
+const TodoApp = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [errors, setErrors] = useState<string | undefined>();
+  const [editedTodo, setEditedTodo] = useState<Todo | undefined>();
+  const [filter, setFilter] = useState<FilterType>();
 
-  todosApiClient: ApiClient<IdType, Todo> = new ApiClientImpl<IdType, Todo>('todos');
-  nextId = 0;
-
-  constructor(props: {}) {
-    super(props);
-    this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
-  }
-
-  async componentDidMount() {
+  useOnMountAsync(async () => {
     try {
-      const todos = await this.todosApiClient.findAll();
-      this.setState({ todos });
+      const todos = await API_CLIENT.findAll();
+      setTodos(todos);
     } catch (err) {
-      this.setState({ errors: '' + err });
+      setErrors('' + err);
     }
-  }
+  }); // <=> componentDidMount
 
-  handleUpdateTodo(todo: Todo) {
-    this.setState(({ todos }) => ({ todos: todos.map(td => td.id === todo.id ? todo : td) }))
-  }
-
-  handleDeleteTodo = (todo: Todo) => {
-    this.setState(({ todos }) => ({ todos: todos.filter(td => td.id !== todo.id) }))
-  }
-
-  handleTodoSubmit = async (todo: Todo | TodoCreateDTO) => {
+  const handleUpdateTodo = useCallback(async (todo: Todo) => {
     try {
-      if ('id' in todo) {// edit mode
-        const updated = await this.todosApiClient.update(todo);
-        this.setState(({ todos }) => ({ 
-          todos: todos.map(td => td.id === updated.id ? updated : td),
-          errors: undefined
-         }))
-      } else { // create mode
-        const created = await this.todosApiClient.create(todo);
-        this.setState(({ todos }) => ({ 
-          todos: todos.concat(created),
-          errors: undefined
-        }))
-      }
-    } catch(err) {
-      this.setState({ errors: '' + err });
+      const updated = await API_CLIENT.update(todo);
+      setTodos((oldTodos) => oldTodos.map(td => td.id === updated.id ? updated : td));
+      setErrors(undefined);
+    } catch (err) {
+      setErrors('' + err);
+    }
+  }, []);
+
+  const handleDeleteTodo = async (todo: Todo) => {
+    try {
+      await API_CLIENT.deleteById(todo.id);
+      setTodos(oldTodos => oldTodos.filter(td => td.id !== todo.id));
+      setErrors(undefined);
+    } catch (err) {
+      setErrors('' + err);
     }
   }
 
-  handleTodoEdit = (todo: Todo) => {
-    this.setState({ editedTodo: todo })
+  const handleTodoSubmit = useCallback(
+    async (todo: Todo | TodoCreateDTO) => {
+      try {
+        if ('id' in todo) {// edit mode
+          await handleUpdateTodo(todo);
+          setEditedTodo(undefined);
+        } else { // create mode
+          const created = await API_CLIENT.create(todo);
+          setTodos(oldTodos => oldTodos.concat(created));
+          setEditedTodo(editedTodo ? undefined : new Todo(0, '', ''));
+          setErrors(undefined);
+        }
+      } catch (err) {
+        setErrors('' + err);
+      }
+    },
+    [editedTodo, handleUpdateTodo]
+  );
+
+
+
+  const handleTodoEdit = (todo: Todo) => {
+    setEditedTodo(todo);
   }
 
-  handleCancel = () => {
-    this.setState({ editedTodo: undefined })
+  const handleCancel = () => {
+    setEditedTodo(undefined);
   }
 
-  handleFilterChange = (filter: FilterType) => {
-    this.setState({ filter });
+  const handleFilterChange = (filter: FilterType) => {
+    setFilter(filter);
   }
 
-  render() {
-    return (
-      <div className="TodoApp">
-        <header className="TodoApp-header">
-          <h1>React TODOs Demo</h1>
-          {this.state.errors && <div className='errors'>{this.state.errors}</div>}
-          <TodoInput key={this.state.editedTodo?.id} todo={this.state.editedTodo}
-            onTodoSubmit={this.handleTodoSubmit} onTodoCancel={this.handleCancel} />
-          <TodoFilter filter={this.state.filter} onFilterChange={this.handleFilterChange} />
-          <TodoList todos={this.state.todos} filter={this.state.filter}
-            onUpdateTodo={this.handleUpdateTodo}
-            onEditTodo={this.handleTodoEdit}
-            onDeleteTodo={this.handleDeleteTodo} />
-        </header>
-      </div>
-    );
-  }
+  return (
+    <div className="TodoApp">
+      <header className="TodoApp-header">
+        <h1>React TODOs Demo</h1>
+        {errors && <div className='errors'>{errors}</div>}
+        <TodoInput key={editedTodo?.id} todo={editedTodo}
+          onTodoSubmit={handleTodoSubmit} onTodoCancel={handleCancel} />
+        <TodoFilter filter={filter} onFilterChange={handleFilterChange} />
+        <TodoList todos={todos} filter={filter}
+          onUpdateTodo={handleUpdateTodo}
+          onEditTodo={handleTodoEdit}
+          onDeleteTodo={handleDeleteTodo} />
+      </header>
+    </div>
+  );
 }
 
+export default TodoApp;

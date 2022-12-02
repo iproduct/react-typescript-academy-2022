@@ -1,6 +1,4 @@
 import { Identifiable } from "../shared/common-types";
-import { json } from 'stream/consumers';
-
 const API_BASE_URL = `http://localhost:9000/api`;
 
 export interface ApiClient<K, V extends Identifiable<K>> {
@@ -8,7 +6,7 @@ export interface ApiClient<K, V extends Identifiable<K>> {
     findById(id: K): Promise<V>;
     create(entityWithoutId: Omit<V, 'id'>): Promise<V>;
     update(entity: V): Promise<V>;
-    deleteById(id: K): Promise<V>;
+    deleteById(id: K): Promise<void>;
 }
 
 export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K, V> {
@@ -37,8 +35,8 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
             body: JSON.stringify(entity)
         });
     }
-    deleteById(id: K): Promise<V> {
-        return this.handleJsonRequest<V>(`${API_BASE_URL}/${this.apiCollectionSuffix}/${id}`, {
+    async deleteById(id: K): Promise<void> {
+        await this.handleJsonRequest<V>(`${API_BASE_URL}/${this.apiCollectionSuffix}/${id}`, {
             method: 'DELETE',
         });
     }

@@ -11,6 +11,7 @@
     border-radius: 5px;
     padding: 5px;
 }
+
 .TodoItem:hover {
     background-image: linear-gradient(
         to bottom right,
@@ -45,5 +46,5 @@
 .TodoItem-right {
   flex: 0 1 180px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }

@@ -38,11 +38,6 @@ export default class TodoInput extends Component<TodoInputProps, TodoInputState>
                 parseInt(this.state.status),
             )
         );
-        this.setState({
-            text: '',
-            status: '1',
-            deadline: ''
-        });
     }
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
