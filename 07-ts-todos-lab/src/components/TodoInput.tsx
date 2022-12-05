@@ -1,4 +1,4 @@
-import React, { Children, Component, Fragment, PropsWithChildren, ReactElement } from 'react'
+import React, { Children, Component, Fragment, PropsWithChildren, ReactElement, ReactNode } from 'react'
 import { Todo, TodoCreateDTO, TodoStatus } from '../model/todos'
 import { Optional, TodoListener } from '../shared/common-types'
 import { toIsoDate } from '../shared/utils';
@@ -7,7 +7,7 @@ interface TodoInputProps {
     todo: Optional<Todo>;
     onTodoSubmit: TodoListener;
     onTodoCancel: () => void;
-    // children?: ReactNode;
+    children?: ReactNode;
 }
 
 interface TodoInputState {
@@ -17,7 +17,7 @@ interface TodoInputState {
 }
 
 type IdToLabelMap = {
-    [Prop in keyof Todo]?: ReactElement
+    [Prop in (keyof TodoInputState) | 'id']?: ReactElement
 }
 
 export default class TodoInput extends Component<PropsWithChildren<TodoInputProps>, TodoInputState> {
@@ -61,16 +61,18 @@ export default class TodoInput extends Component<PropsWithChildren<TodoInputProp
     render() {
         const children = Children.toArray(this.props.children);
         console.log(children);
+        const nonLabelChildren = children.filter(child => typeof child !== 'object' || ('type' in child && child.type !== 'label'));
         const labels = children.filter(child => typeof child === 'object' && 'type' in child && child.type === 'label');
         const idToLabelMap: IdToLabelMap = {};
         labels.forEach(label => {
-            const labelElem = label as ReactElement<{htmlFor: string}>;
-            idToLabelMap[labelElem.props.htmlFor as keyof TodoInputState] = labelElem;
+            if (typeof label === 'object' && 'props' in label && typeof label.props === 'object' && 'htmlFor' in label.props) {
+                idToLabelMap[label.props.htmlFor as keyof TodoInputState] = label;
+            }
         });
         console.log(idToLabelMap);
         return (
             <Fragment>
-                {this.props.children}
+                {nonLabelChildren}
                 <form className='TodoInput' onSubmit={this.handleTodoSubmit}>
                     {/* <label htmlFor='id'>ID</label> */}
                     {idToLabelMap.id}

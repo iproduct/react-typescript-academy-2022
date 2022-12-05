@@ -97,8 +97,8 @@ const TodoApp = () => {
             <img src={todoImg} alt="What to 2do?"></img>
             <label htmlFor='id'>Todo ID</label>
             <label htmlFor='text'>Next Todo?</label>
-            <label htmlFor='status'>Whats the Stutus?</label>
-            <label htmlFor='deadline'>Whats the Deadline?</label>
+            <label htmlFor='status'>Whats the <i>Stutus?</i></label>
+            <label htmlFor='deadline'>Whats the <b>Deadline?</b></label>
         </TodoInput>
         <TodoFilter filter={filter} onFilterChange={handleFilterChange} />
         <TodoList todos={todos} filter={filter} isLoading={isLoading}
