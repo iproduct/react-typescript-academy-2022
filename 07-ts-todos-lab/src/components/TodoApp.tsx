@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import './TodoApp.css';
 import { Todo, TodoCreateDTO, TodoStatus } from '../model/todos';
 import TodoList from './TodoList';
@@ -22,7 +22,6 @@ const TodoApp = () => {
   const [filter, setFilter] = useState<FilterType>();
 
   const [isLoading, load] = useLoading<Todo[]>();
-  // load(Promise<R>): Promise<R>
 
   useOnMountAsync(async () => {
     try {

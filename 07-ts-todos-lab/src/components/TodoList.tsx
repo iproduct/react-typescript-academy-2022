@@ -26,12 +26,17 @@ export const TodoList: React.FC<Props> = ({ todos, filter, isLoading, ...rest })
 };
 
 TodoList.propTypes = {
-    todos: PropTypes.arrayTodo[],
-    filter: FilterType,
-    isLoading: boolean,
-    onUpdateTodo: TodoUdateListener ;
-    onEditTodo: TodoUdateListener ;
-    onDeleteTodo: TodoUdateListener ;
+    todos: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired,
+        deadline: PropTypes.string.isRequired,
+        status: PropTypes.number.isRequired,
+    }).isRequired).isRequired,
+    filter: PropTypes.number,
+    isLoading: PropTypes.bool.isRequired,
+    onUpdateTodo: PropTypes.func.isRequired,
+    onEditTodo: PropTypes.func.isRequired,
+    onDeleteTodo: PropTypes.func.isRequired
 }
 
 export default TodoList;

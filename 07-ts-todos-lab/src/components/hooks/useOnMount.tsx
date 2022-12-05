@@ -6,6 +6,3 @@ export const useOnMountAsync = (f: () => Promise<void>) =>
     useEffect(() => {
         f()
     }, []);
-
-// [isLoading, load] = useLoading();
-// load(Promise<R>): Promise<R>
