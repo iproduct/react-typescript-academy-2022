@@ -17,3 +17,5 @@ export type CountdownHandle = {
   
     return <div>Countdown</div>;
   });
+
+  export default Countdown;

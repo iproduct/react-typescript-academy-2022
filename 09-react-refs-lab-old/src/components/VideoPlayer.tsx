@@ -5,10 +5,8 @@ function VideoPlayer(props: { children?: ReactNode }, videoRef: ForwardedRef<HTM
         <>
             <video
                 ref={videoRef}
-                width="..."
-                height="..."
                 controls
-                src={"..."}
+                src={"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}
             />
             {props.children}
         </>
