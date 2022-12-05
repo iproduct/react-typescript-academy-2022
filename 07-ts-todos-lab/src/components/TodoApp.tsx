@@ -8,6 +8,7 @@ import { IdType } from '../shared/common-types';
 import { ApiClient, ApiClientImpl } from '../service/todos-api-client';
 import { useOnMountAsync } from './hooks/useOnMount';
 import { useLoading } from './hooks/useIsLoading';
+import todoImg from './resources/todo.jpg';
 
 export type FilterType = TodoStatus | undefined;
 
@@ -91,7 +92,14 @@ const TodoApp = () => {
         <h1>React TODOs Demo</h1>
         {errors && <div className='errors'>{errors}</div>}
         <TodoInput key={editedTodo?.id} todo={editedTodo}
-          onTodoSubmit={handleTodoSubmit} onTodoCancel={handleCancel} />
+          onTodoSubmit={handleTodoSubmit} onTodoCancel={handleCancel}>
+            <p>What to do next?</p>
+            <img src={todoImg} alt="What to 2do?"></img>
+            <label htmlFor='id'>Todo ID</label>
+            <label htmlFor='text'>Next Todo?</label>
+            <label htmlFor='status'>Whats the Stutus?</label>
+            <label htmlFor='deadline'>Whats the Deadline?</label>
+        </TodoInput>
         <TodoFilter filter={filter} onFilterChange={handleFilterChange} />
         <TodoList todos={todos} filter={filter} isLoading={isLoading}
           onUpdateTodo={handleUpdateTodo}
