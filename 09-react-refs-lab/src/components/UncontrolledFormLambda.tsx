@@ -1,6 +1,6 @@
-import React, { useRef } from 'react'
+import React, { ComponentPropsWithRef, ElementType, FC, PropsWithRef, useRef } from 'react'
 
-export const UncontrolledFormLambda = () => {
+export const UncontrolledFormLambda: FC<ComponentPropsWithRef<ElementType<any>>> = () => {
     const nameRef = useRef<HTMLInputElement>(null);
     const ageRef = useRef<HTMLInputElement>(null);
 
