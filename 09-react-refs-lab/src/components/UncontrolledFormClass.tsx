@@ -10,6 +10,10 @@ class UncontrolledFormClass extends Component<{}, {}> {
         alert(`A name: ${value}, Changed: ${value !== this.oldValue}`);
         this.oldValue = value;
     }
+    focus() {
+        console.log("Focusing input:", this.inputRef.current);
+        this.inputRef.current?.focus();
+    }
     render() {
         return (
             <form onSubmit={this.handleSubmit}>

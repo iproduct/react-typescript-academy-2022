@@ -12,4 +12,4 @@ function VideoPlayer(props: { children?: ReactNode }, videoRef: ForwardedRef<HTM
         </>
     );
 }
-export default forwardRef<HTMLVideoElement, { children?: ReactNode }> (VideoPlayer);
+export default forwardRef(VideoPlayer);

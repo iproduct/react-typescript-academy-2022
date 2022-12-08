@@ -1,6 +1,7 @@
 import React, { ComponentPropsWithRef, ElementType, FC, PropsWithRef, useRef } from 'react'
 
 export const UncontrolledFormLambda: FC<ComponentPropsWithRef<ElementType<any>>> = () => {
+// export const UncontrolledFormLambda = () => {
     const nameRef = useRef<HTMLInputElement>(null);
     const ageRef = useRef<HTMLInputElement>(null);
 

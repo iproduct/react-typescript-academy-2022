@@ -20,10 +20,10 @@ export class FancyForm extends React.Component<FancyFormProps, {}> {
   render() {
     return (
       <div>
-        <h2 style={{ color: this.props.color }}>Input Text (coror demo)</h2>
+        <h2 style={{ color: this.props.color }}>Input Text (color demo)</h2>
         <input type="text" placeholder="name" />
         <input type="number" ref={this.inputRef} placeholder="age" />
-        <FancyButton ref={this.buttonRef} onClick={this.props.onClick}>
+        <FancyButton ref={this.buttonRef} color={this.props.color} onClick={this.props.onClick}>
           Click <b>me</b> <i>now</i>!
         </FancyButton>
       </div>
