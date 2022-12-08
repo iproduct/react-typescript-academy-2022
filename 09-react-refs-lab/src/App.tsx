@@ -5,7 +5,7 @@ import FForm,  {FancyForm} from './components/FancyForm';
 
 function App() {
   const [color, setColor] = useState<string>('green');
-  const formRef = useRef<FancyForm | null>(null);
+  const formRef = useRef<FancyForm>(null);
   const focus = () => {
     setColor(col => (col === 'red' ? 'blue' : 'red'));
     formRef.current?.focusButton();
