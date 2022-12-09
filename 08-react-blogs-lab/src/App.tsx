@@ -2,12 +2,21 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, ThemeProvider, createTheme } from '@mui/system';
-import { Container } from "@mui/material";
+import { Container, Divider } from "@mui/material";
 import PostCard from "./components/PostCard";
+import PostList from "./components/PostList";
+import { useOnMountAsync } from "./hooks/useOnMount";
+import { ApiClient, ApiClientImpl } from "./service/api-client";
+import { FilterType, IdType } from "./shared/common-types";
+import { Post } from "./model/post";
+import { useLoading } from "./hooks/useIsLoading";
+import PostForm from "./components/PostForm";
 
-const  theme = createTheme();
+const API_CLIENT: ApiClient<IdType, Post> = new ApiClientImpl<IdType, Post>('posts');
+
+const theme = createTheme();
 const theme2 = createTheme({
   palette: {
     background: {
@@ -27,11 +36,32 @@ const theme2 = createTheme({
 });
 
 export default function App() {
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [errors, setErrors] = useState<string | undefined>();
+  const [editedPost, setEditedPost] = useState<Post | undefined>();
+  const [filter, setFilter] = useState<FilterType>();
+
+  const [isLoading, load] = useLoading<Post[]>();
+
+  useOnMountAsync(async () => {
+    try {
+      const posts = await load(API_CLIENT.findAll());
+      setPosts(posts);
+    } catch (err) {
+      setErrors('' + err);
+    }
+  }); // <=> componentDidMount
+
   return (
     // <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
         <h2>Blog Posts MUI Demo</h2>
-        <PostCard />
+        <PostForm post={undefined} onSubmitPost={()=>{}} />
+        <Divider variant='middle' sx={{margin: '30px 0 60px'}}/>
+        <PostList posts={posts} filter={undefined} isLoading={false}
+          onUpdatePost={() => { }}
+          onEditPost={() => { }}
+          onDeletePost={() => { }} />
         <Box
           sx={{
             bgcolor: 'background.paper',

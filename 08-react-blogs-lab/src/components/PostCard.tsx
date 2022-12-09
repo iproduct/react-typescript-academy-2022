@@ -16,6 +16,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
 import paellaImage from './resources/paella.jpg';
+import { Post, PostStatus } from '../model/post';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -30,7 +31,11 @@ const ExpandMore = styled(({ expand, ...other }: ExpandMoreProps) => <IconButton
   }),
 }));
 
-export default function PostCard() {
+interface PostCardProps {
+  post: Post;
+}
+
+export default function PostCard({post}: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -50,21 +55,19 @@ export default function PostCard() {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
+        title={post.title}
         subheader="September 14, 2016"
       />
       <CardMedia
         component="img"
         height="194"
         // image={paellaImage}
-        image="/img/paella.jpg"
+        image={post.imageUrl}
         alt="Paella dish"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+          {post.content}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>

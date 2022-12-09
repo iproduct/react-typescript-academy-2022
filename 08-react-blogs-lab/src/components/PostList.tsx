@@ -1,42 +1,32 @@
-import { useMemo } from "react";
-import { Todo } from "../model/todos";
-import { TodoUdateListener } from "../shared/common-types";
-import { FilterType } from "./TodoApp";
-import TodoItem from "./TodoItem";
-import PropTypes from 'prop-types';
-import "./TodoList.css";
+/* eslint-disable react/react-in-jsx-scope -- Unaware of jsxImportSource */
+/** @jsxImportSource @emotion/react */
 
-type PostListProps = { 
-    todos: Todo[],
+import { css } from "@emotion/react";
+import { useMemo } from "react";
+import { FilterType, PostUdateListener } from "../shared/common-types";
+import PropTypes from 'prop-types';
+import { Post } from "../model/post";
+import PostCard from "./PostCard";
+
+type PostListProps = {
+    posts: Post[],
     filter: FilterType,
     isLoading: boolean,
-    onUpdateTodo: TodoUdateListener ;
-    onEditTodo: TodoUdateListener ;
-    onDeleteTodo: TodoUdateListener ;
+    onUpdatePost: PostUdateListener;
+    onEditPost: PostUdateListener;
+    onDeletePost: PostUdateListener;
 }
 
 // export const TodoList = ({ todos }: Props) => {
-export const TodoList: React.FC<Props> = ({ todos, filter, isLoading, ...rest }) => {
-    const filteredTodos = useMemo(() => todos.filter(todo => filter ? todo.status === filter : true), [todos, filter]);// O(n) => O(1)
+export const TodoList = ({ posts, filter, isLoading, ...rest }: PostListProps) => {
+    const filteredTodos = useMemo(() => posts.filter(todo => filter ? todo.status === filter : true), [posts, filter]);// O(n) => O(1)
     return isLoading ?
         <div>Loadind Data ...</div> :
-        <ul className="TodoList">
-           {filteredTodos.map(todo => (<TodoItem key={todo.id} todo={todo} {...rest} /> ))}
+        <ul className="TodoList"
+            css={css`display: flex;
+                    flex-flow: row wrap;`}>
+            {filteredTodos.map(post => (<PostCard key={post.id} post={post} {...rest} />))}
         </ul>
 };
-
-TodoList.propTypes = {
-    todos: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        text: PropTypes.string.isRequired,
-        deadline: PropTypes.string.isRequired,
-        status: PropTypes.number.isRequired,
-    }).isRequired).isRequired,
-    filter: PropTypes.number,
-    isLoading: PropTypes.bool.isRequired,
-    onUpdateTodo: PropTypes.func.isRequired,
-    onEditTodo: PropTypes.func.isRequired,
-    onDeleteTodo: PropTypes.func.isRequired
-}
 
 export default TodoList;
