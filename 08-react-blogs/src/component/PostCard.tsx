@@ -49,9 +49,9 @@ export default function PostCard({post, onEditPost, onDeletePost}: PostCardProps
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  if(expanded) {
-    throw new Error('I crashed!');
-  }
+  // if(expanded) {
+  //   throw new Error('I crashed!');
+  // }
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader sx={{height: CARD_HEADER_HEIGHT}}
