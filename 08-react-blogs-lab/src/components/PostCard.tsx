@@ -15,8 +15,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useState } from 'react';
-import paellaImage from './resources/paella.jpg';
-import { Post, PostStatus } from '../model/post';
+import { Post } from '../model/post';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
