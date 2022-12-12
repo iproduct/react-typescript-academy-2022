@@ -55,7 +55,7 @@ export default function PostForm({ post = EMPTY_POST, onSubmitPost }: PostFormPr
         resolver: yupResolver(schema),
         context: {someValue: 'someValue'}
     });
-    const { control, register, setValue, handleSubmit, reset, formState: { errors, isDirty, isValid } } = methods;
+    const { control, handleSubmit, reset, formState: { errors, isDirty, isValid } } = methods;
 
     const onSubmit = async (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
         event?.preventDefault();
