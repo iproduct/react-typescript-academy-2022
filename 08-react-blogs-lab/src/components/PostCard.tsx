@@ -59,7 +59,7 @@ export default function PostCard({ post }: PostCardProps) {
             </IconButton>
           }
           title={post.title}
-          subheader="September 14, 2016"
+          subheader={post.tags.join(', ')}
         />
         <CardMedia
           component="img"

@@ -2,17 +2,15 @@
 /** @jsxImportSource @emotion/react */
 
 import { css } from "@emotion/react";
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box, Container, createTheme, Divider, ThemeProvider } from "@mui/material";
-import PostCard from "./components/PostCard";
 import PostList from "./components/PostList";
 import { useOnMountAsync } from "./hooks/useOnMount";
 import { ApiClient, ApiClientImpl } from "./service/api-client";
 import { FilterType, IdType } from "./shared/common-types";
-import { Post } from "./model/post";
+import { Post, PostCreateDTO } from "./model/post";
 import { useLoading } from "./hooks/useIsLoading";
 import PostForm from "./components/PostForm";
-import PostFormHookSimple from "./components/PostFormHookSimple04";
 
 const API_CLIENT: ApiClient<IdType, Post> = new ApiClientImpl<IdType, Post>('posts');
 
@@ -60,12 +58,54 @@ export default function App() {
     }
   }); // <=> componentDidMount
 
+  const handleUpdatePost = useCallback(async (todo: Post) => {
+    try {
+      const updated = await API_CLIENT.update(todo);
+      setPosts((oldPosts) => oldPosts.map(td => td.id === updated.id ? updated : td));
+      setErrors(undefined);
+    } catch (err) {
+      console.log(err);
+      setErrors('' + err);
+    }
+  }, []);
+
+  const handleDeletePost = async (post: Post) => {
+    try {
+      await API_CLIENT.deleteById(post.id);
+      setPosts(oldPosts => oldPosts.filter(p => p.id !== post.id));
+      setErrors(undefined);
+    } catch (err) {
+      setErrors('' + err);
+    }
+  }
+
+
+  const handlePostSubmit = useCallback(
+    async (post: Post | PostCreateDTO) => {
+      try {
+        if ('id' in post && post.id) {// edit mode
+          await handleUpdatePost(post);
+          setEditedPost(undefined);
+        } else { // create mode
+          const created = await API_CLIENT.create(post);
+          setPosts(oldPosts => oldPosts.concat(created));
+          setEditedPost(editedPost ? undefined : new Post(0, '', '', '', 0, []));
+          setErrors(undefined);
+        }
+      } catch (err) {
+        setErrors('' + err);
+      }
+    },
+    [editedPost, handleUpdatePost]
+  );
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
         <h2>Blog Posts MUI Demo</h2>
-        <PostForm post={undefined} onSubmitPost={()=>{}} />
-        <Divider variant='middle' sx={{margin: '30px 0 60px'}}/>
+        {errors && <div css={css`color: red`}>{errors}</div>}
+        <PostForm post={undefined} onSubmitPost={handlePostSubmit} />
+        <Divider variant='middle' sx={{ margin: '30px 0 60px' }} />
         <PostList posts={posts} filter={undefined} isLoading={false}
           onUpdatePost={() => { }}
           onEditPost={() => { }}
