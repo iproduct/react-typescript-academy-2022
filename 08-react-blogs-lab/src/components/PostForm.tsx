@@ -23,13 +23,13 @@ type FormData = {
     id: number;
     title: string;
     content: string;
-    tags: string;
+    tags: string[];
     imageUrl: string;
     status: PostStatus;
     authorId: IdType;
 };
 
-const TAGS_PATTERN = /^\w{2,}([,\s]+\w{2,})*$/;
+const TAGS_PATTERN = /^(\w{2,}[,\s]+)*(\w{2,})?$/;
 
 const POST_SELECT_OPTIONS: SelectOption[] = Object.keys(PostStatus)
     .filter((item) => !isNaN(Number(item)))
@@ -40,33 +40,40 @@ const schema = yup.object({
     id: yup.number().positive(),
     title: yup.string().required().min(2).max(40),
     content: yup.string().required().min(20).max(1024),
-    tags: yup.string().required().matches(TAGS_PATTERN, 'tags should contain only letters, digits and spaces'),
+    // tags: yup.string().matches(TAGS_PATTERN, 'tags should contain only letters, digits and spaces'),
+    tags: yup.array().of(yup.string().matches(/^\w{2,}$/)),
     imageUrl: yup.string().required().url(),
     status: yup.number().min(1).max(2),
     authorId: yup.number().positive().required(),
 }).required();
 
 export default function PostForm({ post = EMPTY_POST, onSubmitPost }: PostFormProps) {
-    const { control, register, setValue, handleSubmit, reset, formState: { errors, isDirty, isValid } } = useForm<FormData>({
-        defaultValues: { ...post, tags: post?.tags.join(', ') },
+    const methods = useForm<FormData>({
+        // defaultValues: { ...post, tags: post?.tags.join(', ') },
+        defaultValues: { ...post },
         mode: 'onChange',
         resolver: yupResolver(schema),
+        context: {someValue: 'someValue'}
     });
+    const { control, register, setValue, handleSubmit, reset, formState: { errors, isDirty, isValid } } = methods;
 
     const onSubmit = async (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
         event?.preventDefault();
-        const newPost = { ...data, tags: data.tags.split(/,\s*/), likeCounter: 0, status: PostStatus.Published }
+        // const newPost = { ...data, tags: data.tags.split(/,\s*/), likeCounter: 0 }
+        const newPost = { ...data, likeCounter: 0 }
         console.log(newPost);
         onSubmitPost(newPost);  
         console.log("RESET to:", post);
-        reset({ ...post, tags: post?.tags.join(', ') });
+        // reset({ ...post, tags: post?.tags.join(', ') });
+        reset({ ...post });
     }
 
     const onReset = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log('RESETING FORM');
         console.log("RESET to:", post);
-        reset({ ...post, tags: post?.tags.join(', ') });
+        // reset({ ...post, tags: post?.tags.join(', ') });
+        reset({ ...post });
     }
 
     return (
@@ -87,7 +94,7 @@ export default function PostForm({ post = EMPTY_POST, onSubmitPost }: PostFormPr
                 rules={{ required: true, minLength: 2, maxLength: 40 }} />
             <FormInputText name='content' label='Content' control={control} error={errors.content?.message}
                 rules={{ required: true, minLength: 20, maxLength: 1024 }} />
-            <FormInputText name='tags' label='Tags' control={control} error={errors.tags?.message}
+            <FormInputText name='tags' label='Tags' control={control} error={errors.tags?.message} isArray={true}
                 rules={{ pattern: TAGS_PATTERN }} />
             <FormInputText name='imageUrl' label='Image URL' control={control} error={errors.imageUrl?.message}
                 rules={{ required: true }} />

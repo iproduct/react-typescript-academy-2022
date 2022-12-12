@@ -10,19 +10,31 @@ interface FormInputTextProps<TFieldValues extends FieldValues> {
     disabled?: boolean;
     size?: 'small' | 'medium';
     error?: string | undefined;
+    isArray?: boolean;
 }
 
 
 function FormInputText<TFieldValues extends FieldValues>(
-    { name, control, label, rules = {}, disabled = false, size = 'medium', error=undefined}: FormInputTextProps<TFieldValues>) {
+    { name, control, label, rules = {}, disabled = false, size = 'medium', error = undefined, isArray = false }: FormInputTextProps<TFieldValues>) {
+    const transform = {
+        input: (value: string | string[]) => Array.isArray(value) ? value.join(', ') : value,
+        output: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => e.target.value.split(/\s*,\s*/)
+    };
     return (
         (
             <Controller
                 name={name}
                 control={control}
                 render={({ field }) =>
-                    <TextField label={label} disabled={disabled} size={size} error={!!error} 
-                     helperText={error || ''} {...field} />
+                    isArray ?
+                        <TextField label={label} disabled={disabled} size={size} error={!!error}
+                            helperText={error || ''}
+                            onChange={(e) => field.onChange(transform.output(e))}
+                            value={transform.input(field.value)} />
+                        :
+                        <TextField label={label} disabled={disabled} size={size} error={!!error}
+                            helperText={error || ''}
+                            {...field} />
                 }
                 rules={rules}
             />

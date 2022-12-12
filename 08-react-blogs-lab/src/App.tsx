@@ -3,8 +3,7 @@
 
 import { css } from "@emotion/react";
 import React, { useState } from 'react';
-import { Box, ThemeProvider, createTheme } from '@mui/system';
-import { Container, Divider } from "@mui/material";
+import { Box, Container, createTheme, Divider, ThemeProvider } from "@mui/material";
 import PostCard from "./components/PostCard";
 import PostList from "./components/PostList";
 import { useOnMountAsync } from "./hooks/useOnMount";
@@ -13,10 +12,22 @@ import { FilterType, IdType } from "./shared/common-types";
 import { Post } from "./model/post";
 import { useLoading } from "./hooks/useIsLoading";
 import PostForm from "./components/PostForm";
+import PostFormHookSimple from "./components/PostFormHookSimple04";
 
 const API_CLIENT: ApiClient<IdType, Post> = new ApiClientImpl<IdType, Post>('posts');
 
-const theme = createTheme();
+
+const theme = createTheme({
+  components: {
+    // Name of the component
+    MuiButtonBase: {
+      defaultProps: {
+        // The props to change the default for.
+        disableRipple: false, // No more ripple, on the whole application 💣!
+      },
+    },
+  },
+});;
 const theme2 = createTheme({
   palette: {
     background: {
@@ -28,9 +39,6 @@ const theme2 = createTheme({
     },
     action: {
       active: '#001E3C',
-    },
-    success: {
-      dark: '#009688',
     },
   },
 });
@@ -53,7 +61,7 @@ export default function App() {
   }); // <=> componentDidMount
 
   return (
-    // <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
         <h2>Blog Posts MUI Demo</h2>
         <PostForm post={undefined} onSubmitPost={()=>{}} />
@@ -92,7 +100,7 @@ export default function App() {
           </Box>
         </Box>
       </Container>
-    // </ThemeProvider>
+    </ThemeProvider>
   );
 }
 

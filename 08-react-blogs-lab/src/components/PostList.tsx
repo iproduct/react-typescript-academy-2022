@@ -23,8 +23,11 @@ export const TodoList = ({ posts, filter, isLoading, ...rest }: PostListProps) =
     return isLoading ?
         <div>Loadind Data ...</div> :
         <ul className="TodoList"
-            css={css`display: flex;
-                    flex-flow: row wrap;`}>
+            css={css`
+                display: flex;
+                flex-flow: row wrap;
+                gap: 20px 20px`
+            }>
             {filteredTodos.map(post => (<PostCard key={post.id} post={post} {...rest} />))}
         </ul>
 };
