@@ -41,7 +41,7 @@ const schema = yup.object({
     title: yup.string().required().min(2).max(40),
     content: yup.string().required().min(20).max(1024),
     // tags: yup.string().matches(TAGS_PATTERN, 'tags should contain only letters, digits and spaces'),
-    tags: yup.array().of(yup.string().matches(/^\w{2,}$/)),
+    tags: yup.array(yup.string().matches(/^\w*(\s+\w*)*$/, 'tags should contain only letters, digits and spaces')).required(),
     imageUrl: yup.string().required().url(),
     status: yup.number().min(1).max(2),
     authorId: yup.number().positive().required(),
@@ -60,7 +60,7 @@ export default function PostForm({ post = EMPTY_POST, onSubmitPost }: PostFormPr
     const onSubmit = async (data: FormData, event: BaseSyntheticEvent<object, any, any> | undefined) => {
         event?.preventDefault();
         // const newPost = { ...data, tags: data.tags.split(/,\s*/), likeCounter: 0 }
-        const newPost = { ...data, likeCounter: 0 }
+        const newPost = { ...data, tags: data.tags.filter(tag => tag.length > 0), likeCounter: 0 }
         console.log(newPost);
         onSubmitPost(newPost);  
         console.log("RESET to:", post);
@@ -76,6 +76,7 @@ export default function PostForm({ post = EMPTY_POST, onSubmitPost }: PostFormPr
         reset({ ...post });
     }
 
+    console.log(control._formValues, errors.tags);
     return (
         <Box
             component="form"
@@ -90,17 +91,17 @@ export default function PostForm({ post = EMPTY_POST, onSubmitPost }: PostFormPr
             onSubmit={handleSubmit(onSubmit)} onReset={onReset}
         >
             <FormInputText name='id' label='ID' control={control} disabled size='small' />
-            <FormInputText name='title' label='Title' control={control} error={errors.title?.message}
+            <FormInputText name='title' label='Title' control={control} error={errors.title}
                 rules={{ required: true, minLength: 2, maxLength: 40 }} />
-            <FormInputText name='content' label='Content' control={control} error={errors.content?.message}
+            <FormInputText name='content' label='Content' control={control} error={errors.content}
                 rules={{ required: true, minLength: 20, maxLength: 1024 }} />
-            <FormInputText name='tags' label='Tags' control={control} error={errors.tags?.message} isArray={true}
+            <FormInputText name='tags' label='Tags' control={control} error={errors.tags} isArray={true}
                 rules={{ pattern: TAGS_PATTERN }} />
-            <FormInputText name='imageUrl' label='Image URL' control={control} error={errors.imageUrl?.message}
+            <FormInputText name='imageUrl' label='Image URL' control={control} error={errors.imageUrl}
                 rules={{ required: true }} />
-            <FormInputText name='authorId' label='Author ID' control={control} error={errors.authorId?.message}
+            <FormInputText name='authorId' label='Author ID' control={control} error={errors.authorId}
                 rules={{ required: true }} />
-            <FormInputSelect name='status' label='Status' control={control} error={errors.status?.message}
+            <FormInputSelect name='status' label='Status' control={control}
                 rules={{ required: true }} options={POST_SELECT_OPTIONS} defaultOptionIndex={0}/>
             <Button variant="contained" endIcon={<SendIcon />} type='submit' disabled={!(isDirty && isValid)}>
                 Submit
