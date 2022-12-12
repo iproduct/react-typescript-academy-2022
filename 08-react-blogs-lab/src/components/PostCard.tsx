@@ -10,6 +10,8 @@ import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -19,6 +21,7 @@ import { Post } from '../model/post';
 import { getSummary } from '../shared/utils';
 import { CARD_CONTENT_HEIGHT, CARD_CONTENT_WIDTH, MAX_SUMMARY_LENGTH } from '../shared/constants';
 import { Box } from '@mui/material';
+import { PostUdateListener } from '../shared/common-types';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -35,9 +38,12 @@ const ExpandMore = styled(({ expand, ...other }: ExpandMoreProps) => <IconButton
 
 interface PostCardProps {
   post: Post;
+  onUpdatePost: PostUdateListener;
+  onEditPost: PostUdateListener;
+  onDeletePost: PostUdateListener;
 }
 
-export default function PostCard({ post }: PostCardProps) {
+export default function PostCard({ post, onUpdatePost, onEditPost, onDeletePost }: PostCardProps) {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -74,8 +80,14 @@ export default function PostCard({ post }: PostCardProps) {
           </Typography>
         </CardContent>
       </Box>
-      
+
       <CardActions disableSpacing>
+        <IconButton aria-label="edit post" onClick={() => onEditPost(post)}>
+          <EditIcon />
+        </IconButton>
+        <IconButton aria-label="edit post" onClick={() => onDeletePost(post)}>
+          <DeleteIcon />
+        </IconButton>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>

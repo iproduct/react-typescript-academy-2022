@@ -99,17 +99,28 @@ export default function App() {
     [editedPost, handleUpdatePost]
   );
 
+  const handlePostEdit = (post: Post) => {
+    setEditedPost(post);
+  }
+
+  const handleCancel = () => {
+    setEditedPost(undefined);
+  }
+
+  const handleFilterChange = (filter: FilterType) => {
+    setFilter(filter);
+  }
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg">
         <h2>Blog Posts MUI Demo</h2>
         {errors && <div css={css`color: red`}>{errors}</div>}
-        <PostForm post={undefined} onSubmitPost={handlePostSubmit} />
+        <PostForm key={editedPost?.id} post={editedPost} onSubmitPost={handlePostSubmit} />
         <Divider variant='middle' sx={{ margin: '30px 0 60px' }} />
         <PostList posts={posts} filter={undefined} isLoading={false}
-          onUpdatePost={() => { }}
-          onEditPost={() => { }}
-          onDeletePost={() => { }} />
+          onUpdatePost={handleUpdatePost}
+          onEditPost={handlePostEdit}
+          onDeletePost={handleDeletePost} />
         <Box
           sx={{
             bgcolor: 'background.paper',
