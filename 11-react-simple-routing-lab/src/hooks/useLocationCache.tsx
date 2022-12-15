@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 let cache = new Map();
 
-function useFakeFetch(url: URL) {
+export default function useLocationCache(url: URL) {
   let location = useLocation();
   let cacheKey = location.key + url;
   let cached = cache.get(cacheKey);
@@ -31,7 +31,7 @@ function useFakeFetch(url: URL) {
         });
       return () => controller.abort();
     }
-  }, [state, cacheKey]);
+  }, [state, url, cacheKey]);
 
   useEffect(() => {
     setState("loading");
