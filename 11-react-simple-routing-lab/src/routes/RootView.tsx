@@ -3,7 +3,7 @@ import './Root.css';
 
 export default function RootView() {
   return (
-    <div className="Root">
+    <div className="RootView">
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
