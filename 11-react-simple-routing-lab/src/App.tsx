@@ -6,6 +6,7 @@ import {
   Route,
   Link,
 } from "react-router-dom";
+import ContactView from "./routes/ContanctView";
 import ErrorView from "./routes/ErrorView";
 import Root from "./routes/Root";
 
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
           },
           {
             path: "contacts/:contactId",
-            element: <Contact />,
+            element: <ContactView />,
           },
           {
             path: "about",
