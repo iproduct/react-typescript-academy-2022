@@ -1,5 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
-import './Root.css';
+import './RootView.css';
 
 export default function RootView() {
   return (
