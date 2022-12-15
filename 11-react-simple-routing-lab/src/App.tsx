@@ -8,12 +8,12 @@ import {
 } from "react-router-dom";
 import ContactView from "./routes/ContanctView";
 import ErrorView from "./routes/ErrorView";
-import Root from "./routes/Root";
+import RootView from "./routes/RootView";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <RootView />,
     errorElement: <ErrorView />,
     children: [
       {
