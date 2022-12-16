@@ -3,7 +3,7 @@ import { Form, Outlet, Params, useFetcher, useLoaderData, useParams } from "reac
 import { Post } from "../model/post";
 import './PostView.css'
 
-export default function PostPage() {
+export default function PostView() {
     // let { postId } = useParams();
     // const [post, setPost] = useState<Post | undefined>()
     // useEffect(() => {
@@ -19,7 +19,7 @@ export default function PostPage() {
     return (
         <div id="contact">
             <div>
-                <img className="PostPage-img"
+                <img className="PostView-img"
                     key={post?.id}
                     src={post?.imageUrl}
                     alt="contact avatar"

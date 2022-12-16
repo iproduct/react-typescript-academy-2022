@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -10,11 +10,23 @@ import {
 import { Post } from "./model/post";
 import ContactView from "./routes/ContanctView";
 import ErrorView from "./routes/ErrorView";
+import { PostsView } from "./routes/PostsView";
+import PostView from "./routes/PostView";
 import RootView from "./routes/RootView";
-import { ApiClient, ApiClientImpl } from "./service/api-client";
+import { ApiClient, ApiClientImpl, PostsApiClient, PostsApiClientImpl } from "./service/api-client";
 import { IdType } from "./shared/common-types";
 
-const API_CLIENT: ApiClient<IdType, Post> = new ApiClientImpl<IdType, Post>('posts');
+const API_CLIENT: PostsApiClient = new PostsApiClientImpl();
+
+export async function postsLoader({ request }: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+  const q = url.searchParams.get('q');
+  if (q) {
+    return API_CLIENT.findByTitleLike(q);
+  } else {
+    return API_CLIENT.findAll();
+  }
+}
 
 export function postLoader({ params }: LoaderFunctionArgs ) {
   if (params.postId) {
@@ -37,6 +49,18 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <div>Home Page</div>,
+          },
+          {
+            path: "posts",
+            loader: postsLoader,
+            element: <PostsView/>,
+            children: [
+              {
+                path: ":postId",
+                loader: postLoader,
+                element: <PostView />
+              }
+            ]
           },
           {
             path: "contacts/:contactId",

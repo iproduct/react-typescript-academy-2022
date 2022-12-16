@@ -1,4 +1,5 @@
-import { Identifiable } from "../shared/common-types";
+import { Post } from './../model/post';
+import { Identifiable, IdType } from "../shared/common-types";
 const API_BASE_URL = `http://localhost:9000/api`;
 
 export interface ApiClient<K, V extends Identifiable<K>> {
@@ -41,7 +42,7 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
         });
     }
 
-    private async handleJsonRequest<V>(url: string, options?: RequestInit): Promise<V> {
+    protected async handleJsonRequest<V>(url: string, options?: RequestInit): Promise<V> {
         try {
             const postsResp = await fetch(url, options);
             if (postsResp.status >= 400) {
@@ -53,3 +54,17 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
         }
     }
 }
+
+export interface PostsApiClient extends ApiClient<IdType, Post>{
+    findByTitleLike(title: string): Promise<Post[]>;
+}
+
+export class PostsApiClientImpl extends ApiClientImpl<IdType, Post> implements PostsApiClient {
+    constructor() {
+        super('posts')
+    }
+    findByTitleLike(search: string): Promise<Post[]> {
+        return this.handleJsonRequest<Post[]>(`${API_BASE_URL}/${this.apiCollectionSuffix}?title_like=${encodeURIComponent(search)}`);
+    }
+}
+
