@@ -1,3 +1,8 @@
 .RootView {
     margin: 0 50px;
 }
+
+.RootView .active {
+    color: white;
+    background-color: cornflowerblue;
+}

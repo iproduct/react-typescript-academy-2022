@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import './RootView.css';
 
 export default function RootView() {
@@ -32,16 +32,29 @@ export default function RootView() {
         <nav>
           <ul>
             <li>
-              <Link to='/'>Home</Link>
+              <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : undefined}>
+                Home
+              </NavLink>
             </li>
             <li>
-              <Link to={`contacts/1`}>Your Name</Link>
+              <NavLink to="/posts" className={({ isActive }) => isActive ? 'active' : undefined} >
+                Blog Posts
+              </NavLink>
             </li>
             <li>
-              <Link to={`contacts/2`}>Your Friend</Link>
+              <NavLink to="/contacts/1" className={({ isActive }) => isActive ? 'active' : undefined} >
+                Your Name
+              </NavLink>
             </li>
             <li>
-              <Link to='/about'>About</Link>
+              <NavLink to="/contacts/2" className={({ isActive }) => isActive ? 'active' : undefined} >
+                Your Friend
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/about" className={({ isActive }) => isActive ? 'active' : undefined} >
+                About
+              </NavLink>
             </li>
           </ul>
         </nav>
