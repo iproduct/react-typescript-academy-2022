@@ -6,9 +6,11 @@ import {
   Route,
   Link,
   LoaderFunctionArgs,
+  ActionFunctionArgs,
+  redirect,
 } from "react-router-dom";
 import { Post } from "./model/post";
-import ContactView from "./routes/ContanctView";
+import ContactView, { Favorite } from "./routes/ContanctView";
 import ErrorView from "./routes/ErrorView";
 import { PostsView } from "./routes/PostsView";
 import PostView from "./routes/PostView";
@@ -36,6 +38,22 @@ export function postLoader({ params }: LoaderFunctionArgs ) {
   }
 }
 
+export const postAction = async ({request, params}: ActionFunctionArgs) => {
+  if(request.method === 'DELETE') {
+    params.postId && await API_CLIENT.deleteById(+params.postId);
+    return redirect('/posts');
+  } else if(request.method === 'PATCH') {
+    let formData = await request.formData();
+    const favorite = formData.get('favorite');
+    console.log(`Favorite Post[${params.postId}]: ${favorite}`);
+    if(favorite !== null && params.postId) {
+      return API_CLIENT.patchById(+params.postId, {favorite: favorite === 'true'? false: true })
+    }
+  } else {
+    throw new Error(`Unhandled form method: ${request.method}`)
+  }
+}
+
 
 const router = createBrowserRouter([
   {
@@ -58,6 +76,7 @@ const router = createBrowserRouter([
               {
                 path: ":postId",
                 loader: postLoader,
+                action: postAction,
                 element: <PostView />
               }
             ]

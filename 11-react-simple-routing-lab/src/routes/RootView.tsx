@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Form, Link, NavLink, Outlet, useFetcher } from 'react-router-dom';
 import './RootView.css';
 
 export default function RootView() {
@@ -7,7 +7,7 @@ export default function RootView() {
       <div id="sidebar">
         <h1>React Router Contacts</h1>
         <div>
-          <form id="search-form" role="search">
+          <Form action="/posts" id="search-form" role="search">
             <input
               id="q"
               aria-label="Search contacts"
@@ -15,6 +15,7 @@ export default function RootView() {
               type="search"
               name="q"
             />
+            <button type="submit">Search</button>
             <div
               id="search-spinner"
               aria-hidden
@@ -24,7 +25,8 @@ export default function RootView() {
               className="sr-only"
               aria-live="polite"
             ></div>
-          </form>
+          </Form>
+
           <form method="post">
             <button type="submit">New</button>
           </form>

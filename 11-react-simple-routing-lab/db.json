@@ -74,20 +74,8 @@
         "mission",
         "space"
       ],
-      "id": 6
-    },
-    {
-      "title": "New Post",
-      "content": "New Post content here ...",
-      "imageUrl": "https://avatars.githubusercontent.com/u/8014435?v=4",
-      "authorId": 1,
-      "tags": [
-        "new",
-        "post content"
-      ],
-      "likeCounter": 0,
-      "status": 2,
-      "id": 8
+      "id": 6,
+      "favorite": true
     }
   ],
   "comments": [

@@ -30,7 +30,7 @@ export default function PostView() {
                 <h1>
                     {post?.id}:
                     {post?.title}
-                    {/* {post && <Favorite post={post} />} */}
+                    {post && <Favorite post={post} />}
                 </h1>
 
 
@@ -63,30 +63,30 @@ export default function PostView() {
     );
 }
 
-// interface FavoriteProps {
-//     post: Post;
-// }
-// 
-// export function Favorite({ post }: FavoriteProps) {
-//     const fetcher = useFetcher();
-//     // yes, this is a `let` for later
-//     let favorite = post.favorite;
-//     if(fetcher.formData) {
-//         favorite = fetcher.formData.get('favorite') === 'false'
-//     }
-//     return (
-//         <fetcher.Form method="post">
-//             <button
-//                 name="favorite"
-//                 value={favorite ? "true" : "false"}
-//                 aria-label={
-//                     favorite
-//                         ? "Remove from favorites"
-//                         : "Add to favorites"
-//                 }
-//             >
-//                 {favorite ? "★" : "☆"}
-//             </button>
-//         </fetcher.Form>
-//     );
-// }
+interface FavoriteProps {
+    post: Post;
+}
+
+export function Favorite({ post }: FavoriteProps) {
+    const fetcher = useFetcher();
+    // yes, this is a `let` for later
+    let favorite = post.favorite;
+    if(fetcher.formData) {
+        favorite = Boolean(fetcher.formData.get('favorite'));
+    }
+    return (
+        <fetcher.Form method="patch">
+            <button
+                name="favorite"
+                value={favorite ? "true" : "false"}
+                aria-label={
+                    favorite
+                        ? "Remove from favorites"
+                        : "Add to favorites"
+                }
+            >
+                {favorite ? "★" : "☆"}
+            </button>
+        </fetcher.Form>
+    );
+}

@@ -13,6 +13,7 @@ export class Post implements Identifiable<IdType> {
         public authorId: IdType,
         public tags: string[],
         public likeCounter: number = 0,
+        public favorite: boolean = false,
         public status: PostStatus = PostStatus.Published
     ) { }
 }
@@ -26,6 +27,7 @@ export class PostCreateDTO implements Omit<Post, 'id'>{
         public authorId: IdType,
         public tags: string[],
         public likeCounter: number = 0,
+        public favorite: boolean = false,
         public status: PostStatus = PostStatus.Published
     ) { }
 }

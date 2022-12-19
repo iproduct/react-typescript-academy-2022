@@ -7,6 +7,7 @@ export interface ApiClient<K, V extends Identifiable<K>> {
     findById(id: K): Promise<V>;
     create(entityWithoutId: Omit<V, 'id'>): Promise<V>;
     update(entity: V): Promise<V>;
+    patchById(id: IdType, patch: Partial<V>): Promise<V>;
     deleteById(id: K): Promise<void>;
 }
 
@@ -34,6 +35,15 @@ export class ApiClientImpl<K, V extends Identifiable<K>> implements ApiClient<K,
                 'content-type': 'application/json'
             },
             body: JSON.stringify(entity)
+        });
+    }
+    patchById(id: IdType, patch: Partial<V>): Promise<V> {
+        return this.handleJsonRequest<V>(`${API_BASE_URL}/${this.apiCollectionSuffix}/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(patch)
         });
     }
     async deleteById(id: K): Promise<void> {
