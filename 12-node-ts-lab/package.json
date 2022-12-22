@@ -1,0 +1,17 @@
+{
+  "name": "12-node-ts-lab",
+  "version": "1.0.0",
+  "description": "Node.js demos using TypeScript",
+  "main": "index.js",
+  "repository": "https://github.com/iproduct/react-typescript-academy-2022",
+  "author": "Tryan Iliev",
+  "license": "Apache-2.0",
+  "scripts": {
+    "tsc": "tsc -w",
+    "server": "node --inspect=5858 -r ts-node/register ./src/05-http-server-02.ts",
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.17",
+    "ts-node": "^10.9.1"
+  }
+}
