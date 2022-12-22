@@ -14,7 +14,7 @@ const server = http.createServer((req: IncomingMessage, res: ServerResponse) => 
     res.write('<h2>Using TypeScript</h2>');
     res.write(`<p>Request Path: ${JSON.stringify(path)}</p>`);
     res.write(`<p>HTTP Method: ${req.method}</p>`);
-    res.end(`<p>Headers: ${JSON.stringify(req.headers)}</p>`);
+    res.end(`<p>${Object.keys(req.headers).map(key => key + ': ' + req.headers[key]).join('<br>')}</p>`);
 });
 
 server.listen(PORT, HOSTNAME, ()=>{
