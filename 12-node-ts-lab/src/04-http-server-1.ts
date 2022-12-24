@@ -8,8 +8,9 @@ const PORT = 9000;
 
 const server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
     const path = url.parse(req.url).path;
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/html');
+    // res.statusCode = 200;
+    // res.setHeader('Content-Type', 'text/html');
+    res.writeHead(200, {'Content-Type': 'text/html'});
     res.write('<h1>Hello from Node.js</h1>');
     res.write('<h2>Using TypeScript</h2>');
     res.write(`<p>Request Path: ${JSON.stringify(path)}</p>`);

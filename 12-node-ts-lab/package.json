@@ -8,11 +8,12 @@
   "license": "Apache-2.0",
   "scripts": {
     "tsc": "tsc -w",
-    "server": "node --inspect=5858 -r ts-node/register ./src/04-http-server-1.ts",
+    "server": "node --inspect=5858 -r ts-node/register ./src/09-stream-letters.ts",
     "start": "nodemon"
   },
   "devDependencies": {
     "@types/node": "^18.11.17",
+    "@types/uuid": "^9.0.0",
     "concurrently": "^7.6.0",
     "livereload": "^0.9.3",
     "nodemon": "^2.0.20",
@@ -20,6 +21,8 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "rxjs": "^7.8.0"
+    "oppressor": "^0.0.1",
+    "rxjs": "^7.8.0",
+    "uuid": "^9.0.0"
   }
 }
