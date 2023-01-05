@@ -1,0 +1,9 @@
+[
+    {
+        "id": "1",
+        "title": "First Post",
+       "content": "First Post content ...",
+        "authorId": "Tryan",
+        "tags": ["first", "post"]
+    }
+]
