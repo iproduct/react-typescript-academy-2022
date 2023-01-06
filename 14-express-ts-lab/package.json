@@ -8,7 +8,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "tsc": "tsc -w",
-    "server": "node --inspect=5858 -r ts-node/register ./src/02-server-express-posts.ts",
+    "server": "node --inspect=5858 -r ts-node/register ./src/03-server-express-router.ts",
     "start": "nodemon"
   },
   "devDependencies": {
