@@ -11,8 +11,8 @@ import { Post } from './model/post';
 import { Repository } from './dao/repository';
 import postsRouter from './routes/posts-router'
 
-const HOSTNAME = 'localhost';
-const PORT = 8001;
+export const HOSTNAME = 'localhost';
+export const PORT = 8001;
 
 const app = express();
 app.options('*', cors());
@@ -20,6 +20,7 @@ app.use(cors({
     origin: 'http://localhost:3000',
     methods: 'GET, POST'
 }));
+app.use(express.json({limit: '10mb'}));
 app.use(logger('dev'));
 app.use('/api', (req, res, next) => {
     res.set({

@@ -4,6 +4,7 @@
         "title": "First Post",
        "content": "First Post content ...",
         "authorId": "Tryan",
-        "tags": ["first", "post"]
+        "tags": ["first", "post"],
+        "categories": ["programming"]
     }
 ]
