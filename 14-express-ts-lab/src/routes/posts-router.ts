@@ -4,7 +4,7 @@ import { Request, Response, Router } from 'express';
 import { Repository } from '../dao/repository';
 import { Post } from '../model/post';
 import {validator} from 'indicative';
-import { HOSTNAME, PORT } from '../03-server-express-router';
+import { HOSTNAME, PORT } from '../04-server-express-router';
 
 const router = Router();
 
@@ -40,6 +40,9 @@ router.get('/', async (req, res) => {
         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
         return;
     }
+    const now = new Date();
+    post.created = now;
+    post.modified = now; 
     try {
         const created = await repo.create(post);
         res.status(201).location(`http://${HOSTNAME}:${PORT}/api/posts/${created.id}`).json(created);

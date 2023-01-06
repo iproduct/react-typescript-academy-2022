@@ -8,12 +8,13 @@
   "license": "Apache-2.0",
   "scripts": {
     "tsc": "tsc -w",
-    "server": "node --inspect=5858 -r ts-node/register ./src/03-server-express-router.ts",
+    "server": "node --inspect=5858 -r ts-node/register ./src/05-mysql-simple.ts",
     "start": "nodemon"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.15",
+    "@types/mysql": "^2.15.21",
     "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.0",
     "concurrently": "^7.6.0",
@@ -28,6 +29,7 @@
     "express": "^4.18.2",
     "indicative": "^7.4.4",
     "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
     "oppressor": "^0.0.1",
     "rxjs": "^7.8.0",
     "uuid": "^9.0.0"
