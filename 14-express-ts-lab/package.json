@@ -8,7 +8,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "tsc": "tsc -w",
-    "server": "node --inspect=5858 -r ts-node/register ./src/05-mysql-simple.ts",
+    "server": "node --inspect=5858 -r ts-node/register ./src/07-mysql-pool.ts",
     "start": "nodemon"
   },
   "devDependencies": {
