@@ -28,14 +28,15 @@ router.get('/', async (req, res) => {
         await validator.validate(post, {
             title: 'required|string|min:3|max:80',
             content: 'string|max:1024',
-            authorId: 'required|regex:^[0-9a-f]{24}$',
+            authorId: 'required|regex:[0-9a-f\\-]{36}',
             imageUrl: 'url',
             tags: 'required|array',
-            'tags.*': 'string|regex:^\\w{24}$',
+            'tags.*': 'string|regex:\\w+',
             categories: 'required|array',
             'categories.*': 'string'
         });
     } catch(errors) {
+        console.log(errors);
         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
         return;
     }
