@@ -29,7 +29,11 @@ export class PostsRepository implements Repository<Post> {
                     reject(err);
                     return;
                 }
-                resolve(rows);
+                resolve(rows.map(row => ({
+                    ...row, 
+                    tags: row.tags.split(/[,\s]+/), 
+                    categories: row.categories.split(/,\s+/)
+                })));
             });
         });
     }
@@ -42,9 +46,13 @@ export class PostsRepository implements Repository<Post> {
                     return;
                 }
                 if (rows.length == 1) {
-                    const post = rows[0] as Post;
+                    const post = rows[0];
                     console.log('Found post:', post);
-                    resolve(post);
+                    resolve({
+                        ...post, 
+                        tags: post.tags.split(/[,\s]+/), 
+                        categories: post.categories.split(/[,\s]+/)
+                    });
                 } else {
                     reject(new Error(`Error finding new document in database`));
                 }
