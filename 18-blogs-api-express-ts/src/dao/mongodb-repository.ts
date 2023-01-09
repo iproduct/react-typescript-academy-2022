@@ -63,6 +63,6 @@ export class MongodbRepository<T extends Identifiable> implements Repository<T> 
     }
 
     async count(): Promise<number> {
-        throw new Error('Method not implemented.');
+        return await this.db.collection<T>(this.collection).estimatedDocumentCount();
     }
 }
