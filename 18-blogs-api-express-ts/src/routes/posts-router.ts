@@ -8,6 +8,7 @@ import { Post } from '../model/post';
 import verifyToken from '../security/verify-token';
 import verifyRole from '../security/verify-role';
 import { ObjectId } from 'mongodb';
+import { Role } from '../model/user';
 
 
 const router = express.Router();
@@ -78,14 +79,15 @@ router.post('/', async function (req, res) {
     }
 });
 
-router.put('/:id', /*verifyToken, verifyRole(['Author','Admin']),*/ async (req, res) => {
-    const old = await req.app.locals.db.collection('posts').findOne({ _id: new ObjectId(req.params.id) });
+router.put('/:id', verifyToken, verifyRole([Role.AUTHOR, Role.ADMIN]), async (req, res) => {
+    const old = await req.app.locals.postsRepo.findById(req.params.id);
     if (!old) {
         sendErrorResponse(req, res, 404, `Post with ID=${req.params.id} does not exist`);
         return;
     }
     const post = req.body;
-    if (old._id.toString() !== post.id) {
+    console.log(old);
+    if (old.id.toString() !== post.id) {
         sendErrorResponse(req, res, 400, `Post ID=${post.id} does not match URL ID=${req.params.id}`);
         return;
     }
@@ -103,16 +105,8 @@ router.put('/:id', /*verifyToken, verifyRole(['Author','Admin']),*/ async (req, 
             'keywords.*': 'string'
         });
         try {
-            const r = await req.app.locals.db.collection('posts').updateOne({ _id: new ObjectId(req.params.id) }, { $set: post });
-            if (r.result.ok) {
-                console.log(`Updated post: ${JSON.stringify(post)}`);
-                if (r.modifiedCount === 0) {
-                    console.log(`The old and the new posts are the same.`);
-                }
-                res.json(post);
-            } else {
-                sendErrorResponse(req, res, 500, `Unable to update post: ${post.id}: ${post.title}`);
-            }
+            const updated = await req.app.locals.postsRepo.update(post);
+            res.json(updated);
         } catch (err) {
             console.log(`Unable to update post: ${post.id}: ${post.title}`);
             console.error(err);
@@ -134,7 +128,7 @@ router.delete('/:id', async (req, res) => {
         }
         old = replaceWithId(old)
         const r = await req.app.locals.db.collection('posts').deleteOne({ _id: new ObjectId(req.params.id) });
-        if(r.result.ok && r.deletedCount === 1) {
+        if (r.result.ok && r.deletedCount === 1) {
             console.log(`Deleted post: ${old.id}: ${old.title}`);
             res.json(old);
         } else {

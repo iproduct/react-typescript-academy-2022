@@ -37,7 +37,7 @@ export default function verifyToken(req: Request, res: Response, next: NextFunct
   // console.log(`Token: ${token}`);
 
   jwt.verify(token, process.env.BLOGS_API_SECRET, function (error, decoded: { id: string }) {
-    if (error) next({ status: 403, message: `Failed to authenticate token.`, error });
+    if (error) next({ status: 401, message: `Failed to authenticate token.`, error });
     else {
       // if everything good, save to request for use in other routes
       res.locals.userId = decoded.id;
