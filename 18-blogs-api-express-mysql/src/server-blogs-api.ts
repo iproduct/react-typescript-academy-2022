@@ -41,7 +41,7 @@ app
     });
 
 app.use(function (err, req, res, next) {
-    console.error(err.stack);
+    console.error(err);
     let status = 500;
     if(err instanceof AuthenticationError) {
         status = 401;
