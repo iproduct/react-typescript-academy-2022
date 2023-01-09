@@ -80,14 +80,8 @@ router.post('/', async function (req, res) {
 });
 
 router.put('/:id', verifyToken, verifyRole([Role.AUTHOR, Role.ADMIN]), async (req, res) => {
-    const old = await req.app.locals.postsRepo.findById(req.params.id);
-    if (!old) {
-        sendErrorResponse(req, res, 404, `Post with ID=${req.params.id} does not exist`);
-        return;
-    }
     const post = req.body;
-    console.log(old);
-    if (old.id.toString() !== post.id) {
+    if (req.params.id !== post.id) {
         sendErrorResponse(req, res, 400, `Post ID=${post.id} does not match URL ID=${req.params.id}`);
         return;
     }
@@ -104,14 +98,8 @@ router.put('/:id', verifyToken, verifyRole([Role.AUTHOR, Role.ADMIN]), async (re
             keywords: 'array',
             'keywords.*': 'string'
         });
-        try {
-            const updated = await req.app.locals.postsRepo.update(post);
-            res.json(updated);
-        } catch (err) {
-            console.log(`Unable to update post: ${post.id}: ${post.title}`);
-            console.error(err);
-            sendErrorResponse(req, res, 500, `Server error: ${err.message}`, err);
-        }
+        const updated = await req.app.locals.postsRepo.update(post);
+        res.json(updated);
     } catch (errors) {
         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
     }
