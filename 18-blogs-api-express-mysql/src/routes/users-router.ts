@@ -17,7 +17,7 @@ const router = express.Router();
 
 // Users API Feature
 router.get('/', async (req, res) => {
-    const usersRepo: Repository<User> = req.app.locals.usersRepo;
+    const usersRepo: Repository<User> = req.app.get("usersRepo");
     try {
         const users = await usersRepo.findAll();
         res.json(users);
@@ -28,11 +28,11 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    const usersRepo: Repository<User> = req.app.locals.usersRepo;
+    const usersRepo: Repository<User> = req.app.get("usersRepo");
     const params = req.params;
     try {
         await indicative.validator.validate(params,
-            { id: 'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' });
+            { id: 'required|integer|above:0' });
     } catch (errors) {
         sendErrorResponse(req, res, 400, `Invalid user data: ${errors.map(e => e.message).join(', ')}`, errors);
         return;
@@ -56,7 +56,7 @@ router.post('/', async function (req, res, next) {
 
     try {
         await indicative.validator.validate(user, {
-            // id: 'required|regex:^[0-9a-f]{24}',
+            // id: 'required|integer|above:0',
             firstName: 'required|string|min:2',
             lastName: 'required|string|min:2',
             username: 'required|string|min:5',
@@ -93,7 +93,7 @@ router.post('/', async function (req, res, next) {
 
 router.put('/:id', async function (req, res) {
     const id = req.params.id;
-    const usersRepo: Repository<User> = req.app.locals.usersRepo;
+    const usersRepo: Repository<User> = req.app.get("usersRepo");
     const user = req.body;
 
     // const old = await req.app.locals.db.collection('users').findOne({ _id: new ObjectId(id) });
@@ -108,7 +108,7 @@ router.put('/:id', async function (req, res) {
 
     try {
         await indicative.validator.validate(user, {
-            id: 'required|regex:^[0-9a-f]{24}$',
+            id: 'required|integer|above:0',
             firstName: 'required|string|min:2',
             lastName: 'required|string|min:2',
             username: 'required|string|min:5',
@@ -136,9 +136,9 @@ router.put('/:id', async function (req, res) {
 
 router.delete('/:id', verifyToken, verifyRole([Role.AUTHOR, Role.ADMIN]), async(req, res, next) => {
     const params = req.params;
-    const usersRepo: Repository<User> = req.app.locals.usersRepo;
+    const usersRepo: Repository<User> = req.app.get("usersRepo");
     try {
-        await indicative.validator.validate(params, { id: 'required|regex:^[0-9a-f]{24}$' });
+        await indicative.validator.validate(params, { id: 'required|integer|above:0' });
     } catch (errors) {
         sendErrorResponse(req, res, 400, `Invalid user data: ${errors.map(e => e.message).join(', ')}`, errors);
         return;

@@ -8,9 +8,8 @@
   "scripts": {
     "server": "node --inspect=5858 -r ts-node/register ./src/server-blogs-api.ts",
     "tsc": "tsc -w",
-    "start": "nodemon -w ./dist ./dist/server-blogs-api.ts",
-    "build": "tsc",
-    "nodemon": "nodemon"
+    "start": "nodemon",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
     const params = req.params;
     try {
         await indicative.validator.validate(params,
-            { id: 'required|integer|above:1' });
+            { id: 'required|integer|above:0' });
     } catch (errors) {
         console.log(errors);
         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
@@ -56,7 +56,7 @@ router.post('/', async function (req, res) {
             // id: 'required|integer|above:1',
             title: 'required|string|min:3|max:80',
             content: 'string|max:1024',
-            authorId: 'required|integer|min:1',
+            authorId: 'required|integer|above:0',
             imageUrl: 'url',
             tags: 'required|array',
             'tags.*': 'string|regex:\\w+',
@@ -83,7 +83,7 @@ router.put('/:id', /*verifyToken, verifyRole(['Author','Admin']),*/ async (req, 
     const params = req.params;
     try {
         await indicative.validator.validate(params,
-            { id: 'required|integer|above:1' });
+            { id: 'required|integer|above:0' });
     } catch (errors) {
         console.log(errors);
         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
@@ -102,7 +102,7 @@ router.put('/:id', /*verifyToken, verifyRole(['Author','Admin']),*/ async (req, 
                 id: 'required|integer|above:1',
                 title: 'required|string|min:3|max:80',
                 content: 'string|max:1024',
-                authorId: 'required|integer|min:1',
+                authorId: 'required|integer|above:0',
                 imageUrl: 'url',
                 tags: 'required|array',
                 'tags.*': 'string|regex:\\w+',
@@ -134,7 +134,7 @@ router.delete('/:id', async (req, res) => {
     const params = req.params;
     try {
         await indicative.validator.validate(params,
-            { id: 'required|integer|above:1' });
+            { id: 'required|integer|above:0' });
     } catch (errors) {
         console.log(errors);
         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
