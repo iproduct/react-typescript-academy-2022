@@ -1,4 +1,4 @@
-import { NotFoundError } from './../model/errors';
+import { InvalidDataError, NotFoundError } from './../model/errors';
 import { Repository } from './../dao/repository';
 import { HOSTNAME, PORT } from '../server-blogs-api';
 import * as express from 'express';
@@ -105,26 +105,20 @@ router.put('/:id', verifyToken, verifyRole([Role.AUTHOR, Role.ADMIN]), async (re
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
     const params = req.params;
     try {
         await indicative.validator.validate(params, { id: 'required|regex:^[0-9a-f]{24}$' });
-        let old = await req.app.locals.db.collection('posts').findOne({ _id: new ObjectId(req.params.id) });
-        if (!old) {
-            sendErrorResponse(req, res, 404, `Post with ID=${req.params.id} does not exist`);
-            return;
-        }
-        old = replaceWithId(old)
-        const r = await req.app.locals.db.collection('posts').deleteOne({ _id: new ObjectId(req.params.id) });
-        if (r.result.ok && r.deletedCount === 1) {
-            console.log(`Deleted post: ${old.id}: ${old.title}`);
-            res.json(old);
-        } else {
-            console.log(`Unable to delete post: ${old.id}: ${old.title}`);
-            sendErrorResponse(req, res, 500, `Unable to delete post: ${old.id}: ${old.title}`);
-        }
     } catch (errors) {
-        sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
+        console.log(errors);
+        next(new InvalidDataError(`Invalid post data: ${errors.map(e => e.message).join(', ')}`));
+        return;
+    }
+    const postsRepo: Repository<Post> = req.app.locals.postsRepo;
+    try {
+        return res.json(await postsRepo.deleteById(req.params.id));
+    } catch (err) {
+        next(err);
     }
 });
 
