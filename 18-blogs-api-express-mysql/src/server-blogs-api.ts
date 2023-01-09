@@ -64,8 +64,8 @@ app.use(function (err, req, res, next) {
         password: 'trayan',
         database: 'fullstack_react_2022'
       });
-    app.locals.postsRepo = new PostsRepository(pool);
-    app.locals.usersRepo = new UsersRepository(pool);
+    app.set("postsRepo", new PostsRepository(pool));
+    app.set("usersRepo", new UsersRepository(pool));
 
     app.listen(PORT, HOSTNAME, () => {
         console.log(`HTTP Server listening on: http://${HOSTNAME}:${PORT}`);

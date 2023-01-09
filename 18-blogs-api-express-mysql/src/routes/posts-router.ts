@@ -14,7 +14,7 @@ const router = express.Router();
 
 // Posts API Feature
 router.get('/', async (req, res) => {
-    const postsRepo: Repository<Post> = req.app.locals.postsRepo;
+    const postsRepo: Repository<Post> = req.app.get("postsRepo");
     try {
         const posts = await postsRepo.findAll();
         res.json(posts);
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    const postsRepo: Repository<Post> = req.app.locals.postsRepo;
+    const postsRepo: Repository<Post> = req.app.get("postsRepo");
     const params = req.params;
     try {
         await indicative.validator.validate(params,
@@ -49,7 +49,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async function (req, res) {
-    const postsRepo: Repository<Post> = req.app.locals.postsRepo;
+    const postsRepo: Repository<Post> = req.app.get("postsRepo");
     const post = req.body;
     try {
         await indicative.validator.validate(post, {
@@ -80,13 +80,23 @@ router.post('/', async function (req, res) {
 });
 
 router.put('/:id', /*verifyToken, verifyRole(['Author','Admin']),*/ async (req, res) => {
-    const old = await req.app.locals.db.collection('posts').findOne({ _id: new ObjectId(req.params.id) });
+    const params = req.params;
+    try {
+        await indicative.validator.validate(params,
+            { id: 'required|integer|above:1' });
+    } catch (errors) {
+        console.log(errors);
+        sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
+        return;
+    }
+    const postsRepo: Repository<Post> = req.app.get("postsRepo");
+    const old = await postsRepo.findById(+req.params.id);
     if (!old) {
         sendErrorResponse(req, res, 404, `Post with ID=${req.params.id} does not exist`);
         return;
     }
     const post = req.body;
-    if (old._id.toString() !== post.id) {
+    if (old.id.toString() !== post.id) {
         sendErrorResponse(req, res, 400, `Post ID=${post.id} does not match URL ID=${req.params.id}`);
         return;
     }
