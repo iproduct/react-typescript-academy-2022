@@ -36,28 +36,16 @@ export class MongodbRepository<T extends Identifiable> implements Repository<T> 
     }
 
     async update(dto: T): Promise<T> {
-        const document = replaceWith_id(dto) as OptionalUnlessRequiredId<T>;
-        const myquery = { _id: new ObjectId(document._id) };
-
-        // var myquery = { _id: new ObjectID(entity._id) };
-        delete document._id
-        var newvalues = { $set: document };
-
-        console.log("Query", myquery);
-        console.log("Document", document);
-
+        const {id, ...document} = dto;
         const updateRes = await this.db.collection(this.collection)
-            .updateOne(myquery, newvalues);
-        // const updateRes = await this.db.collection(this.collection)
-        //     .replaceOne(myquery, document);
+            .replaceOne({_id: new ObjectId(id) }, document);
         if (!updateRes.acknowledged) {
             throw new Error(`Error updating document in MongoDB`)
         }
-        // if (updateRes.modifiedCount < 1) {
-        //     throw new NotFoundError(`Entity with ID=${dto.id} does not exist`);
-        // }
-        console.log(`Successfully updated 1 document with ID ${document._id}`);
-        console.log("DTO", dto);
+        if (updateRes.modifiedCount < 1) {
+            throw new NotFoundError(`Entity with ID=${dto.id} does not exist`);
+        }
+        console.log(`Successfully updated 1 document with ID ${id}`);
         return dto;
     }
 

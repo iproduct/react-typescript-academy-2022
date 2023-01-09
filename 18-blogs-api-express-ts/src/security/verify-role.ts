@@ -27,7 +27,6 @@ export default function verifyRole(roles) {
     const userRepo = req.app.locals.usersRepo as UserRepository;
     try {
       const user = await userRepo.findById(res.locals.userId);
-      console.log(roles, user.role)
       if (!roles.includes(user.role)) {
         next(new ForbiddenError(`Access not allowed`));
         return;
