@@ -18,13 +18,13 @@
  */
 
 import { ForbiddenError } from './../model/errors';
-import { UserRepository } from '../dao/users-repository';
+import { UsersRepository } from '../dao/users-repository';
 import { Request, Response, NextFunction } from 'express';
 
 
 export default function verifyRole(roles) {
   return async function (req: Request, res: Response, next: NextFunction) {
-    const userRepo = req.app.locals.usersRepo as UserRepository;
+    const userRepo = req.app.locals.usersRepo as UsersRepository;
     try {
       const user = await userRepo.findById(res.locals.userId);
       if (!roles.includes(user.role)) {

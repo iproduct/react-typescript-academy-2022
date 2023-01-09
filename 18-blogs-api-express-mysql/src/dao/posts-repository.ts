@@ -4,7 +4,6 @@ import { promises } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { NotFoundError } from '../model/errors';
 import { Db, ObjectId, OptionalId, OptionalUnlessRequiredId, WithId } from 'mongodb';
-import { replaceWithId, replaceWith_id } from '../utils';
 import {Pool} from 'mysql';
 
 

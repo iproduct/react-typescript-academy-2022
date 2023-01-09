@@ -7,10 +7,10 @@ import * as indicative from 'indicative';
 import { Role, User } from '../model/user';
 import { ObjectId } from 'mongodb';
 import * as bcrypt from 'bcryptjs';
-import { UserRepository } from '../dao/users-repository';
 import { nextTick } from 'process';
 import verifyToken from '../security/verify-token';
 import verifyRole from '../security/verify-role';
+import { UsersRepository } from '../dao/users-repository';
 
 
 const router = express.Router();
@@ -38,7 +38,7 @@ router.get('/:id', async (req, res) => {
         return;
     }
     try {
-        const user = await usersRepo.findById(params.id);
+        const user = await usersRepo.findById(+params.id);
         res.json(user);
     } catch (error) {
         if (error instanceof NotFoundError) {
@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async function (req, res, next) {
-    const usersRepo: UserRepository = req.app.locals.usersRepo;
+    const usersRepo: UsersRepository = req.app.get("usersRepo");
     const user = req.body;
 
     try {
@@ -144,7 +144,7 @@ router.delete('/:id', verifyToken, verifyRole([Role.AUTHOR, Role.ADMIN]), async(
         return;
     }
     try {
-        const deleted = await usersRepo.deleteById(params.id);
+        const deleted = await usersRepo.deleteById(+params.id);
         res.json(deleted);
     } catch (error) {
         next(error);

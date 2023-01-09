@@ -1,7 +1,6 @@
 import { IdType, Repository } from './repository';
 import { Db } from 'mongodb';
 import { User } from '../model/user';
-import { replaceWithId } from '../utils';
 import { Pool } from 'mysql';
 
 export class UsersRepository implements Repository<User> {

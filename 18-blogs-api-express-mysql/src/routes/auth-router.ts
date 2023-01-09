@@ -25,14 +25,14 @@ import * as jwt from 'jsonwebtoken';
 import { Role, User } from '../model/user';
 import Credentials from '../model/auth';
 import { Repository } from '../dao/repository';
-import { UserRepository } from '../dao/users-repository';
+import { UsersRepository } from '../dao/users-repository';
 import { sendErrorResponse } from '../utils';
 
 const router = Router();
 
 // Auth API Feature
 router.post('/login', async (req, res, next) => {
-    const usersRepo: UserRepository = req.app.locals.usersRepo;
+    const usersRepo: UsersRepository = req.app.locals.usersRepo;
     const credentials = req.body as Credentials;
     try {
         await indicative.validator.validate(credentials, {
@@ -67,7 +67,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.post('/register', async (req, res, next) => {
-    const usersRepo: UserRepository = req.app.locals.usersRepo;
+    const usersRepo: UsersRepository = req.app.locals.usersRepo;
     // validate new user
     const newUser = req.body;
     try {
