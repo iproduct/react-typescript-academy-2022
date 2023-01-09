@@ -2,7 +2,7 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import * as logger from 'morgan';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient} from 'mongodb';
 import { sendErrorResponse } from './utils';
 import postsRouter from './routes/posts-router';
 import { MongodbRepository } from './dao/mongodb-repository';
@@ -26,7 +26,7 @@ const usersCollection = 'users';
 const app = express();
 app.use(cors({
     origin: 'http://localhost:3000',
-    methods: 'GET,POST'
+    methods: 'GET,POST,PUT,DELETE'
 }))
 app.use(logger('dev'))
 app.use(express.json({ limit: '10mb' }))

@@ -29,8 +29,9 @@ router.get('/:id', async (req, res) => {
     const params = req.params;
     try {
         await indicative.validator.validate(params,
-            { id: 'required|regex:^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' });
+            { id: 'required|regex:^[0-9a-f]{24}$' });
     } catch (errors) {
+        console.log(errors);
         sendErrorResponse(req, res, 400, `Invalid post data: ${errors.map(e => e.message).join(', ')}`, errors);
         return;
     }
@@ -77,7 +78,7 @@ router.post('/', async function (req, res) {
     }
 });
 
-router.put('/:id', verifyToken, verifyRole(['Author','Admin']), async (req, res) => {
+router.put('/:id', /*verifyToken, verifyRole(['Author','Admin']),*/ async (req, res) => {
     const old = await req.app.locals.db.collection('posts').findOne({ _id: new ObjectId(req.params.id) });
     if (!old) {
         sendErrorResponse(req, res, 404, `Post with ID=${req.params.id} does not exist`);
